@@ -1,3 +1,5 @@
+import Towers.BSD.B02_Modularity_Closed
+
 /-!
 # BSD_Multiplicativity_Closed — Unconditional proof that a_n is multiplicative
 
@@ -27,8 +29,6 @@ For coprime m, n:
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD: OPEN.  NOT a brick.  NOT a Clay submission.
 -/
-
-import Towers.BSD.B02_Modularity_Closed
 
 namespace Towers.BSD
 
