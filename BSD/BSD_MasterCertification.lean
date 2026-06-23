@@ -1,3 +1,6 @@
+import Towers.BSD.B06_BSDCollection
+import Towers.BSD.MordellWeil
+
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
 
@@ -118,9 +121,6 @@
   Trail: BSD_ClassNumber → BSD_C22b_LowerBound → BSD_ClassNumberLowerProof
          → BSD_ClassNumberBounds → BSD_MasterProof (CLOSED).
 -/
-
-import Towers.BSD.B06_BSDCollection
-import Towers.BSD.MordellWeil
 
 namespace Towers.BSD
 
