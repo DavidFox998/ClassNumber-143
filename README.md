@@ -145,22 +145,87 @@ The BSD conjecture for 143a1 (rank = ord L) is named OPEN in `E143a1_BSD_OPEN`.
 ## File dependency order
 
 ```
-BSD/B01_EllipticCurve.lean          Tier 0  curve scaffold, opaque anchors
-BSD/BSD_NumberField.lean             Tier 1  K = ℚ(√-143), 𝓞_K, ω_OK
-BSD/BSD_Discriminant.lean            Tier 2  disc = -143, irreducible
-BSD/BSD_IntBasis.lean                Tier 2  {1,ω} ℤ-basis of 𝓞_K
-BSD/BSD_ReducedForms.lean            Tier 3  10 reduced BQFs (Option B base)
-BSD/BSD_ClassNumberLowerProof.lean   Tier 4  10 ≤ h(K), p₂^k non-principal
-BSD/BSD_P2_Principal_CLOSED.lean     Tier 5  Option A: p₂^10 principal → h(K)=10
-BSD/BSD_ClassNum_Upper_CLOSED.lean   Tier 6  h(K) ≤ 10 combinator
-BSD/BSD_BQF_Bridge_Closed.lean       Tier 6  Option B: BQF bridge → h(K)=10
-BSD/BSD_ClassGroup_Generator_CLOSED  Tier 7  ClassGroup = ⟨[p₂]⟩
-BSD/BSD_HeegnerPoint_CLOSED.lean     Tier 5  rational point (4,6) on E
-BSD/Traces_E1859_All_168.lean        Tier 5  168 Frobenius traces
-BSD/BSD_AP_Table_Closed.lean         Tier 5  Hasse bounds (all 168)
-BSD/E143a1_CLOSED.lean               Tier 8  capstone: all proved facts
-BSD/BSD_MasterCertification.lean     Tier 9  terminal combinator + open surfaces
+BSD/B01_EllipticCurve.lean              Tier 0  curve scaffold, opaque anchors
+BSD/B02_Modularity.lean                 Tier 0  named OPEN surfaces: Modularity_143,
+                                                 BSD_L_Analytic_143, BSD_FuncEq (Wiles–Taylor)
+BSD/B03_LFunction.lean                  Tier 0  named OPEN surfaces: BSD_143 (BSD conjecture),
+                                                 BSD_TamagawaConj, BSD_Regulator, BSD_Sha
+BSD/BSD_LFunction.lean                  Tier 1  PROVED: fiber_card_le_two, card_E143_le,
+                                                 a_p_bound_weak, a_n (Hecke coefficients)
+                                                 named OPEN (Tier 3): BSD_LSeriesSummable,
+                                                 BSD_AnalyticOn, BSD_EulerProduct,
+                                                 BSD_ModularityE143, BSD_BSDFormula
+                                                 combinator: BSD_tier3_chain (0 sorry, 0 axiom)
+BSD/BSD_NumberField.lean                Tier 1  K = ℚ(√-143), 𝓞_K, ω_OK
+BSD/BSD_Discriminant.lean               Tier 2  disc = -143, irreducible
+BSD/BSD_IntBasis.lean                   Tier 2  {1,ω} ℤ-basis of 𝓞_K
+BSD/BSD_ReducedForms.lean               Tier 3  10 reduced BQFs (Option B base)
+BSD/BSD_ClassNumberLowerProof.lean      Tier 4  10 ≤ h(K), p₂^k non-principal
+BSD/BSD_P2_Principal_CLOSED.lean        Tier 5  Option A: p₂^10 principal → h(K)=10
+BSD/BSD_ClassNum_Upper_CLOSED.lean      Tier 6  h(K) ≤ 10 combinator
+BSD/BSD_BQF_Bridge_Closed.lean          Tier 6  Option B: BQF bridge → h(K)=10
+BSD/BSD_ClassGroup_Generator_CLOSED.lean Tier 7  ClassGroup = ⟨[p₂]⟩
+BSD/BSD_HeegnerPoint_CLOSED.lean        Tier 5  rational point (4,6) on E
+BSD/Traces_E1859_All_168.lean           Tier 5  168 Frobenius traces
+BSD/BSD_AP_Table_Closed.lean            Tier 5  Hasse bounds (all 168)
+BSD/E143a1_CLOSED.lean                  Tier 8  capstone: all proved facts
+BSD/BSD_MasterCertification.lean        Tier 9  terminal combinator + open surfaces
 ```
+
+---
+
+## Open surfaces — complete ledger
+
+**All arithmetic surfaces are CLOSED.**  Every surface below is a named
+`def Prop` — not an axiom, not sorry, not a True-stub.
+
+Previously listed as OPEN but now **PROVED and discharged**:
+- `K1_ClassNumber_Upper_BSD` — classNumber K ≤ 10 — proved via `BSD_P2_Principal_CLOSED` + `BSD_BQF_Bridge_Closed`; discharged in `BSD_MasterCombinator`
+- `BSD_HeegnerPoint_OPEN` — ∃ rational point — proved: point (4,6) in `BSD_HeegnerPoint_CLOSED.lean`
+
+### Clay core + analytic gaps — `B02_Modularity.lean`, `B03_LFunction.lean` (9 surfaces)
+
+| Named Prop | File | Statement | Gap |
+|---|---|---|---|
+| `BSD_143_OPEN` | B03_LFunction | rank E(ℚ) = ord_{s=1} L(E,s) | BSD conjecture itself |
+| `BSD_TamagawaConj_OPEN 143` | B03_LFunction | L*(E,1)·\|Ш\|·\|tors\|² = Ω·R·∏c_p | Leading term formula |
+| `Modularity_143_OPEN` | B02_Modularity | E_{143} is modular (Wiles–Taylor) | Not in Mathlib v4.12.0 |
+| `BSD_L_Analytic_143_OPEN` | B02_Modularity | L(E_{143},s) extends to entire ℂ | Follows from modularity |
+| `BSD_FuncEq_OPEN 143` | B02_Modularity | L(E_{143},s) satisfies functional equation | Follows from modularity |
+| `BSD_Regulator_OPEN 143` | B03_LFunction | R(E_{143}/ℚ) > 0 | Néron–Tate height API absent |
+| `BSD_Sha_OPEN 143` | B03_LFunction | \|Ш(E_{143}/ℚ)\| finite | Ш finiteness: open Clay problem |
+| `BSD_LFunctionZero_OPEN` | BSD_AnalyticRank | L_143a1(1) = 0 | Root number ε=+1; no formal proof |
+| `BSD_AnalyticRankOne_OPEN` | BSD_AnalyticRank | ord_{s=1} L_143a1 = 1 | Derivative API absent |
+
+### Tier-3 analytic surfaces — `BSD_LFunction.lean` (5 surfaces)
+
+Named in `BSD_tier3_surface_ledger`; threaded by `BSD_tier3_chain` (0 sorry, classical trio).
+
+| Named Prop | Statement | Gap |
+|---|---|---|
+| `BSD_LSeriesSummable` | L(E₁₄₃,s) absolutely convergent for Re(s) > 3/2 | Needs `BSD_aNBound`; ~18 lines |
+| `BSD_AnalyticOn` | L(E₁₄₃,s) analytic on {Re(s) > 3/2} | Summability + M-test; ~9 lines |
+| `BSD_EulerProduct` | Euler product identity for L(E₁₄₃,s) | Multiplicativity + local factor; ~27 lines |
+| `BSD_ModularityE143` | L(E₁₄₃,s) = L(f,s) for f ∈ S₂(Γ₀(143)) | Wiles–Taylor; not in Mathlib v4.12.0 |
+| `BSD_BSDFormula` | ord_{s=1} L(E₁₄₃,s) = rank E₁₄₃(ℚ) | BSD conjecture itself |
+
+---
+
+## P5 bridge cross-reference
+
+The files `BSD/B02_Modularity.lean`, `BSD/B03_LFunction.lean`, and
+`BSD/BSD_LFunction.lean` are **present in this repository** (standalone).
+They are also mirrored in the RH P5 bridge repository for study:
+
+> **`DavidFox998/rh-p5-bridge-14`** — ZeroDensity + ZProtocol honesty bridge.
+> Path: `Towers/BSD/B02_Modularity.lean`, `Towers/BSD/B03_LFunction.lean`,
+> `Towers/BSD/BSD_LFunction.lean`.
+
+Referees may study these surface definitions in the P5 bridge repo
+**without accessing or modifying the Clay BSD repos**.
+The P5 bridge copies use `namespace Towers.BSD`; this repo uses `namespace BSD`.
+The P5 bridge repo is read-only study material.
+The authoritative Clay BSD record is this repository.
 
 ---
 
@@ -180,5 +245,7 @@ Every file: 0 sorry, 0 admit.
 
 This repository contains the formal arithmetic of K = ℚ(√-143) and the
 elliptic curve 143a1.  It does **not** prove the Birch-Swinnerton-Dyer
-conjecture.  The BSD conjecture for 143a1 — rank E(ℚ) = ord_{s=1} L(E,s) —
-is named as an open surface `E143a1_BSD_OPEN` in `E143a1_CLOSED.lean`.
+conjecture.  The BSD conjecture and all analytic prerequisites are named
+as honest open surfaces in `B02_Modularity.lean`, `B03_LFunction.lean`,
+`BSD_LFunction.lean`, and `BSD_MasterCertification.lean`.
+Mathlib version pinned to v4.12.0. DO NOT run `lake update`.
