@@ -1,7 +1,9 @@
+import Towers.BSD.Traces_E1859_All_168
+
 /-!
 # BSD_AP_Table_Closed — Closed Frobenius trace table for 143a1
 
-Depends on `BSD.Traces_E1859_All_168` which defines
+Depends on `Towers.BSD.Traces_E1859_All_168` which defines
 `E1859.ap : ℕ → ℤ` as a literal pattern-match lookup over 168 primes ≤ 997.
 
 ## Design
@@ -21,8 +23,6 @@ makes them redundant but they are kept as a human-readable ledger.
 SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 No `native_decide` anywhere. All 168 ap values and all 168 Hasse bounds: CLOSED.
 -/
-
-import BSD.Traces_E1859_All_168
 
 namespace BSD_AP_Table_Closed
 
