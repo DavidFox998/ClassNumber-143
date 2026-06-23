@@ -1,3 +1,6 @@
+import Towers.BSD.BSD_AP_Table_Closed
+import Towers.BSD.Traces_E1859_All_168
+
 /-!
 # BSD_AnalyticRank — Sharpened analytic rank surfaces for 143a1
 
@@ -58,9 +61,6 @@ Verified at p ∈ {2,3,5,7} against 143_traces.csv.
 SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD rank 1 conclusion: OPEN (conditional on named surfaces). No Clay claim.
 -/
-
-import Towers.BSD.BSD_AP_Table_Closed
-import Towers.BSD.Traces_E1859_All_168
 
 namespace Towers.BSD
 
