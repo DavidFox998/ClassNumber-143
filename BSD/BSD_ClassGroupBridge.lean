@@ -1,3 +1,11 @@
+import Towers.BSD.BSD_P2_Principal_CLOSED
+import Towers.BSD.BSD_ClassNum_Upper_CLOSED
+import Towers.BSD.BSD_ClassNumberBounds
+import Towers.BSD.BSD_ReducedForms
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Finset.Basic
+
 /-!
 # BSD_ClassGroupBridge — ClassGroup generator bridge
 
@@ -32,17 +40,9 @@ Named open surface: `BSD_BQF_ClassNumber_bridge`
   (`BinaryQuadraticForm.classGroupEquiv` absent from Mathlib v4.12.0).
 -/
 
-import BSD.BSD_P2_Principal_CLOSED
-import BSD.BSD_ClassNum_Upper_CLOSED
-import BSD.BSD_ClassNumberBounds
-import BSD.BSD_ReducedForms
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Basic
-
 set_option maxHeartbeats 800000
 
-namespace BSD
+namespace Towers.BSD
 
 open NumberField
 
@@ -171,4 +171,4 @@ theorem BSD_ClassGroupBridge_ledger :
      (BSD_classNumber_eq_10_one_gate h_bridge).le,
      BSD_classNumber_lower_bound⟩
 
-end BSD
+end Towers.BSD
