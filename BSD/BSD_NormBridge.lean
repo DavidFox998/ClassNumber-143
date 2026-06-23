@@ -1,5 +1,5 @@
-import BSD.BSD_ClassNumber
-import BSD.BSD_IntBasis
+import Towers.BSD.BSD_ClassNumber
+import Towers.BSD.BSD_IntBasis
 import Mathlib.RingTheory.Ideal.Norm
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
@@ -167,7 +167,7 @@ def BSD_algNorm_gen_CLOSED : Prop :=
       `.natAbs = 1024`.
 
     This bridges the arithmetic certificate to the ideal-theoretic norm,
-    setting up the `BSD_orderOf_p2` discharge (Gap B closed,
+    setting up the `BSD_orderOf_p2_OPEN` discharge (Gap B closed,
     Gap A — constructing 𝔭₂ — remains open). -/
 theorem BSD_absNorm_gen_cond
     (h : BSD_algNorm_gen_CLOSED) :
