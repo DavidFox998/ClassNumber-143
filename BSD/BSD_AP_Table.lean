@@ -1,3 +1,7 @@
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic
+
 /-!
 # BSD_AP_Table — Hecke trace table for 143a1 (LMFDB 143.2.a.a)
 
@@ -36,10 +40,6 @@ Source: LMFDB 143.2.a.a column of 143_traces.csv; confirmed by j0_143_hankel.py.
 SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 All unproved values are named EMPIRICAL surfaces, not axioms and not sorry.
 -/
-
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Tactic
 
 namespace Towers.BSD
 
