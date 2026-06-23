@@ -15,14 +15,14 @@ Non-split multiplicative reduction at p=11 and p=13 (a₁₁ = a₁₃ = −1).
 
 ## Named OPEN surfaces (def Prop, not axioms, not sorry)
 
-- `BSD_Hasse p`       : |a_p| ≤ 2√p  — Frobenius degree argument;
+- `BSD_Hasse_OPEN p`       : |a_p| ≤ 2√p  — Frobenius degree argument;
                              `EllipticCurve.Frobenius` absent from Mathlib v4.12.0
-- `BSD_PrimePowBound` : |a_{p^k}| ≤ (k+1)√p^k  — needs Hasse + sin/cos identity
-- `BSD_LSeriesSummable`: L absolutely convergent for Re(s) > 3/2 — needs a_n sharp bound
-- `BSD_AnalyticOn`    : L analytic on {Re(s) > 3/2} — M-test + LSeries API
-- `BSD_EulerProduct`  : Euler product identity — multiplicativity + absolute convergence
-- `BSD_ModularityE143`: L(E₁₄₃, s) = L(f, s) for f ∈ S₂(Γ₀(143)) — Wiles-Taylor
-- `BSD_BSDFormula`    : ord_{s=1} L(E₁₄₃, s) = rank E(ℚ)  — BSD conjecture
+- `BSD_PrimePowBound_OPEN` : |a_{p^k}| ≤ (k+1)√p^k  — needs Hasse + sin/cos identity
+- `BSD_LSeriesSummable_OPEN`: L absolutely convergent for Re(s) > 3/2 — needs a_n sharp bound
+- `BSD_AnalyticOn_OPEN`    : L analytic on {Re(s) > 3/2} — M-test + LSeries API
+- `BSD_EulerProduct_OPEN`  : Euler product identity — multiplicativity + absolute convergence
+- `BSD_ModularityE143_OPEN`: L(E₁₄₃, s) = L(f, s) for f ∈ S₂(Γ₀(143)) — Wiles-Taylor
+- `BSD_BSDFormula_OPEN`    : ord_{s=1} L(E₁₄₃, s) = rank E(ℚ)  — BSD conjecture
 
 ## Chain combinator (0 sorry)
 
@@ -229,43 +229,43 @@ The Frobenius endomorphism φ : (x,y) ↦ (x^p, y^p) on E₁₄₃/F_p satisfies
 
 The Frobenius isogeny / degree quadratic form is NOT formalized in
 Mathlib v4.12.0 (EllipticCurve.Frobenius absent from AlgebraicGeometry/).
-Hence BSD_Hasse is a named OPEN surface, not an axiom.
+Hence BSD_Hasse_OPEN is a named OPEN surface, not an axiom.
 -/
 
 /-- **OPEN**: |a_p(E₁₄₃)| ≤ 2√p  for p of good reduction (p ≠ 11, 13).
     Gap: Frobenius endomorphism degree theory absent from Mathlib v4.12.0.
     Reference: Silverman AEC §V.2, Hasse 1936. -/
-def BSD_Hasse (p : ℕ) [Fact p.Prime] : Prop :=
+def BSD_Hasse_OPEN (p : ℕ) [Fact p.Prime] : Prop :=
   |(a_p p : ℝ)| ≤ 2 * Real.sqrt (p : ℝ)
 
 /-- **OPEN**: |a_{p^k}| ≤ (k+1)·p^{k/2}.
-    Gap: requires BSD_Hasse + sin/cos closed form induction.
+    Gap: requires BSD_Hasse_OPEN + sin/cos closed form induction.
     Proof sketch: set θ = arccos(a_p / 2√p) ∈ (0,π) (strict: √p irrational for prime p);
     a_{p^k} = p^{k/2} · sin((k+1)θ)/sinθ; then |sin((k+1)θ)| ≤ (k+1)|sinθ| by induction. -/
-def BSD_PrimePowBound (p : ℕ) [Fact p.Prime] (k : ℕ) : Prop :=
+def BSD_PrimePowBound_OPEN (p : ℕ) [Fact p.Prime] (k : ℕ) : Prop :=
   |(a_prime_pow p k : ℝ)| ≤ (k + 1 : ℝ) * (Real.sqrt (p : ℝ)) ^ k
 
 /-- **OPEN**: |a_n| ≤ √n · τ(n) where τ(n) = n.divisors.card.
-    Gap: requires BSD_PrimePowBound + multiplicativity of a_n + product estimate. -/
-def BSD_aNBound (n : ℕ) : Prop :=
+    Gap: requires BSD_PrimePowBound_OPEN + multiplicativity of a_n + product estimate. -/
+def BSD_aNBound_OPEN (n : ℕ) : Prop :=
   |(a_n n : ℝ)| ≤ Real.sqrt (n : ℝ) * (n.divisors.card : ℝ)
 
 /-- **OPEN**: L(E₁₄₃, s) absolutely convergent for Re(s) > 3/2.
-    Gap: requires BSD_aNBound; comparison with ζ(s − 1/2)² via τ(n) = O(n^ε);
+    Gap: requires BSD_aNBound_OPEN; comparison with ζ(s − 1/2)² via τ(n) = O(n^ε);
     LSeries summability API glue (~18 lines). -/
-def BSD_LSeriesSummable : Prop :=
+def BSD_LSeriesSummable_OPEN : Prop :=
   ∀ s : ℂ, 3/2 < s.re →
     Summable fun n : ℕ+ => (a_n n : ℂ) / (n : ℂ) ^ s
 
 /-- **OPEN**: L(E₁₄₃, s) is analytic on {s | Re(s) > 3/2}.
     Gap: locally uniform convergence + Weierstrass M-test (~9 lines). -/
-def BSD_AnalyticOn : Prop :=
+def BSD_AnalyticOn_OPEN : Prop :=
   AnalyticOn ℂ (fun s => ∑' n : ℕ+, (a_n n : ℂ) / (n : ℂ) ^ s) {s | 3/2 < s.re}
 
 /-- **OPEN**: Euler product identity.
     L(E₁₄₃, s) = ∏_p (1 − a_p p^{−s} + p^{1−2s})^{−1}  for Re(s) > 3/2.
     Gap: multiplicativity of a_n + absolute convergence + local factor identity (~27 lines). -/
-def BSD_EulerProduct : Prop :=
+def BSD_EulerProduct_OPEN : Prop :=
   ∀ s : ℂ, 3/2 < s.re →
     (∑' n : ℕ+, (a_n n : ℂ) / (n : ℂ) ^ s) =
     ∏' q : {n : ℕ // n.Prime},
@@ -281,20 +281,20 @@ project, not a current task.  Named as OPEN surfaces — NOT axioms. -/
 
 /-- **OPEN**: Modularity — L(E₁₄₃, s) = L(f, s) for some f ∈ S₂(Γ₀(143)).
     Gap: Wiles-Taylor theorem; not formalized anywhere in Mathlib v4.12.0. -/
-def BSD_ModularityE143 : Prop :=
+def BSD_ModularityE143_OPEN : Prop :=
   ∃ (f : ℕ → ℂ),
     (∀ n : ℕ+, f n = a_n n) ∧
     True  -- stub for ∃ cusp form f ∈ S₂(Γ₀(143)) with these Fourier coefficients
 
 /-- **OPEN**: Analytic continuation and functional equation for L(E₁₄₃, s)
     (follows from modularity + Hecke theory). -/
-def BSD_FuncEq : Prop :=
+def BSD_FuncEq_OPEN : Prop :=
   ∃ (Λ : ℂ → ℂ),
     AnalyticOn ℂ Λ Set.univ ∧
     ∀ s : ℂ, Λ s = Λ (2 - s)
 
 /-- **OPEN**: BSD rank formula — ord_{s=1} L(E₁₄₃, s) = rank E₁₄₃(ℚ). -/
-def BSD_BSDFormula : Prop :=
+def BSD_BSDFormula_OPEN : Prop :=
   ∃ (r : ℕ),
     True  -- stub for ord_{s=1} L(E₁₄₃, s) = r = rank E₁₄₃(ℚ)
 
@@ -314,15 +314,15 @@ The combinator itself has SORRY: 0; the open surfaces are the genuine gaps.
     This is NOT a proof of BSD.  It is an honest conditional combinator:
     it names the gaps and threads them, but discharges nothing. -/
 theorem BSD_tier3_chain
-    -- Analytic structure (provable without axioms once BSD_aNBound is closed)
-    (_hSumm    : BSD_LSeriesSummable)
-    (_hAn      : BSD_AnalyticOn)
-    (_hEuler   : BSD_EulerProduct)
+    -- Analytic structure (provable without axioms once BSD_aNBound_OPEN is closed)
+    (_hSumm    : BSD_LSeriesSummable_OPEN)
+    (_hAn      : BSD_AnalyticOn_OPEN)
+    (_hEuler   : BSD_EulerProduct_OPEN)
     -- Modularity and analytic continuation (Wiles-Taylor, genuinely OPEN)
-    (_hMod     : BSD_ModularityE143)
-    (_hFuncEq  : BSD_FuncEq)
+    (_hMod     : BSD_ModularityE143_OPEN)
+    (_hFuncEq  : BSD_FuncEq_OPEN)
     -- BSD conjecture itself (OPEN)
-    (hBSD      : BSD_BSDFormula) :
+    (hBSD      : BSD_BSDFormula_OPEN) :
     ∃ r : ℕ, True := by
   obtain ⟨r, _⟩ := hBSD
   exact ⟨r, trivial⟩
@@ -330,11 +330,11 @@ theorem BSD_tier3_chain
 /-- Summary: the 5 OPEN surfaces for Tier 3.
     Closed chain certificate — no sorry, no axiom beyond classical trio. -/
 theorem BSD_tier3_surface_ledger :
-    (BSD_LSeriesSummable → False → False) ∧
-    (BSD_AnalyticOn → False → False) ∧
-    (BSD_EulerProduct → False → False) ∧
-    (BSD_ModularityE143 → False → False) ∧
-    (BSD_BSDFormula → False → False) := by
+    (BSD_LSeriesSummable_OPEN → False → False) ∧
+    (BSD_AnalyticOn_OPEN → False → False) ∧
+    (BSD_EulerProduct_OPEN → False → False) ∧
+    (BSD_ModularityE143_OPEN → False → False) ∧
+    (BSD_BSDFormula_OPEN → False → False) := by
   exact ⟨fun _ h => h, fun _ h => h, fun _ h => h, fun _ h => h, fun _ h => h⟩
 
 end
