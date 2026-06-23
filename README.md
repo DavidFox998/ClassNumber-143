@@ -1,10 +1,22 @@
-# h(ℚ(√-143)) = 10 — Unconditional Lean 4 Proof
+# Birch-Swinnerton-Dyer — 143a1 Arithmetic Certificate
 
 **Lean 4 · Mathlib v4.12.0 · 0 sorry · Axiom footprint: classical trio only**
 
-Standalone formal proof that the class number of the imaginary quadratic
-field K = ℚ(√-143) equals 10, via two independent proof routes.  
-Both routes are unconditional (0 open gates, 0 sorry).
+Formal arithmetic certificate for the elliptic curve **143a1**
+(Cremona label; y² + y = x³ − x² − x − 2, conductor N = 143 = 11 × 13),
+built as a scaffold toward the Birch-Swinnerton-Dyer conjecture.
+
+Both unconditional proof routes for h(ℚ(√-143)) = 10 are included.
+The BSD conjecture for 143a1 is **OPEN** — named honestly as an open surface.
+
+---
+
+## Two BSD proof strategies for referees
+
+| Strategy | Description | Status |
+|----------|-------------|--------|
+| **Option A — Tauberian Route** | Prove L(E₁₄₃,s) summability → analyticity → Euler product → rank bound via Tauberian theorem | 3 of 5 L-function surfaces **conditionally closed** in `BSD_LFunction_Closed.lean`; 2 permanently OPEN |
+| **Option B — Kolyvagin–Heegner Route** | Use arithmetic scaffold (h(K)=10, ClassGroup=⟨[p₂]⟩, Heegner point) + Kolyvagin Euler system → rank bound | Arithmetic scaffold **fully proved**; analytic rank surfaces OPEN |
 
 ---
 
@@ -12,43 +24,61 @@ Both routes are unconditional (0 open gates, 0 sorry).
 
 | Component | Status |
 |-----------|--------|
-| Lower bound 10 ≤ h(K) | **PROVED** — unconditional |
-| Option A — principal ideal route | **PROVED** — unconditional |
-| Option B — BQF bridge route | **PROVED** — unconditional |
-| Main theorem h(K) = 10 | **PROVED** — both routes closed |
-| Generator: ClassGroup = ⟨[p₂]⟩ | **PROVED** — unconditional |
-| Capstone: 143a1 arithmetic | **PROVED** — `E143a1_CLOSED.lean` |
+| h(K) = 10 via principal ideal (for Option B) | **PROVED** — unconditional |
+| h(K) = 10 via BQF bridge (for Option B) | **PROVED** — unconditional |
+| Generator: ClassGroup(𝓞_K) = ⟨[p₂]⟩ | **PROVED** — unconditional |
+| Rational point (4, 6) on 143a1 | **PROVED** — unconditional |
+| a_p for 168 primes p ≤ 997 | **PROVED** — all by rfl |
+| Hasse bounds \|a_p\|² ≤ 4p (168 primes) | **PROVED** — unconditional |
+| Capstone 143a1 arithmetic | **PROVED** — `E143a1_CLOSED.lean` |
+| BSD_LSeriesSummable (Option A) | **CONDITIONAL** — `BSD_LFunction_Closed.lean` |
+| BSD_AnalyticOn (Option A) | **CONDITIONAL** — `BSD_LFunction_Closed.lean` |
+| BSD_EulerProduct (Option A) | **CONDITIONAL** — `BSD_LFunction_Closed.lean` |
+| BSD_ModularityE143 (Option A) | **OPEN** — Wiles–Taylor; not in Mathlib v4.12.0 |
+| BSD conjecture rank = ord L | **OPEN** — `E143a1_BSD_OPEN` |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all files |
 
 ---
 
-## Two unconditional routes to h(K) = 10
+## The elliptic curve 143a1
+
+```
+E : y² + y = x³ − x² − x − 2
+```
+
+Weierstrass coefficients [a₁, a₂, a₃, a₄, a₆] = [0, −1, 1, −1, −2].
+Conductor N = 143 = 11 × 13.  Minimal discriminant Δ = −1859 = −11 · 13².
+Root number ε(E) = +1.  Generator P = (4, 6).
+
+---
+
+## Two unconditional routes to h(ℚ(√-143)) = 10
 
 ### Option A — Principal Ideal Route
 
-The generator element gen_OK = -28 + 3ω satisfies N(gen_OK) = 2^10 = 1024.
-This proves p₂^10 is principal (the ideal it generates has norm 2^10).
-Combined with the lower bound 10 ≤ h(K) (from non-principality of p₂^k
-for odd k = 1, 3, 5, 7, 9), the pinching gives h(K) = 10.
+The generator element gen_OK = −28 + 3ω satisfies N(gen_OK) = 2¹⁰ = 1024.
+This proves p₂¹⁰ is principal.  Combined with the lower bound 10 ≤ h(K)
+(from non-principality of p₂^k for odd k = 1, 3, 5, 7, 9), the pinching
+gives h(K) = 10.
 
 Key files: `BSD_ClassNumberLowerProof.lean` → `BSD_P2_Principal_CLOSED.lean`
 
 ```lean
--- norm certificate (BSD_AlgNorm.lean):
+-- norm certificate:
 theorem BSD_absNorm_genOK : Ideal.absNorm (Ideal.span {gen_OK}) = 1024
 
--- principal ideal (BSD_P2_Principal_CLOSED.lean):
+-- principal ideal:
 theorem BSD_p2_pow_10_principal : BSD_p2_pow_10_principal_hyp
 
--- concludes h(K) = 10:
+-- class number:
 theorem BSD_classNumber_eq_10_via_principal
     (h : BSD_p2_pow_10_principal_hyp) : NumberField.classNumber K = 10
 ```
 
 ### Option B — BQF Bridge Route
 
-Enumerate all 10 reduced binary quadratic forms of discriminant -143
+Enumerate all 10 reduced binary quadratic forms of discriminant −143
 (proved complete by interval_cases, 72 cases).  Apply Lagrange divisibility:
 classNumber K divides orderOf([p₂]) = 10, and 10 ≤ classNumber K,
 so classNumber K = 10.  No BinaryQuadraticForm.classGroupEquiv API needed.
@@ -56,21 +86,21 @@ so classNumber K = 10.  No BinaryQuadraticForm.classGroupEquiv API needed.
 Key files: `BSD_ReducedForms.lean` → `BSD_BQF_Bridge_Closed.lean`
 
 ```lean
--- exactly 10 reduced forms (BSD_ReducedForms.lean):
+-- exactly 10 reduced forms:
 theorem BSD_numReducedForms143 : reducedForms143.length = 10 := rfl
 
--- bridge (BSD_BQF_Bridge_Closed.lean):
+-- bridge:
 theorem BSD_BQF_ClassNumber_bridge_CLOSED :
     NumberField.classNumber K = reducedForms143.length
--- Both sides = 10; proved via Lagrange divisibility bypass.
+-- Proved via Lagrange divisibility bypass; both sides = 10.
 ```
 
 ---
 
-## Generator certificate (beyond h(K) = 10)
+## Generator certificate
 
-A third result proved in this repo: the class group is cyclic of order 10,
-generated by the class [p₂] of the prime ideal p₂ above 2.
+The class group ClassGroup(𝓞_K) is cyclic of order 10, generated by
+the class [p₂] of the prime ideal p₂ above 2.
 
 Key file: `BSD_ClassGroup_Generator_CLOSED.lean`
 
@@ -82,63 +112,22 @@ theorem BSD_classGroup_gen_by_p2_CLOSED : BSD_classGroup_gen_by_p2_hyp
 
 ---
 
-## Capstone — 143a1 arithmetic certificate
+## Capstone — E143a1_CLOSED.lean
 
-`E143a1_CLOSED.lean` is the capstone file, collecting all proved arithmetic
-for the elliptic curve 143a1  (Cremona label; y² + y = x³ − x² − x − 2):
+`E143a1_CLOSED.lean` is the capstone file collecting every proved arithmetic
+fact about 143a1 in dependency order:
 
 | Proved fact | Lean theorem |
 |---|---|
-| Weierstrass coefficients [0,-1,1,-1,-2] | `E143a1_coefficients` |
+| Coefficients [0,−1,1,−1,−2] | `E143a1_coefficients` |
 | Conductor 143 = 11 × 13 | `E143a1_conductor_factorisation` |
-| Rational point (4, 6) on E | `E143a1_point_4_6` |
-| Conjugate point (4, -7) on E | `E143a1_point_4_neg7` |
-| a_p for 168 primes p ≤ 997 | `E143a1_ap_at_*` (all by rfl) |
-| Hasse bound \|a_p\|² ≤ 4p (168 primes) | `BSD_Hasse_Closed` |
-| h(ℚ(√-143)) = 10 (Option A) | `E143a1_classNumber` |
-| ClassGroup = ⟨[p₂]⟩ (Option B) | `E143a1_classGroup_cyclic` |
-
-The BSD conjecture for 143a1 (rank = ord L) is named OPEN in `E143a1_BSD_OPEN`.
-
----
-
-## Proved arithmetic summary
-
-### Number field K = ℚ(√-143)
-
-| Result | File |
-|---|---|
-| X²-X+36 irreducible over ℚ | `BSD_Discriminant` |
-| finrank ℚ K = 2 | `BSD_Discriminant` |
-| discriminant(K) = -143 | `BSD_Discriminant` |
-| {1, ω} is a ℤ-basis for 𝓞_K | `BSD_IntBasis` |
-| NrRealPlaces K = 0, NrComplexPlaces K = 1 | `BSD_NumberField` |
-| Minkowski bound (2/π)·√143 < 8 | `BSD_NumberField` |
-
-### Norm-form impossibilities
-
-| Result | File |
-|---|---|
-| a²+ab+36b² ≠ 2^k for k = 1, 3, 5, 7, 9 (odd) | `BSD_ClassNumberLowerProof` |
-| a²+ab+36b² = 2^10 : gen_OK = (-28, 3) | `BSD_AlgNorm` |
-| absNorm(p₂) = 2 | `BSD_ClassNumberLowerProof` |
-| p₂^k non-principal for k = 1, 3, 5, 7, 9 | `BSD_ClassNumberLowerProof` |
-
-### Binary quadratic forms
-
-| Result | File |
-|---|---|
-| Exactly 10 reduced BQFs of discriminant -143 | `BSD_ReducedForms` |
-| All 10 forms satisfy reduced-form conditions | `BSD_ReducedForms` |
-| Every reduced BQF of disc -143 is in the list | `BSD_ReducedForms` |
-| absNorm(idealOfForm a b) = a (all 10 forms) | `BSD_FormIdeal` |
-
-### Frobenius traces for 143a1
-
-| Result | File |
-|---|---|
-| ap(p) for 168 primes p ≤ 997 (by rfl) | `Traces_E1859_All_168` |
-| Hasse bound ap(p)² ≤ 4p (168 primes) | `BSD_AP_Table_Closed` |
+| Point (4, 6) on E | `E143a1_point_4_6` |
+| Point (4, −7) on E | `E143a1_point_4_neg7` |
+| h(ℚ(√-143)) = 10  [Option A] | `E143a1_classNumber` |
+| ClassGroup = ⟨[p₂]⟩  [Option B] | `E143a1_classGroup_cyclic` |
+| a_p for 168 primes ≤ 997 | `E143a1_ap_at_*` |
+| Hasse bound (all 168) | `BSD_Hasse_Closed` |
+| BSD gap (named OPEN) | `E143a1_BSD_OPEN` |
 
 ---
 
@@ -156,16 +145,22 @@ BSD/BSD_LFunction.lean                  Tier 1  PROVED: fiber_card_le_two, card_
                                                  BSD_AnalyticOn, BSD_EulerProduct,
                                                  BSD_ModularityE143, BSD_BSDFormula
                                                  combinator: BSD_tier3_chain (0 sorry, 0 axiom)
+BSD/BSD_LFunction_Closed.lean           Tier 2  Option A conditional closures:
+                                                 BSD_LSeriesSummable_CLOSED (given 3 sub-surfaces)
+                                                 BSD_AnalyticOn_CLOSED (given BSD_WeierstrassM_OPEN)
+                                                 BSD_EulerProduct_CLOSED (given BSD_EulerConvergence_OPEN)
+                                                 BSD_ModularityE143 + BSD_BSDFormula: permanently OPEN
+                                                 combinator: BSD_optionA_tauberian_chain
 BSD/BSD_NumberField.lean                Tier 1  K = ℚ(√-143), 𝓞_K, ω_OK
 BSD/BSD_Discriminant.lean               Tier 2  disc = -143, irreducible
 BSD/BSD_IntBasis.lean                   Tier 2  {1,ω} ℤ-basis of 𝓞_K
-BSD/BSD_ReducedForms.lean               Tier 3  10 reduced BQFs (Option B base)
+BSD/BSD_ReducedForms.lean               Tier 3  10 reduced BQFs  (Option B base)
 BSD/BSD_ClassNumberLowerProof.lean      Tier 4  10 ≤ h(K), p₂^k non-principal
 BSD/BSD_P2_Principal_CLOSED.lean        Tier 5  Option A: p₂^10 principal → h(K)=10
 BSD/BSD_ClassNum_Upper_CLOSED.lean      Tier 6  h(K) ≤ 10 combinator
 BSD/BSD_BQF_Bridge_Closed.lean          Tier 6  Option B: BQF bridge → h(K)=10
 BSD/BSD_ClassGroup_Generator_CLOSED.lean Tier 7  ClassGroup = ⟨[p₂]⟩
-BSD/BSD_HeegnerPoint_CLOSED.lean        Tier 5  rational point (4,6) on E
+BSD/BSD_HeegnerPoint_CLOSED.lean        Tier 5  rational point (4,6)
 BSD/Traces_E1859_All_168.lean           Tier 5  168 Frobenius traces
 BSD/BSD_AP_Table_Closed.lean            Tier 5  Hasse bounds (all 168)
 BSD/E143a1_CLOSED.lean                  Tier 8  capstone: all proved facts
@@ -174,16 +169,57 @@ BSD/BSD_MasterCertification.lean        Tier 9  terminal combinator + open surfa
 
 ---
 
+## Proved arithmetic summary
+
+### Number field K = ℚ(√-143)
+
+| Result | File |
+|---|---|
+| X²-X+36 irreducible over ℚ | `BSD_Discriminant` |
+| finrank ℚ K = 2 | `BSD_Discriminant` |
+| disc(K) = −143 | `BSD_Discriminant` |
+| {1, ω} is a ℤ-basis for 𝓞_K | `BSD_IntBasis` |
+| NrRealPlaces K = 0, NrComplexPlaces K = 1 | `BSD_NumberField` |
+| Minkowski bound (2/π)·√143 < 8 | `BSD_NumberField` |
+
+### Norm-form arithmetic
+
+| Result | File |
+|---|---|
+| a²+ab+36b² ≠ 2^k for k = 1,3,5,7,9 | `BSD_ClassNumberLowerProof` |
+| a²+ab+36b² = 2^10: gen_OK = (−28, 3) | `BSD_AlgNorm` |
+| absNorm(p₂) = 2 | `BSD_ClassNumberLowerProof` |
+| p₂^k non-principal for k = 1,3,5,7,9 | `BSD_ClassNumberLowerProof` |
+
+### Binary quadratic forms
+
+| Result | File |
+|---|---|
+| Exactly 10 reduced BQFs of disc −143 | `BSD_ReducedForms` |
+| All 10 forms satisfy reduced-form conditions | `BSD_ReducedForms` |
+| Every reduced BQF of disc −143 is in the list | `BSD_ReducedForms` |
+| absNorm(idealOfForm a b) = a (all 10) | `BSD_FormIdeal` |
+
+### Frobenius traces for 143a1
+
+| Result | File |
+|---|---|
+| ap(p) for 168 primes p ≤ 997 (by rfl) | `Traces_E1859_All_168` |
+| Hasse bound ap(p)² ≤ 4p (168 primes) | `BSD_AP_Table_Closed` |
+
+---
+
 ## Open surfaces — complete ledger
 
 **All arithmetic surfaces are CLOSED.**  Every surface below is a named
-`def Prop` — not an axiom, not sorry, not a True-stub.
+`def Prop` — not an axiom, not sorry, not a True-stub.  The combinators
+that thread them are all 0 sorry, classical trio.
 
 Previously listed as OPEN but now **PROVED and discharged**:
 - `K1_ClassNumber_Upper_BSD` — classNumber K ≤ 10 — proved via `BSD_P2_Principal_CLOSED` + `BSD_BQF_Bridge_Closed`; discharged in `BSD_MasterCombinator`
 - `BSD_HeegnerPoint_OPEN` — ∃ rational point — proved: point (4,6) in `BSD_HeegnerPoint_CLOSED.lean`
 
-### Clay core + analytic gaps — `B02_Modularity.lean`, `B03_LFunction.lean` (9 surfaces)
+### Clay core + analytic gaps — `B02_Modularity.lean`, `B03_LFunction.lean`, `BSD_MasterCertification.lean` (9 surfaces)
 
 | Named Prop | File | Statement | Gap |
 |---|---|---|---|
@@ -197,17 +233,41 @@ Previously listed as OPEN but now **PROVED and discharged**:
 | `BSD_LFunctionZero_OPEN` | BSD_AnalyticRank | L_143a1(1) = 0 | Root number ε=+1; no formal proof |
 | `BSD_AnalyticRankOne_OPEN` | BSD_AnalyticRank | ord_{s=1} L_143a1 = 1 | Derivative API absent |
 
-### Tier-3 analytic surfaces — `BSD_LFunction.lean` (5 surfaces)
+### Tier-3 analytic surfaces — `BSD_LFunction.lean` + `BSD_LFunction_Closed.lean`
 
-Named in `BSD_tier3_surface_ledger`; threaded by `BSD_tier3_chain` (0 sorry, classical trio).
+`BSD_LFunction.lean` defines the 7 named OPEN surfaces and the Hecke coefficient arithmetic.
+`BSD_LFunction_Closed.lean` (Milestone 1 — Option A: Tauberian Route) conditionally closes
+3 of the 5 L-function surfaces by reducing them to named sub-surface hypotheses.
+
+`BSD_tier3_surface_ledger` (theorem, 0 sorry) records all 5 surfaces honestly.
+`BSD_optionA_tauberian_chain` (theorem, 0 sorry) chains all conditional closures.
+
+**L-function surfaces after Milestone 1:**
+
+| Named Prop | Statement | Status after M1 |
+|---|---|---|
+| `BSD_LSeriesSummable_OPEN` | L(E₁₄₃,s) absolutely convergent for Re(s) > 3/2 | **CONDITIONAL** — `BSD_LSeriesSummable_CLOSED` given `BSD_TermBound_OPEN` + `BSD_CompareZeta_OPEN` |
+| `BSD_AnalyticOn_OPEN` | L(E₁₄₃,s) analytic on {Re(s) > 3/2} | **CONDITIONAL** — `BSD_AnalyticOn_CLOSED` given `BSD_WeierstrassM_OPEN` |
+| `BSD_EulerProduct_OPEN` | Euler product identity for L(E₁₄₃,s) | **CONDITIONAL** — `BSD_EulerProduct_CLOSED` given `BSD_EulerConvergence_OPEN` |
+| `BSD_ModularityE143_OPEN` | L(E₁₄₃,s) = L(f,s) for f ∈ S₂(Γ₀(143)) | **OPEN** — Wiles–Taylor; not in Mathlib v4.12.0; no timeline |
+| `BSD_BSDFormula_OPEN` | ord_{s=1} L(E₁₄₃,s) = rank E₁₄₃(ℚ) | **OPEN** — BSD conjecture itself; Millennium Problem |
+
+**New named sub-surfaces from Milestone 1 (`BSD_LFunction_Closed.lean`):**
+
+| Sub-surface | Mathematical gap |
+|---|---|
+| `BSD_TermBound_OPEN` | ‖a_n/n^s‖ ≤ √n·τ(n)/n^(Re s) — norm calc via `Complex.norm_cpow` |
+| `BSD_CompareZeta_OPEN` | ∑ √n·τ(n)/n^σ converges for σ > 3/2 — comparison with ζ(σ−1/2)² |
+| `BSD_WeierstrassM_OPEN` | Summable → AnalyticOn (Weierstrass M-test; `analyticOn_tsum` absent) |
+| `BSD_EulerConvergence_OPEN` | Euler product converges to Dirichlet series (Euler product theorem absent) |
+
+**Supporting open surfaces in `BSD_LFunction.lean`:**
 
 | Named Prop | Statement | Gap |
 |---|---|---|
-| `BSD_LSeriesSummable` | L(E₁₄₃,s) absolutely convergent for Re(s) > 3/2 | Needs `BSD_aNBound`; ~18 lines |
-| `BSD_AnalyticOn` | L(E₁₄₃,s) analytic on {Re(s) > 3/2} | Summability + M-test; ~9 lines |
-| `BSD_EulerProduct` | Euler product identity for L(E₁₄₃,s) | Multiplicativity + local factor; ~27 lines |
-| `BSD_ModularityE143` | L(E₁₄₃,s) = L(f,s) for f ∈ S₂(Γ₀(143)) | Wiles–Taylor; not in Mathlib v4.12.0 |
-| `BSD_BSDFormula` | ord_{s=1} L(E₁₄₃,s) = rank E₁₄₃(ℚ) | BSD conjecture itself |
+| `BSD_Hasse_OPEN` | \|a_p\| ≤ 2√p for p of good reduction | Frobenius degree theory absent from Mathlib v4.12.0 |
+| `BSD_PrimePowBound_OPEN` | \|a_{p^k}\| ≤ (k+1)·p^{k/2} | Requires Hasse + sin/cos identity |
+| `BSD_aNBound_OPEN` | \|a_n\| ≤ √n · τ(n) | Requires PrimePowBound + multiplicativity |
 
 ---
 
@@ -218,12 +278,14 @@ The files `BSD/B02_Modularity.lean`, `BSD/B03_LFunction.lean`, and
 They are also mirrored in the RH P5 bridge repository for study:
 
 > **`DavidFox998/rh-p5-bridge-14`** — ZeroDensity + ZProtocol honesty bridge.
-> Path: `Towers/BSD/B02_Modularity.lean`, `Towers/BSD/B03_LFunction.lean`,
+> Path in that repo: `Towers/BSD/B02_Modularity.lean`, `Towers/BSD/B03_LFunction.lean`,
 > `Towers/BSD/BSD_LFunction.lean`.
 
 Referees may study these surface definitions in the P5 bridge repo
-**without accessing or modifying the Clay BSD repos**.
-The P5 bridge copies use `namespace Towers.BSD`; this repo uses `namespace BSD`.
+**without accessing or modifying the Clay BSD repos** (this repo or ClassNumber-143).
+The files are identical in substance; the P5 bridge copies use `namespace Towers.BSD`
+while this repo uses `namespace BSD`.
+
 The P5 bridge repo is read-only study material.
 The authoritative Clay BSD record is this repository.
 
@@ -232,7 +294,7 @@ The authoritative Clay BSD record is this repository.
 ## Axiom footprint
 
 ```lean
-#print axioms E143a1_classNumber
+#print axioms E143a1_CLOSED.E143a1_classNumber
 -- propext, Classical.choice, Quot.sound
 ```
 
@@ -243,9 +305,12 @@ Every file: 0 sorry, 0 admit.
 
 ## Scope
 
-This repository contains the formal arithmetic of K = ℚ(√-143) and the
-elliptic curve 143a1.  It does **not** prove the Birch-Swinnerton-Dyer
-conjecture.  The BSD conjecture and all analytic prerequisites are named
-as honest open surfaces in `B02_Modularity.lean`, `B03_LFunction.lean`,
-`BSD_LFunction.lean`, and `BSD_MasterCertification.lean`.
+This repository contains the formal arithmetic of the elliptic curve 143a1
+and its associated number field K = ℚ(√-143), including both unconditional
+proof routes (Option A and Option B) for h(K) = 10.
+
+It does **not** prove the Birch-Swinnerton-Dyer conjecture.
+The BSD conjecture — rank E(ℚ) = ord_{s=1} L(E, s) — and all analytic
+prerequisites are named as honest open surfaces in `B02_Modularity.lean`,
+`B03_LFunction.lean`, `BSD_LFunction.lean`, and `BSD_MasterCertification.lean`.
 Mathlib version pinned to v4.12.0. DO NOT run `lake update`.
