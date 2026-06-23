@@ -1,4 +1,5 @@
 import Towers.BSD.B01_EllipticCurve
+import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 
 /-
   # B02 — Modularity (Wiles–Taylor) for the BSD Tower
