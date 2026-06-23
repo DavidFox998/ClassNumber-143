@@ -212,13 +212,26 @@ theorem BSD_BrickLedger :
       BSD_LFunctionZero_OPEN      — L_143a1(1) = 0
       BSD_AnalyticRankOne_OPEN    — ord_{s=1} L_143a1 = 1
 
-    DISCHARGED since Milestones 5.2–5.3 (not counted above):
+    DISCHARGED since Milestones 5.2–5.4 (not counted above):
       BSD_HeegnerPoint_OPEN    — PROVED: (2, 0) ∈ 143a1(ℚ) by norm_num
                                  (BSD_HeegnerPoint_CLOSED.lean, Milestone 5.3)
       K1_ClassNumber_Upper_BSD — PROVED: classNumber K = 10
                                  (BSD_ClassNum_Upper_CLOSED.lean, Milestone 5.2)
       K1_Lower_OrderOf_BSD     — proved: BSD_classNumber_lower_bound (BSD_MasterProof)
       BSD_finrank_CLOSED       — proved: BSD_finrank_proved (BSD_Discriminant.lean)
+      BSD_conductor_squarefree — PROVED: Squarefree (143) = true by decide
+                                 (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+      BSD_bad_primes           — PROVED: bad primes = {11, 13} by decide
+                                 (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+      BSD_no_additive_primes   — PROVED: 11²∤143, 13²∤143 by decide (semistability)
+                                 (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+      BSD_quadratic_pos        — PROVED: ∀ x:ℚ, x²+x+1>0 by nlinarith (disc=-3)
+                                 (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+      BSD_y_zero_unique        — PROVED: x=2 unique rational y=0 solution by ring+linarith
+                                 (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+
+    NEWLY NAMED OPEN (Milestone 5.4, not counted in the 9):
+      BSD_NonTorsion_OPEN      — (2,0) has infinite order; group law absent from v4.12.0
 
     All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
 def BSD_open_surface_count : ℕ := 9
