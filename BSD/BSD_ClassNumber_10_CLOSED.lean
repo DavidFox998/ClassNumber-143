@@ -1,3 +1,5 @@
+import Towers.BSD.BSD_ClassNum_Upper_CLOSED
+
 /-!
 # BSD_ClassNumber_10_CLOSED — classNumber(ℚ(√−143)) = 10, unconditional summary
 
@@ -35,8 +37,6 @@ All work was done in the files it imports; this file assembles the results.
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 PROVED 2026-06-23.
 -/
-
-import Towers.BSD.BSD_ClassNum_Upper_CLOSED
 
 namespace Towers.BSD
 
