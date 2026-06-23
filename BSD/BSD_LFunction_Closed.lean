@@ -1,3 +1,6 @@
+import Towers.BSD.BSD_LFunction
+import Mathlib.Analysis.SpecialFunctions.Pow.Complex
+
 /-!
 # BSD_LFunction_Closed — Option A: Conditional closures + Milestone 2 sub-surface proof
 
@@ -14,43 +17,40 @@ analyticity, and Euler product.  This file covers the first three steps of that 
 
 | Theorem | Gate hypotheses |
 |---------|----------------|
-| `BSD_LSeriesSummable_CLOSED` | `BSD_aNBound_OPEN` (∀ n) + `BSD_TermBound_OPEN` + `BSD_CompareZeta_OPEN` |
-| `BSD_AnalyticOn_CLOSED` | `BSD_LSeriesSummable_OPEN` + `BSD_WeierstrassM_OPEN` |
-| `BSD_EulerProduct_CLOSED` | `BSD_LSeriesSummable_OPEN` + `BSD_EulerConvergence_OPEN` |
+| BSD_LSeriesSummable_CLOSED | BSD_aNBound_OPEN (all n) + BSD_TermBound_OPEN + BSD_CompareZeta_OPEN |
+| BSD_AnalyticOn_CLOSED | BSD_LSeriesSummable_OPEN + BSD_WeierstrassM_OPEN |
+| BSD_EulerProduct_CLOSED | BSD_LSeriesSummable_OPEN + BSD_EulerConvergence_OPEN |
 
 ## Milestone 2 — what is unconditionally proved (0 sorry, classical trio)
 
 | Theorem | Status |
 |---------|--------|
-| `BSD_TermBound_CLOSED` | **PROVED** — norm manipulation from `BSD_aNBound_OPEN`; uses `abs_cpow_eq_rpow_re_of_pos` |
-| `BSD_LSeriesSummable_CLOSED_M2` | **PROVED** — drops `BSD_TermBound_OPEN` hypothesis (uses `BSD_TermBound_CLOSED`) |
-| `BSD_optionA_tauberian_chain_M2` | **PROVED** — 5-hypothesis strengthening of M1 combinator |
+| BSD_TermBound_CLOSED | PROVED — norm manipulation from BSD_aNBound_OPEN; uses abs_cpow_eq_rpow_re_of_pos |
+| BSD_LSeriesSummable_CLOSED_M2 | PROVED — drops BSD_TermBound_OPEN hypothesis (uses BSD_TermBound_CLOSED) |
+| BSD_optionA_tauberian_chain_M2 | PROVED — 5-hypothesis strengthening of M1 combinator |
 
 ## What remains permanently OPEN (no timeline)
 
 | Surface | Reason |
 |---------|--------|
-| `BSD_ModularityE143_OPEN` | Wiles–Taylor 1995; absent from Mathlib v4.12.0 |
-| `BSD_BSDFormula_OPEN` | BSD conjecture (Millennium Problem) |
+| BSD_ModularityE143_OPEN | Wiles-Taylor 1995; absent from Mathlib v4.12.0 |
+| BSD_BSDFormula_OPEN | BSD conjecture (Millennium Problem) |
 
 ## Named sub-surfaces introduced in Milestone 1 (three still OPEN in M2)
 
-Each sub-surface is a `def Prop` — not proved, not an axiom, not a `sorry`.
+Each sub-surface is a def Prop — not proved, not an axiom, not a sorry.
 They document exactly where Mathlib v4.12.0 API is absent.
 
 | Sub-surface | Status after M2 | Mathematical gap |
 |-------------|----------------|-----------------|
-| `BSD_TermBound_OPEN` | **CLOSED** — `BSD_TermBound_CLOSED` | norm estimate; proved via `abs_cpow_eq_rpow_re_of_pos` |
-| `BSD_CompareZeta_OPEN` | **OPEN** | ∑ √n·τ(n)/n^σ converges for σ>3/2; needs τ(n)=O(n^ε) or ζ²-convolution |
-| `BSD_WeierstrassM_OPEN` | **OPEN** | pointwise summability → analyticity; needs locally-uniform-convergence bridge |
-| `BSD_EulerConvergence_OPEN` | **OPEN** | Euler product theorem for multiplicative arithmetic functions |
+| BSD_TermBound_OPEN | CLOSED — BSD_TermBound_CLOSED | norm estimate; proved via abs_cpow_eq_rpow_re_of_pos |
+| BSD_CompareZeta_OPEN | OPEN | sum sqrt(n)*tau(n)/n^sigma converges for sigma>3/2 |
+| BSD_WeierstrassM_OPEN | OPEN | pointwise summability to analyticity; needs locally-uniform-convergence bridge |
+| BSD_EulerConvergence_OPEN | OPEN | Euler product theorem for multiplicative arithmetic functions |
 
-SORRY: 0.  Axiom footprint: classical trio `{propext, Classical.choice, Quot.sound}`.
+SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD Surface: OPEN.  No Clay claim.  RH unaffected.
 -/
-
-import Towers.BSD.BSD_LFunction
-import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 
 namespace Towers.BSD
 
