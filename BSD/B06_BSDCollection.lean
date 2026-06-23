@@ -1,10 +1,13 @@
+import Towers.BSD.B03_LFunction
+import Towers.BSD.BSD_ClassNumber143
+
 /-
   # B06 — BSD Tower Collection (Top-Level Combinator)
 
   Top-level combinator threading the full BSD scaffold:
     B01_EllipticCurve   → BSDAritSurface, E_BSD, BSDLFunction (opaque)
-    B02_Modularity      → Modularity_BSD, BSD_Hecke
-    B03_LFunction       → BSD_LFunction, BSD_Sha
+    B02_Modularity      → Modularity_BSD_OPEN, BSD_Hecke_OPEN
+    B03_LFunction       → BSD_LFunction_OPEN, BSD_Sha_OPEN
     BSD_NumberField     → K = ℚ(√-143), α_sq, nrRealPlaces_zero_BSD
     BSD_ClassNumber143  → BSD_ClassNumber_discharged (conditional h(K)=10)
 
@@ -14,9 +17,6 @@
   SORRY: 0. Axiom footprint: classical trio. NOT a brick.
   BSD Surface: OPEN. No Clay claim.
 -/
-
-import BSD.B03_LFunction
-import BSD.BSD_ClassNumber143
 
 namespace Towers.BSD
 
@@ -35,12 +35,12 @@ open NumberField NumberField.InfinitePlace Real
     NOT a brick.  BSD OPEN.  RH OPEN.  No Clay claim. -/
 theorem BSD_Conditional
     -- Modularity / L-function opens
-    (h_mod : Modularity_143)
-    (h_hecke : BSD_L_Analytic_143)
-    (h_bsd : BSD_143)
-    (h_tam : BSD_TamagawaConj 143)
-    (h_reg : BSD_Regulator 143)
-    (h_sha : BSD_Sha 143)
+    (h_mod : Modularity_143_OPEN)
+    (h_hecke : BSD_L_Analytic_143_OPEN)
+    (h_bsd : BSD_143_OPEN)
+    (h_tam : BSD_TamagawaConj_OPEN 143)
+    (h_reg : BSD_Regulator_OPEN 143)
+    (h_sha : BSD_Sha_OPEN 143)
     -- Class number opens
     (h_upper : K1_Upper_ClassGroup_BSD)
     (h_lower : K1_Lower_OrderOf_BSD)
@@ -52,7 +52,7 @@ theorem BSD_Conditional
     NrRealPlaces K = 0 ∧
     (2 / Real.pi * Real.sqrt 143 < 8) ∧
     NumberField.classNumber K = 10 ∧
-    BSD_143 :=
+    BSD_143_OPEN :=
   ⟨BSD_Conductor_143,
    BSD_Arithmetic_143,
    nrRealPlaces_zero_BSD,
