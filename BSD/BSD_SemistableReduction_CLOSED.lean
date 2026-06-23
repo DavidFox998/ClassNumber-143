@@ -1,3 +1,5 @@
+import Towers.BSD.BSD_HeegnerPoint_CLOSED
+
 /-!
 # BSD_SemistableReduction_CLOSED — Semistability, Bad Primes, Torsion Analysis
 
@@ -44,8 +46,6 @@ group law + Nagell-Lutz, not in Mathlib v4.12.0. Gap: BSD_NonTorsion_OPEN.)
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 NOT a brick.  BSD: OPEN.
 -/
-
-import Towers.BSD.BSD_HeegnerPoint_CLOSED
 
 namespace Towers.BSD
 
