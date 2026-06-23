@@ -1,3 +1,12 @@
+import Towers.BSD.BSD_MasterCertification
+import Towers.BSD.BSD_ClassNumberLowerProof
+import Towers.BSD.BSD_C22b_LowerBound
+import Towers.BSD.BSD_AnalyticRank
+import Mathlib.RingTheory.ClassGroup
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.RingTheory.Ideal.Norm
+
 /-!
 # BSD_MasterProof — Master Proof Set for h(ℚ(√-143)) = 10
 
@@ -102,16 +111,7 @@ SORRY: 0. Axiom footprint: classical trio only.
 - `orderOf_pos`, `pow_orderOf_eq_one`, `orderOf_le_card_univ`
 -/
 
-import BSD.BSD_MasterCertification
-import BSD.BSD_ClassNumberLowerProof
-import BSD.BSD_C22b_LowerBound
-import BSD.BSD_AnalyticRank
-import Mathlib.RingTheory.ClassGroup
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.RingTheory.Ideal.Norm
-
-namespace BSD
+namespace Towers.BSD
 
 open NumberField
 
@@ -504,4 +504,4 @@ theorem trail_analytic_rank_chain
 
 end AnalyticRankTrail
 
-end BSD
+end Towers.BSD
