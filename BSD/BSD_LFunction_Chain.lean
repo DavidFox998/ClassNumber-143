@@ -1,3 +1,6 @@
+import Towers.BSD.B02_Modularity_Closed
+import Towers.BSD.BSD_AnalyticRank
+
 /-!
 # BSD_LFunction_Chain — Complete Analytic Chain for L(143a1, s)
 
@@ -31,9 +34,6 @@ open surfaces in `B02_Modularity_Closed.lean` through to L(E,1) = 0.
 
 SORRY: 0.  Axiom footprint: classical trio.  NOT a brick.  BSD: OPEN.
 -/
-
-import Towers.BSD.B02_Modularity_Closed
-import Towers.BSD.BSD_AnalyticRank
 
 namespace Towers.BSD
 
