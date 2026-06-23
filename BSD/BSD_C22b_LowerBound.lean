@@ -1,9 +1,9 @@
 /-
-  Towers/BSD/BSD_C22b_LowerBound.lean
+  BSD/BSD_C22b_LowerBound.lean
 
-  BSD-namespaced mirror of C22b_ClassNumberLowerBound.lean from the RH chain.
-  Proves the even-k arithmetic for the lower bound h(ℚ(√-143)) ≥ 10,
-  and names the two formal bridges as open surfaces.
+  Even-k arithmetic lemmas for the lower bound h(ℚ(√-143)) ≥ 10.
+  Proves the norm-form impossibilities for k ∈ {2,4,6,8},
+  and names the two formal API bridges as open surfaces.
 
   ## What is PROVED unconditionally (0 sorry, classical trio)
 
