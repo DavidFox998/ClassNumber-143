@@ -1,3 +1,5 @@
+import Towers.BSD.BSD_AnalyticRank
+
 /-!
 # BSD_HeegnerPoint_CLOSED — Rational Point on 143a1 Proved Unconditionally
 
@@ -36,8 +38,6 @@ proved from the defining formulas by `norm_num`.  This confirms:
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 PROVED 2026-06-23.
 -/
-
-import Towers.BSD.BSD_AnalyticRank
 
 namespace Towers.BSD
 
