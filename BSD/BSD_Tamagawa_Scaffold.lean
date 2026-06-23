@@ -1,3 +1,6 @@
+import Towers.BSD.B03_LFunction
+import Towers.BSD.BSD_HeegnerPoint_CLOSED
+
 /-!
 # BSD_Tamagawa_Scaffold — Tamagawa Product, Sha, and Regulator for 143a1
 
@@ -31,9 +34,6 @@ Gap: Néron-Tate height pairing not in Mathlib v4.12.0.
 
 SORRY: 0.  Axiom footprint: classical trio.  NOT a brick.  BSD: OPEN.
 -/
-
-import Towers.BSD.B03_LFunction
-import Towers.BSD.BSD_HeegnerPoint_CLOSED
 
 namespace Towers.BSD
 
