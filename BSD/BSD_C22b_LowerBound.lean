@@ -1,9 +1,14 @@
-/-
-  BSD/BSD_C22b_LowerBound.lean
+import Towers.BSD.BSD_ClassNumber143
+import Mathlib.RingTheory.AdjoinRoot
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.RingTheory.PrincipalIdealDomain
 
-  Even-k arithmetic lemmas for the lower bound h(ℚ(√-143)) ≥ 10.
-  Proves the norm-form impossibilities for k ∈ {2,4,6,8},
-  and names the two formal API bridges as open surfaces.
+/-
+  Towers/BSD/BSD_C22b_LowerBound.lean
+
+  BSD-namespaced mirror of C22b_ClassNumberLowerBound.lean from the RH chain.
+  Proves the even-k arithmetic for the lower bound h(ℚ(√-143)) ≥ 10,
+  and names the two formal bridges as open surfaces.
 
   ## What is PROVED unconditionally (0 sorry, classical trio)
 
@@ -31,11 +36,6 @@
   SORRY: 0.  No native_decide.  Classical trio only.  NOT a brick.
   K1_Lower_OrderOf_BSD: OPEN conditional on the two bridges.
 -/
-
-import BSD.BSD_ClassNumber143
-import Mathlib.RingTheory.AdjoinRoot
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.RingTheory.PrincipalIdealDomain
 
 namespace Towers.BSD
 
