@@ -1,3 +1,7 @@
+import Towers.BSD.B02_Modularity
+import Towers.BSD.BSD_LFunction_Closed
+import Towers.BSD.BSD_AP_Table_Closed
+
 /-!
 # B02_Modularity_Closed — Conditional closures of the three B02 modularity surfaces
 
@@ -39,10 +43,6 @@ no `sorry`, classical trio throughout.
 SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 NOT a brick. BSD Surface: OPEN. No Clay claim.
 -/
-
-import Towers.BSD.B02_Modularity
-import Towers.BSD.BSD_LFunction_Closed
-import Towers.BSD.BSD_AP_Table_Closed
 
 namespace Towers.BSD
 
