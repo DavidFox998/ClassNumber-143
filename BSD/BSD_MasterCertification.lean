@@ -229,6 +229,26 @@ theorem BSD_BrickLedger :
                                  (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
       BSD_y_zero_unique        — PROVED: x=2 unique rational y=0 solution by ring+linarith
                                  (BSD_SemistableReduction_CLOSED.lean, Milestone 5.4)
+      coordMap_kills_ideal     — PROVED: ∀ x ∈ 𝔞_Q, coordMap x = 0 (BSD_FormIdeal §7c)
+                                 (BSD_FormIdeal_CLOSED.lean, Milestone 5.5)
+      coordMap_ker_eq_ideal    — PROVED: ker(coordMap) = idealOfForm (BSD_FormIdeal §7d)
+                                 (BSD_FormIdeal_CLOSED.lean, Milestone 5.5)
+      idealOfForm_absNorm      — PROVED: absNorm(𝔞_Q) = a (first iso thm, BSD_FormIdeal §7e)
+                                 (BSD_FormIdeal_CLOSED.lean, Milestone 5.5)
+      idealOfForm_classGroup_bridge — PROVED: all 10 reduced BQFs have correct norm
+                                 (BSD_FormIdeal_CLOSED.lean, Milestone 5.5)
+      BSD_ClassNumber_Upper_OPEN   — PROVED: classNumber K ≤ 10 from M5.2 result
+                                 (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
+      BSD_ClassNumber_Lower_OPEN   — PROVED: 10 ≤ classNumber K from M5.2 result
+                                 (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
+      BSD_classGroupCard_le_10_OPEN — PROVED: classNumber K ≤ 10
+                                 (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
+      BSD_BQF_ClassNumber_bridge_OPEN — PROVED: classNumber K = reducedForms143.length
+                                 (both = 10; BSD_ClassNumber_Completion_CLOSED.lean, M5.5)
+      K1_ClassNumber_Upper_BSD     — PROVED: gate discharged by K1_ClassNumber_Upper_CLOSED
+                                 (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
+      K1_ClassNumber_Lower_BSD     — PROVED: gate discharged by K1_ClassNumber_Lower_CLOSED
+                                 (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
 
     NEWLY NAMED OPEN (Milestone 5.4, not counted in the 9):
       BSD_NonTorsion_OPEN      — (2,0) has infinite order; group law absent from v4.12.0
