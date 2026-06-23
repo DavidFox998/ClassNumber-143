@@ -1,3 +1,5 @@
+import Towers.BSD.BSD_ClassNumber
+
 /-
   # BSD_NormFormBounds — Tier 2 Track A: norm-form lower bound for 𝓞_K = ℤ[ω]
 
@@ -29,16 +31,14 @@
      non-principal ideal classes.
 
   NAMED OPEN SURFACES:
-      BSD_ClassNumber_Upper : h(K) ≤ 10
-      BSD_ClassNumber_Lower : 10 ≤ h(K)
+      BSD_ClassNumber_Upper_OPEN : h(K) ≤ 10
+      BSD_ClassNumber_Lower_OPEN : 10 ≤ h(K)
 
   COMBINATOR (0 sorry):
       BSD_ClassNumber_eq_ten_cond : h(K) = 10  (conditional)
 
   SORRY: 0 in proved results.  Classical trio axiom footprint.
 -/
-
-import BSD.BSD_ClassNumber
 
 namespace Towers.BSD
 
@@ -145,7 +145,7 @@ lemma normForm_seven_impossible_direct (a b : ℤ) : normForm a b ≠ 7 :=
 
 /-! ### Named open surfaces for the class number -/
 
-/-- **BSD_ClassNumber_Upper**: h(K) ≤ 10.
+/-- **BSD_ClassNumber_Upper_OPEN**: h(K) ≤ 10.
 
     Mathematical route (Minkowski):
     minkowski_lt_eight_BSD: (2/π)·√143 < 8 proves every ideal class has
@@ -159,9 +159,9 @@ lemma normForm_seven_impossible_direct (a b : ℤ) : normForm a b ≠ 7 :=
     Formal gap: the Minkowski bound applied to the class group of AdjoinRoot
     in Mathlib v4.12.0 needs ~80 lines of ClassGroup API work.
     STATUS: OPEN.  NOT discharged here. -/
-def BSD_ClassNumber_Upper : Prop := K1_ClassNumber_Upper_BSD
+def BSD_ClassNumber_Upper_OPEN : Prop := K1_ClassNumber_Upper_BSD
 
-/-- **BSD_ClassNumber_Lower**: 10 ≤ h(K).
+/-- **BSD_ClassNumber_Lower_OPEN**: 10 ≤ h(K).
 
     Mathematical route:
     norm_form_gen_1024_BSD shows (-28, 3) is the ℤ-coordinate pair with
@@ -171,15 +171,15 @@ def BSD_ClassNumber_Upper : Prop := K1_ClassNumber_Upper_BSD
 
     Formal gap: ideal group API for AdjoinRoot in Mathlib v4.12.0.
     STATUS: OPEN.  NOT discharged here. -/
-def BSD_ClassNumber_Lower : Prop := K1_ClassNumber_Lower_BSD
+def BSD_ClassNumber_Lower_OPEN : Prop := K1_ClassNumber_Lower_BSD
 
 /-! ### Combinator (0 sorry) -/
 
 /-- h(K) = 10, given both OPEN surfaces as explicit hypotheses.
     COMBINATOR: 0 sorry, classical trio only.  NOT a brick. -/
 theorem BSD_ClassNumber_eq_ten_cond
-    (h_upper : BSD_ClassNumber_Upper)
-    (h_lower : BSD_ClassNumber_Lower) :
+    (h_upper : BSD_ClassNumber_Upper_OPEN)
+    (h_lower : BSD_ClassNumber_Lower_OPEN) :
     NumberField.classNumber K = 10 :=
   K1_ClassNumber_Certificate_BSD h_upper h_lower
 
