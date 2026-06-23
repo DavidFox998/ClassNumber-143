@@ -52,6 +52,8 @@ foundation at genus = 13.
 | TheoremaAureum.arakelov_positivity_X0_143 | ArakelovPositivity (X₀ 143) [shared] |
 | BSD_HeckeMultiplicativity_143_CLOSED | a_n(mn) = a_n m · a_n n (gcd=1) |
 | Modularity_143_CLOSED_1gate          | Modularity given BSD_HasseFull_143_OPEN |
+| BSD_HeegnerPoint_CLOSED              | ∃ (x y : ℚ), y²+y = x³−x²−x−2; witness (2,0) ← NEW |
+| BSD_weierstrass_discriminant         | Δ(143a1) = −1859 = −(11·13²) ← NEW |
 
 ## Genuine Clay gaps (def Prop — not axioms, not sorry)
 
@@ -69,12 +71,14 @@ foundation at genus = 13.
 | BSD_TamagawaConj_OPEN 143      | Tamagawa product = 1 |
 | BSD_143_OPEN                   | BSD conjecture (rank = analytic rank) |
 
-DISCHARGED this batch (no longer open surfaces):
+DISCHARGED (Milestone 5.2 + 5.3):
   K1_ClassNumber_Upper_BSD — classNumber K ≤ 10  PROVED unconditionally
     (BSD_ClassNum_Upper_CLOSED.lean, via BSD_classNumber_eq_10_via_principal +
      BSD_p2_pow_10_principal + orderOf_dvd_card + BSD_classNumber_lower_bound)
   K1_Lower_OrderOf_BSD     — 10 ≤ classNumber K  PROVED unconditionally
     (BSD_MasterProof.lean, BSD_classNumber_lower_bound)
+  BSD_HeegnerPoint_OPEN    — ∃ rational point  PROVED: witness (2, 0) ∈ 143a1(ℚ)
+    (BSD_HeegnerPoint_CLOSED.lean, by norm_num — Milestone 5.3)
 
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD: OPEN.  NOT a brick.  NOT a Clay submission.
@@ -84,6 +88,7 @@ import Towers.BSD.BSD_Multiplicativity_Closed
 import Towers.BSD.BSD_MasterCertification
 import Towers.BSD.BSD_ClassNum_Upper_CLOSED
 import Towers.BSD.BSD_ClassNumber_10_CLOSED
+import Towers.BSD.BSD_HeegnerPoint_CLOSED
 import Towers.RH.Chain.C08_M4WeilBridge
 
 namespace Towers.BSD
@@ -187,8 +192,8 @@ def BSD_HasseFull_HighPrimes_OPEN : Prop :=
       BSD_HasseFull_HighPrimes_OPEN — Frobenius gap for primes > 997
         (this is part of BSD_HasseFull_143_OPEN; named explicitly here).
 
-    Remaining genuine Clay gaps: 11 named open surfaces (see table above). -/
-def BSD_clay_cert_open_count : ℕ := 11
+    Remaining genuine Clay gaps: 10 named open surfaces (see table above). -/
+def BSD_clay_cert_open_count : ℕ := 10
 
 -- ============================================================
 -- §5. Original minimum-gate combinator (9 gates, preserved)
