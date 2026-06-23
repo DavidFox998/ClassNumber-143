@@ -1,7 +1,11 @@
+import Towers.BSD.BSD_NumberField
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.Data.ZMod.Basic
+
 /-
   # BSD_ClassNumber — Norm-form certificates for h(ℚ(√-143)) = 10
 
-  Standalone re-declaration of the K1ClassNumber arithmetic under BSD.
+  Standalone re-declaration of the K1ClassNumber arithmetic under Towers.BSD.
   This file mirrors Towers.RH.JorgensonKramer.X0_143.K1ClassNumber but imports
   only from BSD_NumberField (no Towers.RH.* imports).
 
@@ -28,10 +32,6 @@
 
   SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 -/
-
-import BSD.BSD_NumberField
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.Data.ZMod.Basic
 
 namespace Towers.BSD
 
