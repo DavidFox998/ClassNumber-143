@@ -1,3 +1,8 @@
+import Towers.BSD.BSD_NormBridge
+import Towers.BSD.BSD_C22b_LowerBound
+import Mathlib.RingTheory.Ideal.Norm
+import Mathlib.GroupTheory.OrderOfElement
+
 /-
   Towers/BSD/BSD_ClassNumberLowerProof.lean
 
@@ -35,14 +40,9 @@
   NOT a brick.  K1_ClassNumber_Lower_BSD: OPEN (OrderOf bridge missing).
 -/
 
-import BSD.BSD_NormBridge
-import BSD.BSD_C22b_LowerBound
-import Mathlib.RingTheory.Ideal.Norm
-import Mathlib.GroupTheory.OrderOfElement
-
 set_option maxHeartbeats 400000
 
-namespace BSD
+namespace Towers.BSD
 
 open NumberField Polynomial
 
@@ -530,4 +530,4 @@ theorem EvenK_NonPrincipal_Bridge_proof : EvenK_NonPrincipal_Bridge_p2_OK := by
         · right; linarith
       rcases h_pm with h | h <;> { rw [h] at ha_dvd; norm_num at ha_dvd }
 
-end BSD
+end Towers.BSD
