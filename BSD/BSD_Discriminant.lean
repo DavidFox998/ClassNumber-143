@@ -1,3 +1,11 @@
+import Towers.BSD.BSD_NumberField
+import Mathlib.RingTheory.Trace.Defs
+import Mathlib.RingTheory.Trace.Basic
+import Mathlib.RingTheory.Norm.Basic
+import Mathlib.RingTheory.Discriminant
+import Mathlib.NumberTheory.NumberField.Basic
+import Mathlib.NumberTheory.NumberField.Discriminant
+
 /-
   # BSD_Discriminant — Tier 1 arithmetic for K = ℚ(√-143)
 
@@ -24,14 +32,6 @@
   NOT a brick.  SORRY: 0.  Axiom footprint: classical trio
   {propext, Classical.choice, Quot.sound}.
 -/
-
-import BSD.BSD_NumberField
-import Mathlib.RingTheory.Trace.Defs
-import Mathlib.RingTheory.Trace.Basic
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.Discriminant
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.NumberField.Discriminant
 
 namespace Towers.BSD
 
