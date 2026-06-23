@@ -1,3 +1,5 @@
+import Towers.BSD.BSD_ClassNumber
+
 /-
   # BSD_ClassNumber143 — BSD-namespaced class number certificate
 
@@ -19,8 +21,6 @@
 
   SORRY: 0. Axiom footprint: classical trio. NOT a brick. BSD Surface: OPEN.
 -/
-
-import BSD.BSD_ClassNumber
 
 namespace Towers.BSD
 
