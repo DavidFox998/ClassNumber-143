@@ -24,7 +24,7 @@ is available in Lean 4.12.0 Init / Batteries.
 
 ## Open surface (named, not proved here)
 
-`BSD_BQF_ClassNumber_bridge` remains OPEN in `BSD_ReducedForms.lean`:
+`BSD_BQF_ClassNumber_bridge_OPEN` remains OPEN in `BSD_ReducedForms.lean`:
 `BinaryQuadraticForm.classGroupEquiv` connecting reduced forms to ClassGroup(𝓞 K)
 is absent from Mathlib v4.12.0.
 
@@ -236,7 +236,7 @@ theorem forms143_complete (a b c : Int)
     This certifies h(ℚ(√-143)) = 10 at the level of reduced BQFs.
     The formal bridge to `NumberField.classNumber` requires
     `BinaryQuadraticForm.classGroupEquiv`, absent from Mathlib v4.12.0
-    — see `BSD_BQF_ClassNumber_bridge` in `BSD_ReducedForms.lean`. -/
+    — see `BSD_BQF_ClassNumber_bridge_OPEN` in `BSD_ReducedForms.lean`. -/
 theorem classNumber_143_certificate :
     ∀ a b c : Int,
       (b * b - 4 * a * c = -143 ∧
