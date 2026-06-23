@@ -1,3 +1,7 @@
+import Towers.BSD.BSD_NumberField
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.Tactic
+
 /-!
 # BSD_ReducedForms — Reduced binary quadratic forms of discriminant -143
 
@@ -20,15 +24,11 @@ Gauss–Dirichlet bijection absent from Mathlib v4.12.0.
 
 | Surface | Gap |
 |---------|-----|
-| `BSD_BQF_ClassNumber_bridge` | `BinaryQuadraticForm.classGroupEquiv` absent from Mathlib v4.12.0 |
+| `BSD_BQF_ClassNumber_bridge_OPEN` | `BinaryQuadraticForm.classGroupEquiv` absent from Mathlib v4.12.0 |
 
 SORRY: 0. Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 NOT a brick. BSD class number: OPEN.
 -/
-
-import BSD.BSD_NumberField
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.Tactic
 
 namespace Towers.BSD
 
@@ -119,21 +119,20 @@ theorem reducedForms143_complete (a b c : ℤ) (h : IsReducedBQF143 a b c) :
 
 /-! ### BQF–ClassNumber bridge gap -/
 
-/-- `NumberField.classNumber K = reducedForms143.length` (= 10).
+/-- **OPEN**: `NumberField.classNumber K = reducedForms143.length` (= 10).
 
     The arithmetic side is complete:
     - `BSD_numReducedForms143` : reducedForms143.length = 10  (proved by rfl)
     - `reducedForms143_all_reduced` : all 10 are genuine reduced BQFs  (proved)
     - `reducedForms143_complete` : completeness  (proved via interval_cases)
 
-    **STATUS: CLOSED** (2026-06-23). Proved in `BSD_BQF_Bridge_Closed.lean`
-    without `BinaryQuadraticForm.classGroupEquiv`.  The proof uses:
-    1. `BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal`
-       (Lagrange divisibility: orderOf [p₂] = 10 ∣ classNumber K, with
-       BSD_classNumber_lower_bound: 10 ≤ classNumber K → classNumber K = 10).
-    2. `BSD_numReducedForms143 : reducedForms143.length = 10` (by rfl).
-    The `Prop` definition is retained so existing imports remain valid. -/
-def BSD_BQF_ClassNumber_bridge : Prop :=
+    The formal gap is the Gauss–Dirichlet bijection between reduced forms of
+    discriminant -143 and ClassGroup(𝓞 K).  The API
+    `BinaryQuadraticForm.classGroupEquiv` connecting these two structures is
+    absent from Mathlib v4.12.0.
+
+    STATUS: OPEN.  def Prop.  NOT proved, NOT axiom. -/
+def BSD_BQF_ClassNumber_bridge_OPEN : Prop :=
   NumberField.classNumber K = reducedForms143.length
 
 end Towers.BSD
