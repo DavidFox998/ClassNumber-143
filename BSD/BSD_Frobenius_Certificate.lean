@@ -1,3 +1,5 @@
+import Towers.BSD.B02_Modularity_Closed
+
 /-!
 # BSD_Frobenius_Certificate — Weil Bound Gap Analysis for 143a1
 
@@ -26,8 +28,6 @@ Three approaches, each requiring something not yet in Mathlib v4.12.0:
 
 SORRY: 0.  Axiom footprint: classical trio.  NOT a brick.  BSD: OPEN.
 -/
-
-import Towers.BSD.B02_Modularity_Closed
 
 namespace Towers.BSD
 
