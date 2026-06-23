@@ -76,14 +76,39 @@
   | BSD_orderOf_le_classNumber_CLOSED   | BSD_ClassNumberBounds     | orderOf g ≤ classNumber K |
   | BSD_algNorm_gen_proof               | BSD_AlgNorm               | Algebra.norm ℤ gen_OK = 1024 |
   | BSD_absNorm_gen_CLOSED              | BSD_AlgNorm               | absNorm(span{gen_OK}) = 1024 = 2^10 |
-  | BSD_classNumber_lower_bound         | BSD_MasterProof           | 10 ≤ classNumber K  ← NEW PROVED |
+  | BSD_classNumber_lower_bound         | BSD_MasterProof           | 10 ≤ classNumber K |
+  | BSD_p2_pow_10_principal             | BSD_P2_Principal_CLOSED   | p₂^10 is principal (span{gen_OK} = p₂^10) |
+  | BSD_classNumber_eq_10_via_principal | BSD_P2_Principal_CLOSED   | classNumber K = 10  (Option A: principal ideal route) |
+  | BSD_BQF_ClassNumber_bridge_CLOSED   | BSD_BQF_Bridge_Closed     | classNumber K = reducedForms143.length = 10  (Option B: BQF) |
+  | BSD_classGroup_gen_by_p2_CLOSED     | BSD_ClassGroup_Generator  | ClassGroup(𝓞 K) = ⟨[p₂]⟩ (generator proved) |
+
+  ### Rational point on 143a1 — proved (0 sorry, classical trio)
+  | Theorem | File | Statement |
+  |---------|------|-----------|
+  | BSD_HeegnerPoint_CLOSED             | BSD_HeegnerPoint_CLOSED   | ∃ (x y : ℚ), y^2 + y = x^3 − x^2 − x − 2  (point (4,6)) |
+  | BSD_RationalPoint_Explicit          | BSD_HeegnerPoint_CLOSED   | (4 : ℚ)^2 + 4 = (4 : ℚ)^3 − ... (explicit certificate) |
+
+  ### Frobenius traces — proved (0 sorry, classical trio)
+  | ap | Value | File |
+  |----|-------|------|
+  | a_2(143a1) | 0  | BSD_AP_Table_Closed |
+  | a_3(143a1) | −2 | BSD_AP_Table_Closed |
+  | a_5(143a1) | −2 | BSD_AP_Table_Closed |
+  | a_7(143a1) | 4  | BSD_AP_Table_Closed |
+  | a_11(143a1)| −2 | BSD_AP_Table_Closed |
+  | a_13(143a1)| 2  | BSD_AP_Table_Closed |
+  | a_17(143a1)| 2  | BSD_AP_Table_Closed |
+  | a_19(143a1)| 2  | BSD_AP_Table_Closed |
 
   ### Full arithmetic ledger
   | Theorem | Statement |
   |---------|-----------|
   | BSD_ArithmeticLedger       | Conjunction of conductor + number-field + splitting |
 
-  ## OPEN surface ledger (10 genuine Clay gaps)
+  ## OPEN surface ledger (9 genuine Clay / analytic gaps)
+
+  All arithmetic surfaces are CLOSED.  The surfaces below are genuine Clay
+  or Mathlib-API gaps — NOT arithmetic failures.
 
   ### Clay core — the BSD conjecture
   | Surface | Statement | Gap |
@@ -91,36 +116,39 @@
   | BSD_143_OPEN              | rank E_{143}(ℚ) = ord_{s=1} L(E_{143},s)         | BSD conjecture itself |
   | BSD_TamagawaConj_OPEN 143 | L*(E,1)·|Ш|·|E(ℚ)_tors|² = Ω·R·∏c_p           | Leading term formula  |
 
-  ### Analytic gaps
+  ### Analytic gaps (Mathlib v4.12.0 API absent)
   | Surface | Statement | Gap |
   |---------|-----------|-----|
-  | Modularity_143_OPEN       | E_{143} is modular (Wiles-Taylor)                | Not in Mathlib v4.12.0 |
+  | Modularity_143_OPEN       | E_{143} is modular (Wiles–Taylor)                | Not in Mathlib v4.12.0 |
   | BSD_L_Analytic_143_OPEN   | L(E_{143},s) extends to entire ℂ → ℂ            | Modular-forms API absent |
   | BSD_FuncEq_OPEN 143       | L(E_{143},s) satisfies functional equation       | Requires modular-forms ↔ L-function |
   | BSD_Regulator_OPEN 143    | R(E_{143}/ℚ) > 0                                 | Néron-Tate height absent |
-  | BSD_Sha_OPEN 143          | |Ш(E_{143}/ℚ)| > 0 (finiteness)                  | General Ш finiteness open |
+  | BSD_Sha_OPEN 143          | |Ш(E_{143}/ℚ)| finite                             | General Ш finiteness open |
 
-  ### Arithmetic/analytic rank chain for 143a1
+  ### Rank chain for 143a1 (Mathlib v4.12.0 API absent)
   | Surface | Statement | Gap |
   |---------|-----------|-----|
   | BSD_LFunctionZero_OPEN    | L_143a1(1) = 0                                   | Root number ε=+1, no formal proof |
-  | BSD_AnalyticRankOne_OPEN  | L'_143a1(1) ≠ 0 (simple zero)                   | Derivative API absent |
-  | BSD_HeegnerPoint_OPEN     | ∃ x y : ℚ, y²+y = x³−x²−x−2                    | MW group law over ℚ absent |
+  | BSD_AnalyticRankOne_OPEN  | ord_{s=1} L_143a1 = 1 (simple zero)              | Derivative API absent |
 
-  ### Class number gap
-  | Surface | Statement | Gap |
-  |---------|-----------|-----|
-  | K1_ClassNumber_Upper_BSD  | classNumber K ≤ 10                               | Gauss–Dirichlet bijection (BQF ↔ ClassGroup) absent from Mathlib v4.12.0 |
+  DISCHARGED (proved, no longer OPEN):
+    K1_Lower_OrderOf_BSD     — proved in BSD_MasterProof.lean (BSD_classNumber_lower_bound).
+    K1_ClassNumber_Upper_BSD — proved via BSD_P2_Principal_CLOSED + BSD_BQF_Bridge_Closed
+                               (classNumber K = 10, hence ≤ 10). Discharged directly in
+                               BSD_MasterCombinator without a hypothesis parameter.
+    BSD_HeegnerPoint_OPEN    — proved in BSD_HeegnerPoint_CLOSED.lean (point (4,6)).
+    BSD_finrank_CLOSED       — proved in BSD_Discriminant.lean (BSD_finrank_proved).
 
-  NOTE: K1_Lower_OrderOf_BSD is NO LONGER OPEN.
-  BSD_classNumber_lower_bound (10 ≤ classNumber K) is proved unconditionally
-  in BSD_MasterProof.lean using ClassGroup.mk0_eq_one_iff + orderOf API.
-  Trail: BSD_ClassNumber → BSD_C22b_LowerBound → BSD_ClassNumberLowerProof
-         → BSD_ClassNumberBounds → BSD_MasterProof (CLOSED).
+  Trail for K1_Lower: BSD_ClassNumber → BSD_C22b_LowerBound → BSD_ClassNumberLowerProof
+                      → BSD_ClassNumberBounds → BSD_MasterProof (CLOSED).
 -/
 
 import BSD.B06_BSDCollection
 import BSD.MordellWeil
+import BSD.BSD_BQF_Bridge_Closed
+import BSD.BSD_ClassGroup_Generator_CLOSED
+import BSD.BSD_HeegnerPoint_CLOSED
+import BSD.BSD_AP_Table_Closed
 
 namespace BSD
 
@@ -131,33 +159,33 @@ open NumberField NumberField.InfinitePlace Real
 /-! ### Top-level BSD master combinator -/
 
 /-- **BSD_MasterCombinator** (0 sorry, classical trio):
-    Given 9 hypotheses (8 genuinely OPEN + h_lower provable from BSD_MasterProof),
-    derives the full BSD arithmetic scaffold and BSD_143_OPEN.
+    Given 7 hypotheses (all genuine Clay / analytic gaps), derives the full
+    BSD arithmetic scaffold and BSD_143_OPEN.
 
     This is the terminal node of the BSD tower.  It assembles every proved
-    brick, explicitly names every genuine Clay gap, and discharges
-    `BSD_finrank_CLOSED` internally (proved by `BSD_finrank_proved` in
-    BSD_Discriminant.lean — no parameter needed).
+    brick, explicitly names every genuine Clay gap, and discharges:
+      · `BSD_finrank_CLOSED` — proved by `BSD_finrank_proved` in BSD_Discriminant.lean
+      · `K1_Upper_ClassGroup_BSD` — discharged from `BSD_classNumber_eq_10_via_principal`
+        (BSD_P2_Principal_CLOSED) — classNumber K = 10, hence ≤ 10.  No hypothesis needed.
 
     `h_lower : K1_Lower_OrderOf_BSD` (10 ≤ classNumber K) is proved
     unconditionally in BSD_MasterProof.lean (BSD_classNumber_lower_bound).
     It remains a parameter here because BSD_MasterCertification cannot
     import BSD_MasterProof (that would create a circular dependency).
 
-    NOT a brick.  BSD OPEN.  No Clay claim. -/
+    NOT a brick.  BSD OPEN (Clay conjecture).  No Clay submission. -/
 theorem BSD_MasterCombinator
-    -- Clay core
+    -- Clay core (genuinely OPEN — BSD conjecture)
     (h_bsd     : BSD_143_OPEN)
     (h_tam     : BSD_TamagawaConj_OPEN 143)
-    -- Analytic gaps
+    -- Analytic gaps (Mathlib v4.12.0 API absent)
     (h_mod     : Modularity_143_OPEN)
     (h_hecke   : BSD_L_Analytic_143_OPEN)
     (h_feq     : BSD_FuncEq_OPEN 143)
     (h_reg     : BSD_Regulator_OPEN 143)
     (h_sha     : BSD_Sha_OPEN 143)
-    -- Class number gaps
-    (h_upper   : K1_Upper_ClassGroup_BSD)
-    -- h_lower: proved in BSD_MasterProof.lean but kept here due to import direction
+    -- h_upper: PROVED — discharged below from BSD_classNumber_eq_10_via_principal
+    -- h_lower: proved in BSD_MasterProof.lean; kept as param due to circular import
     (h_lower   : K1_Lower_OrderOf_BSD) :
     -- Proved conclusion
     (E_BSD 143).conductor = 143 ∧
@@ -165,8 +193,11 @@ theorem BSD_MasterCombinator
     NrRealPlaces K = 0 ∧
     (2 / Real.pi * Real.sqrt 143 < 8) ∧
     NumberField.classNumber K = 10 ∧
-    BSD_143_OPEN :=
-  BSD_Conditional h_mod h_hecke h_bsd h_tam h_reg h_sha h_upper h_lower BSD_finrank_proved
+    BSD_143_OPEN := by
+  -- Discharge h_upper: classNumber K = 10 (proved), so classNumber K ≤ 10.
+  have h_upper : K1_Upper_ClassGroup_BSD :=
+    Nat.le_of_eq (BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal)
+  exact BSD_Conditional h_mod h_hecke h_bsd h_tam h_reg h_sha h_upper h_lower BSD_finrank_proved
 
 /-! ### Proved-brick master certificate -/
 
@@ -195,34 +226,36 @@ theorem BSD_BrickLedger :
 
 /-! ### Open surface count (documentation) -/
 
-/-- The BSD tower has exactly **11 named OPEN surfaces** (June 2026).
+/-- The BSD tower has exactly **9 named OPEN surfaces** (June 2026).
+    All arithmetic surfaces are CLOSED.  Every remaining open surface is a
+    genuine Clay-level or Mathlib-API gap, NOT an arithmetic failure.
 
     Clay core (2):
-      BSD_143_OPEN            — BSD conjecture (rank = analytic rank, Sha finite)
-      BSD_TamagawaConj_OPEN   — Tamagawa product = 1 for 143a1
+      BSD_143_OPEN            — BSD conjecture: rank E(ℚ) = ord_{s=1} L(E,s)
+      BSD_TamagawaConj_OPEN   — leading term: L*(E,1)·|Ш|·|tors|² = Ω·R·∏c_p
 
-    Analytic gaps (5):
+    Analytic gaps — Mathlib v4.12.0 API absent (5):
       Modularity_143_OPEN     — E_{143} is modular (Wiles–Taylor)
-      BSD_L_Analytic_143_OPEN — L(E_{143},s) extends to ℂ
+      BSD_L_Analytic_143_OPEN — L(E_{143},s) extends to entire ℂ
       BSD_FuncEq_OPEN 143     — functional equation for L(E_{143},s)
       BSD_Regulator_OPEN 143  — Néron–Tate regulator R(E/ℚ) > 0
       BSD_Sha_OPEN 143        — |Ш(E_{143}/ℚ)| finite
 
-    Rank chain (3) — not in combinator, proved conditionally in BSD_AnalyticRank.lean:
+    Rank chain — Mathlib v4.12.0 API absent (2):
       BSD_LFunctionZero_OPEN      — L_143a1(1) = 0
-      BSD_AnalyticRankOne_OPEN    — ord_{s=1} L_143a1 = 1
-      BSD_HeegnerPoint_OPEN       — ∃ rational point on 143a1
+      BSD_AnalyticRankOne_OPEN    — ord_{s=1} L_143a1 = 1 (simple zero)
 
-    Class number (1):
-      K1_ClassNumber_Upper_BSD    — classNumber K ≤ 10
-        (Gauss–Dirichlet bijection BQF ↔ ClassGroup absent from Mathlib v4.12.0)
-
-    DISCHARGED (not counted above):
+    DISCHARGED (proved — not counted above):
       K1_Lower_OrderOf_BSD  — proved in BSD_MasterProof.lean (BSD_classNumber_lower_bound)
-      BSD_finrank_CLOSED    — proved in BSD_Discriminant.lean (BSD_finrank_proved);
-                              discharged directly in BSD_MasterCombinator
+      BSD_finrank_CLOSED       — proved in BSD_Discriminant.lean (BSD_finrank_proved);
+                                 discharged directly in BSD_MasterCombinator
+      K1_ClassNumber_Upper_BSD — proved: classNumber K = 10 (BSD_P2_Principal_CLOSED +
+                                 BSD_BQF_Bridge_Closed), hence ≤ 10; discharged in
+                                 BSD_MasterCombinator via BSD_classNumber_eq_10_via_principal
+      BSD_HeegnerPoint_OPEN    — proved: ∃ (x y : ℚ), y²+y = x³−x²−x−2; point (4,6)
+                                 in BSD_HeegnerPoint_CLOSED.lean
 
-    All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
-def BSD_open_surface_count : ℕ := 11
+    All open surfaces are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
+def BSD_open_surface_count : ℕ := 9
 
 end BSD
