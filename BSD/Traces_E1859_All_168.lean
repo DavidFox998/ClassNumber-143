@@ -1,3 +1,5 @@
+import Mathlib.Tactic
+
 /-!
 # Traces_E1859_All_168 — Frobenius trace table for 143a1
 
@@ -17,8 +19,6 @@ All `ap_p : ap p = v` theorems close by `rfl` — no kernel computation,
 no `decide`, no `native_decide`, no `Lean.reduceTrust`.
 Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 -/
-
-import Mathlib.Tactic
 
 namespace E1859
 
