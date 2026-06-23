@@ -11,32 +11,29 @@ Standalone formal proof that the class number of ℚ(√-143) equals 10.
 | Component | Status |
 |-----------|--------|
 | Lower bound: 10 ≤ h(K) | **PROVED** — unconditional, 0 sorry |
-| Upper bound: h(K) ≤ 10 | **TWO named gates** (def Prop, not sorry) |
-| Main theorem: h(K) = 10 | **PROVED** conditional on both gates |
+| Upper bound: h(K) ≤ 10 | **PROVED** — unconditional (2026-06-23) |
+| Main theorem: h(K) = 10 | **PROVED** unconditionally — 0 open gates |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all 34 files |
 
 ---
 
-## Named open gates (def Prop — not sorry, not axiom)
+## Proof route (fully unconditional, 2026-06-23)
 
-Both gaps are in the Dedekind-factorization layer: `IsDedekindDomain`
-ideal-factorization API for `AdjoinRoot`-based fields is not fully wired
-in Mathlib v4.12.0. The Lean type-class infrastructure exists; the concrete
-instance-wire for this particular `AdjoinRoot` is absent.
+The main theorem `classNumber K = 10` is proved via the Lagrange
+divisibility route in `BSD_BQF_Bridge_Closed.lean` (new, 2026-06-23):
 
 ```lean
--- Gate 1 (BSD_P2_Principal_CLOSED.lean)
-def BSD_p2_pow_10_principal_hyp : Prop :=
-  (p2_OK ^ 10).IsPrincipal
--- Mathematical content: Ideal.span {gen_OK} = p₂^10
--- gen_OK = -28 + 3ω, N(gen_OK) = 1024 = 2^10 ← PROVED
+-- Proved theorem (BSD_P2_Principal_CLOSED.lean, line 406):
+theorem BSD_p2_pow_10_principal : BSD_p2_pow_10_principal_hyp
+  -- (p2_OK ^ 10).IsPrincipal  -- proved via norm certificate
 
--- Gate 2 (BSD_ClassNum_Upper_CLOSED.lean)
-def BSD_classGroup_gen_by_p2_hyp : Prop :=
-  ∀ x : ClassGroup (𝓞 K), x ∈ Subgroup.zpowers g
--- Mathematical content: ClassGroup(𝓞 K) = ⟨[p₂]⟩
--- Minkowski-bound enumeration ← PROVED; API bridge ← MISSING
+-- Bridge (BSD_BQF_Bridge_Closed.lean):
+theorem BSD_BQF_ClassNumber_bridge_CLOSED :
+    NumberField.classNumber K = reducedForms143.length :=
+  (BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal).trans
+    BSD_numReducedForms143.symm
+-- Both sides equal 10; no BinaryQuadraticForm.classGroupEquiv needed.
 ```
 
 ---
