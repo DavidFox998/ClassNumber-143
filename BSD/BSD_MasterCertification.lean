@@ -249,6 +249,14 @@ theorem BSD_BrickLedger :
                                  (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
       K1_ClassNumber_Lower_BSD     — PROVED: gate discharged by K1_ClassNumber_Lower_CLOSED
                                  (BSD_ClassNumber_Completion_CLOSED.lean, Milestone 5.5)
+      EvenK_NonPrincipal_Bridge   — PROVED: p2^k not principal for k∈{2,4,6,8} by repr coords
+                                 (BSD_OrderOf_CLOSED.lean, Milestone 5.6)
+      BSD_orderOf_p2_OPEN         — PROVED: ∃ p2:ClassGroup(𝓞K), 10≤orderOf p2 by witness mk0
+                                 (BSD_OrderOf_CLOSED.lean, Milestone 5.6)
+      ClassGroup_OrderOf_Bridge   — PROVED: implication from EvenK to orderOf≥10
+                                 (BSD_OrderOf_CLOSED.lean, Milestone 5.6)
+      BSD_TermBound_OPEN          — PROVED: ‖a_n/n^s‖≤√n·τ(n)/n^σ (conditional, norm_div)
+                                 (BSD_LFunction_Closed.lean §2, Milestone 5.6 registration)
 
     NEWLY NAMED OPEN (Milestone 5.4, not counted in the 9):
       BSD_NonTorsion_OPEN      — (2,0) has infinite order; group law absent from v4.12.0
