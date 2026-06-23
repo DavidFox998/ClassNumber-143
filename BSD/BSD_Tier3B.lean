@@ -1,4 +1,4 @@
-import BSD.BSD_NormBridge
+import Towers.BSD.BSD_NormBridge
 import Mathlib.FieldTheory.Adjoin
 import Mathlib.RingTheory.Norm.Basic
 import Mathlib.NumberTheory.NumberField.Norm
@@ -7,7 +7,7 @@ import Mathlib.LinearAlgebra.Dimension.Free
 /-!
 # BSD_Tier3B — Tier 3B: Formal norm certificate for gen(𝔭₂^{10})
 
-Closes `BSD_algNorm_gen` by proving `(Algebra.norm ℤ gen_OK : ℤ) = 1024` via:
+Closes `BSD_algNorm_gen_OPEN` by proving `(Algebra.norm ℤ gen_OK : ℤ) = 1024` via:
 
 1. `gen_poly_natDegree` : natDegree (X² + 53X + 1024 : ℚ[X]) = 2
 2. `irred_gen_poly_monic` : that polynomial is monic (leadingCoeff = 1)
