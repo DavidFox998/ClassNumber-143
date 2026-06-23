@@ -1,4 +1,4 @@
-import BSD.BSD_NormBridge
+import Towers.BSD.BSD_NormBridge
 import Mathlib.Data.ZMod.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.GroupTheory.QuotientGroup.Basic
@@ -191,19 +191,19 @@ lemma coordMap_one_eq_one (a b : ℤ) :
 /-! ## §7. Named OPEN surfaces — definitions (retained for compatibility) -/
 
 /-- **CLOSED**: `coordMap a b` kills every element of `idealOfForm a b`. -/
-def coordMap_kills_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
+def coordMap_kills_ideal_OPEN (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
   ∀ x ∈ idealOfForm a b, coordMap a b x = 0
 
 /-- **CLOSED**: The kernel of `coordMap a b` equals `idealOfForm a b`. -/
-def coordMap_ker_eq_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
+def coordMap_ker_eq_ideal_OPEN (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
   ∀ x : 𝓞 K, coordMap a b x = 0 ↔ x ∈ idealOfForm a b
 
 /-- **CLOSED**: `Ideal.absNorm (idealOfForm a b) = a.natAbs`. -/
-def idealOfForm_absNorm (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
+def idealOfForm_absNorm_OPEN (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) : Prop :=
   Ideal.absNorm (idealOfForm a b) = a.natAbs
 
 /-- **CLOSED**: absNorm bridge for all 10 reduced forms of disc -143. -/
-def idealOfForm_classGroup_bridge : Prop :=
+def idealOfForm_classGroup_bridge_OPEN : Prop :=
   ∀ abc : ℤ × ℤ × ℤ,
     abc ∈ ([(1, 1, 36), (2, 1, 18), (2, -1, 18),
             (3, 1, 12), (3, -1, 12), (4, 1, 9), (4, -1, 9),
@@ -306,7 +306,7 @@ private theorem coordMap_mul_gen2_aux (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c 
 /-- **CLOSED — Surface 1**: `coordMap a b` kills every element of `idealOfForm a b`.
     For any `x = r * a + s * gen2 ∈ 𝔞_Q`, both summands map to 0 and add to 0. -/
 theorem coordMap_kills_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) :
-    coordMap_kills_ideal a b c h_disc := by
+    coordMap_kills_ideal_OPEN a b c h_disc := by
   intro x hx
   simp only [idealOfForm, Ideal.mem_span_pair] at hx
   obtain ⟨r, s, hrs⟩ := hx
@@ -323,7 +323,7 @@ theorem coordMap_kills_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) :
     yielding `x = k·(a:𝓞K) + n·gen2 ∈ 𝔞_Q`.
     Backward: Surface 1. -/
 theorem coordMap_ker_eq_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) :
-    coordMap_ker_eq_ideal a b c h_disc := by
+    coordMap_ker_eq_ideal_OPEN a b c h_disc := by
   obtain ⟨kb, hbk⟩ := b_odd_of_disc h_disc
   have hbhalf : (b - 1) / 2 = kb := by omega
   intro x
@@ -358,12 +358,12 @@ theorem coordMap_ker_eq_ideal (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) 
     First isomorphism theorem gives `𝓞 K / 𝔞_Q ≃+ ZMod a.natAbs`.
     Then `absNorm = cardQuot = Nat.card = a.natAbs`. -/
 theorem idealOfForm_absNorm (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) :
-    idealOfForm_absNorm a b c h_disc := by
+    idealOfForm_absNorm_OPEN a b c h_disc := by
   have ha_pos : 0 < a * c := by nlinarith [sq_nonneg b]
   have ha_ne : a ≠ 0 := left_ne_zero_of_mul ha_pos.ne'
   haveI : NeZero a.natAbs := ⟨Int.natAbs_ne_zero.mpr ha_ne⟩
   have h_ker := coordMap_ker_eq_ideal a b c h_disc
-  unfold idealOfForm_absNorm
+  unfold idealOfForm_absNorm_OPEN
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   have h_surj : Function.Surjective (coordMap a b) := fun z =>
     ⟨(z.val : ℕ) • (1 : 𝓞 K), by
@@ -386,7 +386,7 @@ theorem idealOfForm_absNorm (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143) :
 
 /-- **CLOSED — Surface 4**: All 10 reduced BQF ideals of disc -143 have the correct norm.
     Applies surface 3 to each of the 10 forms; disc = -143 verified by norm_num. -/
-theorem idealOfForm_classGroup_bridge_proof : idealOfForm_classGroup_bridge := by
+theorem idealOfForm_classGroup_bridge_proof : idealOfForm_classGroup_bridge_OPEN := by
   intro abc hmem
   simp only [List.mem_cons, List.mem_singleton, List.mem_nil_iff, or_false] at hmem
   rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
