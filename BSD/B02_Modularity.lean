@@ -1,3 +1,5 @@
+import Towers.BSD.B01_EllipticCurve
+
 /-
   # B02 — Modularity (Wiles–Taylor) for the BSD Tower
 
@@ -17,8 +19,6 @@
   SORRY: 0. Axiom footprint: classical trio. NOT a brick.
   BSD Surface: OPEN.
 -/
-
-import Towers.BSD.B01_EllipticCurve
 
 namespace Towers.BSD
 
