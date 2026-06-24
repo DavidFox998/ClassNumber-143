@@ -3,6 +3,7 @@ import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.NumberTheory.LSeries.Dirichlet
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.RingTheory.Multiplicity
 import Mathlib.Tactic
@@ -55,8 +56,8 @@ def E143_point (p : ℕ) [Fact p.Prime] (x y : ZMod p) : Prop :=
   y * y + y = x * x * x - x * x - x - 2
 
 instance E143_point_decidable (p : ℕ) [Fact p.Prime] (x y : ZMod p) :
-    Decidable (E143_point p x y) := by
-  classical; exact inferInstance
+    Decidable (E143_point p x y) :=
+  show Decidable (y * y + y = x * x * x - x * x - x - 2) from inferInstance
 
 /-- Affine F_p-points as a Finset. -/
 def E143_Finset (p : ℕ) [Fact p.Prime] : Finset (ZMod p × ZMod p) :=
@@ -78,29 +79,23 @@ give two applications of the second case, forcing y₂ = y₃, contradiction. -/
 lemma fiber_card_le_two (p : ℕ) [Fact p.Prime] (x : ZMod p) :
     (E143_fiber p x).card ≤ 2 := by
   classical
-  rw [E143_fiber]
-  apply Finset.card_le_two_iff.mpr
-  intro y1 hy1 y2 hy2 y3 hy3
+  -- By contradiction: three distinct solutions to y²+y=c force y₂=y₃, contradiction.
   by_contra h
   push_neg at h
-  obtain ⟨⟨h12, h13⟩, h23⟩ := h
-  have eq1 : y1 * y1 + y1 = x * x * x - x * x - x - 2 := by
-    simpa [E143_point] using hy1
-  have eq2 : y2 * y2 + y2 = x * x * x - x * x - x - 2 := by
-    simpa [E143_point] using hy2
-  have eq3 : y3 * y3 + y3 = x * x * x - x * x - x - 2 := by
-    simpa [E143_point] using hy3
+  rw [Finset.two_lt_card] at h
+  obtain ⟨y1, hy1, y2, hy2, y3, hy3, h12, h13, h23⟩ := h
+  simp only [E143_fiber, Finset.mem_filter, Finset.mem_univ, true_and, E143_point] at hy1 hy2 hy3
   -- (y₁ − y₂)(y₁ + y₂ + 1) = 0, and y₁ ≠ y₂
   have key12 : (y1 - y2) * (y1 + y2 + 1) = 0 := by
     have : (y1 - y2) * (y1 + y2 + 1) = y1 * y1 + y1 - (y2 * y2 + y2) := by ring
-    rw [this, eq1, eq2, sub_self]
+    rw [this, hy1, hy2, sub_self]
   have ne12 : y1 - y2 ≠ 0 := sub_ne_zero.mpr h12
   have sum12 : y1 + y2 + 1 = 0 :=
     (mul_eq_zero.mp key12).resolve_left ne12
   -- same for y₁, y₃
   have key13 : (y1 - y3) * (y1 + y3 + 1) = 0 := by
     have : (y1 - y3) * (y1 + y3 + 1) = y1 * y1 + y1 - (y3 * y3 + y3) := by ring
-    rw [this, eq1, eq3, sub_self]
+    rw [this, hy1, hy3, sub_self]
   have ne13 : y1 - y3 ≠ 0 := sub_ne_zero.mpr h13
   have sum13 : y1 + y3 + 1 = 0 :=
     (mul_eq_zero.mp key13).resolve_left ne13
@@ -119,18 +114,12 @@ theorem card_E143_le (p : ℕ) [Fact p.Prime] :
       (E143_fiber p x).image (fun y => (x, y)) := by
     intro x
     ext ⟨a, b⟩
-    simp [E143_Finset, E143_fiber, E143_point, Finset.mem_filter,
-          Finset.mem_image, Prod.ext_iff]
+    simp only [Finset.mem_filter, Finset.mem_image, E143_Finset, E143_fiber,
+               Finset.mem_univ, true_and, Prod.mk.injEq]
+    change (E143_point p a b ∧ a = x) ↔ ∃ y, E143_point p x y ∧ x = a ∧ y = b
     constructor
-    · rintro ⟨h, rfl, hP⟩; exact ⟨b, hP, rfl⟩
-    · rintro ⟨y, hP, rfl, rfl⟩; exact ⟨rfl, hP⟩
-  -- Card of each fiber image
-  have fiber_inj : ∀ x : ZMod p, (E143_fiber p x).image (fun y => (x, y))
-      |>.card = (E143_fiber p x).card := by
-    intro x
-    apply Finset.card_image_of_injOn
-    intro a _ b _ hab
-    exact (Prod.ext_iff.mp hab).2
+    · rintro ⟨hP, rfl⟩; exact ⟨b, hP, rfl, rfl⟩
+    · rintro ⟨y, hP, rfl, rfl⟩; exact ⟨hP, rfl⟩
   -- Partition and bound
   calc (E143_Finset p).card
       = ∑ x : ZMod p,
@@ -139,19 +128,20 @@ theorem card_E143_le (p : ℕ) [Fact p.Prime] :
         · congr 1
           ext xy
           simp [Finset.mem_biUnion, Finset.mem_filter]
-          exact ⟨fun h => ⟨xy.1, Finset.mem_univ _, h, rfl⟩,
-                 fun ⟨_, _, h, hx⟩ => hx ▸ h⟩
         · intro x _ y _ hne
           apply Finset.disjoint_filter.mpr
           intro z _ h1 h2
           exact hne (h1.symm.trans h2)
     _ = ∑ x : ZMod p, (E143_fiber p x).card := by
         congr 1; ext x
-        rw [fiber_eq, fiber_inj]
+        rw [fiber_eq]
+        apply Finset.card_image_of_injective
+        intro a b hab
+        exact (Prod.ext_iff.mp hab).2
     _ ≤ ∑ _x : ZMod p, 2 :=
         Finset.sum_le_sum fun x _ => fiber_card_le_two p x
     _ = 2 * p := by
-        simp [Finset.sum_const, Finset.card_univ, Fintype.card_zmod]
+        simp [Finset.sum_const, Finset.card_univ, ZMod.card]; ring
 
 -- ============================================================
 -- §2. a_p, elementary weak bound
@@ -208,9 +198,13 @@ def a_n (n : ℕ) : ℤ :=
 
 lemma a_n_prime_pow (p : ℕ) [hp : Fact p.Prime] (k : ℕ) :
     a_n (p ^ k) = a_prime_pow p k := by
-  simp only [a_n, Nat.pos_of_ne_zero, Nat.pow_ne_zero hp.out.ne_zero, ne_eq,
-             not_false_eq_true, ↓reduceIte]
-  rw [Nat.factorization_pow, Finsupp.prod_single_index]
+  have hpk : p ^ k ≠ 0 := (Nat.pos_pow_of_pos k hp.out.pos).ne'
+  simp only [a_n, hpk, ↓reduceIte]
+  have hfact : (p ^ k).factorization = Finsupp.single p k := by
+    rw [Nat.factorization_pow, Nat.Prime.factorization hp.out]
+    ext q
+    simp [Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]
+  rw [hfact, Finsupp.prod_single_index]
   · simp [hp.out]
   · simp [a_prime_pow]
 
@@ -260,7 +254,7 @@ def BSD_LSeriesSummable_OPEN : Prop :=
 /-- **OPEN**: L(E₁₄₃, s) is analytic on {s | Re(s) > 3/2}.
     Gap: locally uniform convergence + Weierstrass M-test (~9 lines). -/
 def BSD_AnalyticOn_OPEN : Prop :=
-  AnalyticOn ℂ (fun s => ∑' n : ℕ+, (a_n n : ℂ) / (n : ℂ) ^ s) {s | 3/2 < s.re}
+  AnalyticOn ℂ (fun (s : ℂ) => ∑' n : ℕ+, (a_n n : ℂ) / (n : ℂ) ^ s) {s | 3/2 < s.re}
 
 /-- **OPEN**: Euler product identity.
     L(E₁₄₃, s) = ∏_p (1 − a_p p^{−s} + p^{1−2s})^{−1}  for Re(s) > 3/2.
@@ -269,7 +263,8 @@ def BSD_EulerProduct_OPEN : Prop :=
   ∀ s : ℂ, 3/2 < s.re →
     (∑' n : ℕ+, (a_n n : ℂ) / (n : ℂ) ^ s) =
     ∏' q : {n : ℕ // n.Prime},
-      (1 - (a_p q.val : ℂ) / (q.val : ℂ) ^ s
+      (haveI : Fact q.val.Prime := ⟨q.2⟩
+       (1 : ℂ) - (a_p q.val : ℂ) / (q.val : ℂ) ^ s
          + (q.val : ℂ) ^ ((1 : ℂ) - 2 * s))⁻¹
 
 /-!
