@@ -82,7 +82,7 @@ theorem normForm_two_impossible : ¬ ∃ a b : ℤ, normForm a b = 2 := by
     have ha_le : a ≤ 1 := by nlinarith [sq_nonneg (a - 1)]
     have ha_ge : -1 ≤ a := by nlinarith [sq_nonneg (a + 1)]
     interval_cases a <;> simp_all [normForm]
-  · linarith [normForm_lower_bound hb, h.symm.le]
+  · linarith [normForm_lower_bound (a := a) hb, h.symm.le]
 
 /-- N(a + bω) = 3 has no integer solution. -/
 theorem normForm_three_impossible : ¬ ∃ a b : ℤ, normForm a b = 3 := by
@@ -92,7 +92,7 @@ theorem normForm_three_impossible : ¬ ∃ a b : ℤ, normForm a b = 3 := by
     have ha_le : a ≤ 1 := by nlinarith [sq_nonneg (a - 2)]
     have ha_ge : -1 ≤ a := by nlinarith [sq_nonneg (a + 2)]
     interval_cases a <;> simp_all [normForm]
-  · linarith [normForm_lower_bound hb, h.symm.le]
+  · linarith [normForm_lower_bound (a := a) hb, h.symm.le]
 
 /-- N(a + bω) = 5 has no integer solution. -/
 theorem normForm_five_impossible : ¬ ∃ a b : ℤ, normForm a b = 5 := by
@@ -102,7 +102,7 @@ theorem normForm_five_impossible : ¬ ∃ a b : ℤ, normForm a b = 5 := by
     have ha_le : a ≤ 2 := by nlinarith [sq_nonneg (a - 3)]
     have ha_ge : -2 ≤ a := by nlinarith [sq_nonneg (a + 3)]
     interval_cases a <;> simp_all [normForm]
-  · linarith [normForm_lower_bound hb, h.symm.le]
+  · linarith [normForm_lower_bound (a := a) hb, h.symm.le]
 
 /-- N(a + bω) = 7 has no integer solution. -/
 theorem normForm_seven_impossible : ¬ ∃ a b : ℤ, normForm a b = 7 := by
@@ -112,7 +112,7 @@ theorem normForm_seven_impossible : ¬ ∃ a b : ℤ, normForm a b = 7 := by
     have ha_le : a ≤ 2 := by nlinarith [sq_nonneg (a - 3)]
     have ha_ge : -2 ≤ a := by nlinarith [sq_nonneg (a + 3)]
     interval_cases a <;> simp_all [normForm]
-  · linarith [normForm_lower_bound hb, h.symm.le]
+  · linarith [normForm_lower_bound (a := a) hb, h.symm.le]
 
 /-- All four Minkowski-relevant prime norms are impossible:
     the norm form a² + ab + 36b² represents none of {2, 3, 5, 7}. -/
