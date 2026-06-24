@@ -46,7 +46,7 @@ open NumberField
 -- §1. The main theorem
 -- ============================================================
 
-/-- **classNumber(ℚ(√−143)) = 10** — PROVED UNCONDITIONALLY.
+/-- **classNumber(ℚ(√−143)) = 10** — conditional on BSD_classNumber_upper_OPEN.
 
     The full proof chain is:
       BSD_p2_pow_10_principal  (BSD_P2_Principal_CLOSED.lean)
@@ -55,25 +55,25 @@ open NumberField
 
     Uses BSD_classNumber_lower_bound (BSD_MasterProof.lean) internally.
     0 sorry, classical trio only. -/
-theorem BSD_classNumber_10_FINAL : NumberField.classNumber K = 10 :=
-  BSD_classNumber_K_10
+theorem BSD_classNumber_10_FINAL (h_upper : BSD_classNumber_upper_OPEN) : NumberField.classNumber K = 10 :=
+  BSD_classNumber_K_10 h_upper
 
 -- ============================================================
 -- §2. Gate discharge certificates
 -- ============================================================
 
-/-- **BSD_UpperGate_Discharged**: classNumber K ≤ 10.  Gate PROVED. -/
-theorem BSD_UpperGate_Discharged : K1_Upper_ClassGroup_BSD :=
-  K1_ClassNumber_Upper_CLOSED
+/-- **BSD_UpperGate_Discharged**: classNumber K ≤ 10.  Gate PROVED given h_upper. -/
+theorem BSD_UpperGate_Discharged (h_upper : BSD_classNumber_upper_OPEN) : K1_Upper_ClassGroup_BSD :=
+  K1_ClassNumber_Upper_CLOSED h_upper
 
-/-- **BSD_LowerGate_Discharged**: 10 ≤ classNumber K.  Gate PROVED. -/
+/-- **BSD_LowerGate_Discharged**: 10 ≤ classNumber K.  Gate PROVED unconditionally. -/
 theorem BSD_LowerGate_Discharged : K1_Lower_OrderOf_BSD :=
-  K1_ClassNumber_Lower_CLOSED
+  BSD_classNumber_lower_bound
 
-/-- Both class-number gates discharged unconditionally. -/
-theorem BSD_ClassNum_BothGates :
+/-- Both class-number gates discharged. -/
+theorem BSD_ClassNum_BothGates (h_upper : BSD_classNumber_upper_OPEN) :
     K1_Upper_ClassGroup_BSD ∧ K1_Lower_OrderOf_BSD :=
-  ⟨BSD_UpperGate_Discharged, BSD_LowerGate_Discharged⟩
+  ⟨BSD_UpperGate_Discharged h_upper, BSD_LowerGate_Discharged⟩
 
 -- ============================================================
 -- §3. Surface ledger
@@ -81,14 +81,14 @@ theorem BSD_ClassNum_BothGates :
 
 /-- **BSD_ClassNum_10_surface_ledger** (0 sorry, classical trio):
     All class-number surfaces closed or named:
-    - classNumber K = 10               CLOSED
-    - K1_Upper_ClassGroup_BSD           CLOSED (gate discharged)
-    - K1_Lower_OrderOf_BSD              CLOSED (gate discharged)
+    - classNumber K = 10               CLOSED (conditional on h_upper)
+    - K1_Upper_ClassGroup_BSD           CLOSED (conditional on h_upper)
+    - K1_Lower_OrderOf_BSD              CLOSED (unconditional)
     - BSD_BQF_ClassNumber_bridge        OPEN   (BQF bijection route; bypassed) -/
-theorem BSD_ClassNum_10_surface_ledger :
+theorem BSD_ClassNum_10_surface_ledger (h_upper : BSD_classNumber_upper_OPEN) :
     NumberField.classNumber K = 10 ∧
     K1_Upper_ClassGroup_BSD ∧
     K1_Lower_OrderOf_BSD :=
-  ⟨BSD_classNumber_10_FINAL, BSD_UpperGate_Discharged, BSD_LowerGate_Discharged⟩
+  ⟨BSD_classNumber_10_FINAL h_upper, BSD_UpperGate_Discharged h_upper, BSD_LowerGate_Discharged⟩
 
 end Towers.BSD
