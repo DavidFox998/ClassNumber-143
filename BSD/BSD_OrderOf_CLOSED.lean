@@ -63,9 +63,9 @@ theorem BSD_orderOf_p2_CLOSED : BSD_orderOf_p2_OPEN := by
     have h2 := absNorm_p2_eq_2
     rw [h, Ideal.zero_eq_bot, Ideal.absNorm_bot] at h2
     norm_num at h2
-  have hp₂_mem : p2_OK ∈ (Ideal (𝓞 K))⁰ :=
-    mem_nonZeroDivisors_iff_ne_zero.mpr hp2_ne
-  let I₂ : (Ideal (𝓞 K))⁰ := ⟨p2_OK, hp₂_mem⟩
+  have hp₂_mem : p2_OK ∈ nonZeroDivisors (Ideal (𝓞 K)) :=
+    mem_nonZeroDivisors_of_ne_zero hp2_ne
+  let I₂ : nonZeroDivisors (Ideal (𝓞 K)) := ⟨p2_OK, hp₂_mem⟩
   let g : ClassGroup (𝓞 K) := ClassGroup.mk0 I₂
   refine ⟨g, ?_⟩
   by_contra hlt
