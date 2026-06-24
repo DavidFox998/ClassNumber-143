@@ -56,7 +56,18 @@ namespace Towers.BSD
 /-- **PROVED** (0 sorry, classical trio):
     The conductor 143 is squarefree: 143 = 11 · 13 with 11 ≠ 13 both prime.
     Consequence: E_{143} = 143a1 has no additive reduction → semistable everywhere. -/
-theorem BSD_conductor_squarefree_CLOSED : Squarefree (143 : ℕ) := by decide
+theorem BSD_conductor_squarefree_CLOSED : Squarefree (143 : ℕ) := by
+  intro d hd
+  rcases Nat.eq_zero_or_pos d with rfl | hpos
+  · simp at hd
+  have hd_sq : d * d ≤ 143 := Nat.le_of_dvd (by norm_num) hd
+  have hle : d ≤ 11 := by
+    by_contra h
+    push_neg at h
+    have h12 : 12 ≤ d := h
+    have := Nat.mul_le_mul h12 h12
+    linarith
+  interval_cases d <;> first | exact isUnit_one | norm_num at hd
 
 /-- **PROVED** (0 sorry, classical trio):
     11 is a prime divisor of 143. -/
@@ -69,7 +80,19 @@ theorem BSD_bad_prime_13 : (13 : ℕ).Prime ∧ 13 ∣ 143 := by decide
 /-- **PROVED** (0 sorry, classical trio):
     Every prime divisor of 143 is either 11 or 13. -/
 theorem BSD_bad_primes_CLOSED :
-    ∀ p : ℕ, p.Prime → p ∣ 143 → p = 11 ∨ p = 13 := by decide
+    ∀ p : ℕ, p.Prime → p ∣ 143 → p = 11 ∨ p = 13 := by
+  intro p hp hdvd
+  have h143 : (143 : ℕ) = 11 * 13 := by norm_num
+  rw [h143] at hdvd
+  rcases hp.prime.dvd_mul.mp hdvd with h11 | h13
+  · left
+    rcases (by norm_num : Nat.Prime 11).eq_one_or_self_of_dvd p h11 with h1 | heq
+    · exfalso; have := hp.two_le; omega
+    · exact heq
+  · right
+    rcases (by norm_num : Nat.Prime 13).eq_one_or_self_of_dvd p h13 with h1 | heq
+    · exfalso; have := hp.two_le; omega
+    · exact heq
 
 /-- **PROVED** (0 sorry, classical trio):
     Neither 11² = 121 nor 13² = 169 divides 143.
@@ -136,7 +159,7 @@ theorem BSD_y_zero_point_CLOSED : (2 : ℚ) ^ 3 - 2 ^ 2 - 2 - 2 = 0 := by norm_n
     the Neron model bridge remains `BSD_NeronModel_11_OPEN` / `BSD_NeronModel_13_OPEN`. -/
 theorem BSD_semistable_cert_CLOSED :
     Squarefree (143 : ℕ) ∧
-    (11 : ℕ).Prime ∧ 13 .Prime ∧ (143 : ℕ) = 11 * 13 ∧
+    (11 : ℕ).Prime ∧ (13 : ℕ).Prime ∧ (143 : ℕ) = 11 * 13 ∧
     ¬ (11 ^ 2 ∣ (143 : ℕ)) ∧ ¬ (13 ^ 2 ∣ (143 : ℕ)) ∧
     (∀ p : ℕ, p.Prime → p ∣ 143 → p = 11 ∨ p = 13) :=
   ⟨BSD_conductor_squarefree_CLOSED,
