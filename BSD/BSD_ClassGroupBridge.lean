@@ -122,17 +122,13 @@ theorem BSD_classGroup_gen_by_p2_of_bqf
     BSD_BQF_ClassNumber_bridge → classNumber K = 10.
 
     ONE named open surface (the BQF bridge).
-    Two routes both reduce to this single gate:
-    - BQF route: BSD_classNumber_via_bqf_bridge.
-    - Ideal route: BSD_p2_pow_10_principal (PROVED) + BSD_classGroup_gen_by_p2_of_bqf
-      → BSD_classNumber_eq_10.
-    Both routes agree; the ideal route is verified here. -/
+    Proved via the BQF route `BSD_classNumber_via_bqf_bridge`.
+    The ideal route (BSD_p2_pow_10_principal + BSD_classGroup_gen_by_p2_of_bqf)
+    agrees by `BSD_routes_agree` (rfl). -/
 theorem BSD_classNumber_eq_10_one_gate
     (h_bridge : BSD_BQF_ClassNumber_bridge) :
     NumberField.classNumber K = 10 :=
-  BSD_classNumber_eq_10
-    BSD_p2_pow_10_principal
-    (BSD_classGroup_gen_by_p2_of_bqf h_bridge)
+  BSD_classNumber_via_bqf_bridge h_bridge
 
 /-- **BSD_classNumber_eq_10_bqf_route** (0 sorry, classical trio):
     BQF route (alias of existing theorem, shown for comparison). -/
