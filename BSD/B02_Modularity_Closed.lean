@@ -1,6 +1,7 @@
 import Towers.BSD.B02_Modularity
 import Towers.BSD.BSD_LFunction_Closed
 import Towers.BSD.BSD_AP_Table_Closed
+import Towers.BSD.BSD_AP_Table
 
 /-!
 # B02_Modularity_Closed — Conditional closures of the three B02 modularity surfaces
@@ -73,40 +74,69 @@ theorem a_n_sq_recurrence (p : ℕ) [hp : Fact p.Prime] :
 theorem a_n_hasse_from_open (p : ℕ) [hp : Fact p.Prime]
     (h : BSD_Hasse_OPEN p) : (a_n p : ℝ) ^ 2 ≤ 4 * (p : ℝ) := by
   rw [show (a_n p : ℝ) = a_p p from by exact_mod_cast a_n_eq_ap_prime p]
-  have hsq : Real.sqrt p ^ 2 = p := Real.sq_sqrt (Nat.cast_nonneg p)
-  nlinarith [abs_nonneg (a_p p : ℝ), sq_abs (a_p p : ℝ), Real.sqrt_nonneg (p : ℝ)]
+  have hp_nn : (0 : ℝ) ≤ p := Nat.cast_nonneg p
+  calc (a_p p : ℝ) ^ 2
+      = |(a_p p : ℝ)| ^ 2 := (_root_.sq_abs _).symm
+    _ ≤ (2 * Real.sqrt p) ^ 2 := by
+        apply pow_le_pow_left (abs_nonneg _)
+        exact h
+    _ = 4 * p := by rw [mul_pow, Real.sq_sqrt hp_nn]; ring
 
 -- ============================================================
 -- §2. Exact a_n values at the 4 kernel-decidable primes (0 sorry)
 -- ============================================================
 /-!
-For p ∈ {2, 3, 5, 7} the affine count `E143_Finset p` is small enough (at most
-49 pairs in ZMod p × ZMod p) for the Lean kernel to decide.  These use `decide`
-without `native_decide`, preserving the classical trio.
+For p ∈ {2, 3, 5, 7} the affine count is bridged from `E143a1_count` (the
+computable version in `BSD_AP_Table`, using `[NeZero p]`) to `a_p` (which uses
+`E143_Finset`, `[Fact p.Prime]`).  `E143_point` unfolds to the same arithmetic
+equality as the inline predicate in `E143a1_count`, so the two Finset filters
+are propositionally equal via `Finset.filter_congr`.
 -/
+
+/-- Bridge: `(E143_Finset p).card = E143a1_count p` for any prime p.
+    `E143_point p x y` is defined as `y*y+y = x*x*x-x*x-x-2`, which is
+    exactly the inline predicate in `E143a1_count`; both filter the same
+    `Finset.univ`, so the two expressions are definitionally equal. -/
+private lemma E143_Finset_card_eq_count (p : ℕ) [hp : Fact p.Prime] :
+    (E143_Finset p).card = E143a1_count p := by
+  haveI : NeZero p := ⟨hp.out.ne_zero⟩
+  unfold E143_Finset E143_point E143a1_count
+  rfl
 
 /-- **PROVED**: a_n 2 = 0. Count #E143_affine(𝔽₂) = 2; a_p 2 = 2 − 2 = 0. -/
 theorem a_n_at_2 : a_n 2 = 0 := by
   haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
-  have h : a_p 2 = 0 := by unfold a_p; decide
+  have h : a_p 2 = 0 := by
+    have hc : (E143_Finset 2).card = 2 := by
+      rw [E143_Finset_card_eq_count]; exact E143a1_count_2
+    unfold a_p; rw [show (E143_Finset 2).card = 2 from hc]; norm_num
   simpa using (a_n_eq_ap_prime 2).trans h
 
 /-- **PROVED**: a_n 3 = −1. Count #E143_affine(𝔽₃) = 4; a_p 3 = 3 − 4 = −1. -/
 theorem a_n_at_3 : a_n 3 = -1 := by
   haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
-  have h : a_p 3 = -1 := by unfold a_p; decide
+  have h : a_p 3 = -1 := by
+    have hc : (E143_Finset 3).card = 4 := by
+      rw [E143_Finset_card_eq_count]; exact E143a1_count_3
+    unfold a_p; rw [show (E143_Finset 3).card = 4 from hc]; norm_num
   simpa using (a_n_eq_ap_prime 3).trans h
 
 /-- **PROVED**: a_n 5 = −1. Count #E143_affine(𝔽₅) = 6; a_p 5 = 5 − 6 = −1. -/
 theorem a_n_at_5 : a_n 5 = -1 := by
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
-  have h : a_p 5 = -1 := by unfold a_p; decide
+  have h : a_p 5 = -1 := by
+    have hc : (E143_Finset 5).card = 6 := by
+      rw [E143_Finset_card_eq_count]; exact E143a1_count_5
+    unfold a_p; rw [show (E143_Finset 5).card = 6 from hc]; norm_num
   simpa using (a_n_eq_ap_prime 5).trans h
 
 /-- **PROVED**: a_n 7 = −2. Count #E143_affine(𝔽₇) = 9; a_p 7 = 7 − 9 = −2. -/
 theorem a_n_at_7 : a_n 7 = -2 := by
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
-  have h : a_p 7 = -2 := by unfold a_p; decide
+  have h : a_p 7 = -2 := by
+    have hc : (E143_Finset 7).card = 9 := by
+      rw [E143_Finset_card_eq_count]; exact E143a1_count_7
+    unfold a_p; rw [show (E143_Finset 7).card = 9 from hc]; norm_num
   simpa using (a_n_eq_ap_prime 7).trans h
 
 -- ============================================================
@@ -227,11 +257,11 @@ theorem Modularity_143_CLOSED
   · exact fun m n hcop => h_mult m n hcop
   -- (2) Hecke recurrence: proved from definition
   · intro p hp hbad
-    haveI : Fact p.Prime := hp
+    haveI : Fact p.Prime := ⟨hp⟩
     exact a_n_sq_recurrence p
   -- (3) Weil bound: gate (full; 168-prime evidence in BSD_Weil_168_CLOSED)
   · intro p hp hbad
-    haveI : Fact p.Prime := hp
+    haveI : Fact p.Prime := ⟨hp⟩
     exact a_n_hasse_from_open p (h_hasse p hbad)
 
 -- ============================================================
@@ -281,7 +311,7 @@ theorem BSD_Hecke_143_HalfPlane_CLOSED
     (h_sum : BSD_LSeriesSummable_OPEN)
     (h_wm  : BSD_WeierstrassM_OPEN) :
     AnalyticOn ℂ (BSDLFunction 143) {s : ℂ | (3 : ℝ) / 2 < s.re} :=
-  (BSD_AnalyticOn_CLOSED h_sum h_wm).congr (fun s hs => (h_id s hs).symm)
+  (BSD_AnalyticOn_CLOSED h_sum h_wm).congr (fun s hs => h_id s hs)
 
 -- ============================================================
 -- §9. BSD_FuncEq_143_CLOSED (0 sorry, classical trio)
@@ -299,20 +329,15 @@ theorem BSD_FuncEq_143_CLOSED
     (h_feq : BSD_GammaFuncEq_143_OPEN) :
     BSD_FuncEq_OPEN 143 := by
   intro s
-  rw [h_feq s]
   have h143 : (143 : ℂ) ≠ 0 := by norm_num
   have heps : (BSD_RootNumber 143 : ℂ) = 1 := by
     exact_mod_cast BSD_RootNumber_143
-  rw [heps]
-  -- goal: (143 : ℂ)^(s−1) * (1 * (143 : ℂ)^(1−s) * BSDLFunction 143 s) =
-  --       1 * BSDLFunction 143 s
   have key : (143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s) = 1 := by
-    rw [← cpow_add _ _ h143]
-    norm_num
-  ring_nf
-  rw [show (143 : ℂ) ^ (s - 1) * ((143 : ℂ) ^ (1 - s) * BSDLFunction 143 s) =
-      ((143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s)) * BSDLFunction 143 s from by ring]
-  rw [key]; ring
+    rw [← cpow_add _ _ h143]; norm_num
+  rw [show ((143 : ℕ) : ℂ) = (143 : ℂ) from by norm_cast, h_feq s, heps]
+  rw [show (143 : ℂ) ^ (s - 1) * (1 * (143 : ℂ) ^ (1 - s) * BSDLFunction 143 s) =
+      (143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s) * BSDLFunction 143 s from by ring,
+      key]
 
 -- ============================================================
 -- §10. Gap audit sentinels (0 sorry, classical trio)
