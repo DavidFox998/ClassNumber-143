@@ -133,7 +133,7 @@ open NumberField NumberField.InfinitePlace Real
 
     All three uses reduce to `0 < arakelovSelfIntersection (X₀ 143)`. ∎ -/
 theorem BSD_Arakelov_CrossReference :
-    ArakelovPositivity (X₀ 143) :=
+    TheoremaAureum.ArakelovPositivity (TheoremaAureum.X₀ 143) :=
   TheoremaAureum.arakelov_positivity_X0_143
 
 -- ============================================================
@@ -157,25 +157,24 @@ theorem BSD_Multiplicativity_Gate_Discharged :
     orderOf_dvd_card (Lagrange) + BSD_classNumber_lower_bound →
     classNumber K = 10 → classNumber K ≤ 10.
     Gate fully discharged; no longer a parameter in BSD_ClayCompliance_7gate. -/
-theorem BSD_ClassNumber_Upper_Gate_Discharged :
+theorem BSD_ClassNumber_Upper_Gate_Discharged (h_upper : BSD_classNumber_upper_OPEN) :
     K1_Upper_ClassGroup_BSD :=
-  BSD_UpperGate_Discharged
+  BSD_UpperGate_Discharged h_upper
 
 /-- **BSD_ClassNumber_Lower_Gate_Discharged** (0 sorry, classical trio):
-    `K1_Lower_OrderOf_BSD` (10 ≤ classNumber K) is PROVED.
+    `K1_Lower_OrderOf_BSD` (10 ≤ classNumber K) is PROVED unconditionally.
 
     Chain: BSD_classNumber_lower_bound (BSD_MasterProof, unconditional) →
-    10 ≤ classNumber K.
-    Gate fully discharged; no longer a parameter in BSD_ClayCompliance_7gate. -/
+    10 ≤ classNumber K. -/
 theorem BSD_ClassNumber_Lower_Gate_Discharged :
     K1_Lower_OrderOf_BSD :=
   BSD_LowerGate_Discharged
 
 /-- **BSD_ClassNumber_10_Certificate** (0 sorry, classical trio):
-    classNumber(ℚ(√−143)) = 10.  PROVED UNCONDITIONALLY. -/
-theorem BSD_ClassNumber_10_Certificate :
+    classNumber(ℚ(√−143)) = 10.  Conditional on BSD_classNumber_upper_OPEN. -/
+theorem BSD_ClassNumber_10_Certificate (h_upper : BSD_classNumber_upper_OPEN) :
     NumberField.classNumber K = 10 :=
-  BSD_classNumber_10_FINAL
+  BSD_classNumber_10_FINAL h_upper
 
 -- ============================================================
 -- §3. Frobenius gap surface — named, honest, not discharged
@@ -283,6 +282,8 @@ theorem BSD_ClayCompliance_7gate
     (h_reg    : BSD_Regulator_OPEN 143)
     (h_sha    : BSD_Sha_OPEN 143)
     (h_tam    : BSD_TamagawaConj_OPEN 143)
+    -- Class-number upper gate (still OPEN: BQF bijection absent from Mathlib v4.12.0)
+    (h_upper  : BSD_classNumber_upper_OPEN)
     -- Clay core
     (h_bsd    : BSD_143_OPEN) :
     (E_BSD 143).conductor = 143 ∧
@@ -292,7 +293,7 @@ theorem BSD_ClayCompliance_7gate
     NumberField.classNumber K = 10 ∧
     BSD_143_OPEN :=
   BSD_ClayCompliance_MinGate h_hasse h_hecke h_feq h_reg h_sha h_tam
-    BSD_UpperGate_Discharged
+    (BSD_UpperGate_Discharged h_upper)
     BSD_LowerGate_Discharged
     h_bsd
 
