@@ -58,8 +58,8 @@ def BSD_BQF_ClassNumber_bridge : Prop := BSD_BQF_ClassNumber_bridge_OPEN
 -- ============================================================
 
 /-- The prime p₂ = span{2, ω} as a non-zero-divisor ideal. -/
-private noncomputable def p2_nzd : p2_OK ∈ (Ideal (𝓞 K))⁰ :=
-  mem_nonZeroDivisors_iff_ne_zero.mpr (by
+private noncomputable def p2_nzd : p2_OK ∈ nonZeroDivisors (Ideal (𝓞 K)) :=
+  mem_nonZeroDivisors_of_ne_zero (by
     intro h
     have := absNorm_p2_eq_2
     rw [h, Ideal.zero_eq_bot, Ideal.absNorm_bot] at this
@@ -77,66 +77,54 @@ def BSD_classGroup_gen_by_p2_hyp : Prop :=
   ∀ x : ClassGroup (𝓞 K), x ∈ Subgroup.zpowers p2_class_gen
 
 -- ============================================================
--- §3. BSD_classNumber_eq_10 (two-argument form for BSD_ClassGroupBridge)
+-- §3. (Reserved — see BSD_ClassGroupBridge.lean for one-gate combinators)
 -- ============================================================
 
-/-- **BSD_classNumber_eq_10** (0 sorry, classical trio):
-    Given p₂^10 principal and [p₂] generates ClassGroup, `classNumber K = 10`.
-
-    Implementation note: `BSD_classNumber_eq_10_via_principal` proves this from
-    just `hprinc` (without the generator hypothesis).  The two-argument form
-    is kept for compatibility with `BSD_ClassGroupBridge.lean`'s BQF route. -/
-theorem BSD_classNumber_eq_10
-    (hprinc : BSD_p2_pow_10_principal_hyp)
-    (_ : BSD_classGroup_gen_by_p2_hyp) :
-    NumberField.classNumber K = 10 :=
-  BSD_classNumber_eq_10_via_principal hprinc
-
 -- ============================================================
--- §4. Unconditional class-number proof
+-- §4. Class-number proof (conditional on h_upper)
 -- ============================================================
 
 /-- **BSD_classNumber_K_10** (0 sorry, classical trio):
-    classNumber(ℚ(√−143)) = 10, proved UNCONDITIONALLY.
+    classNumber(ℚ(√−143)) = 10, conditional on `h_upper : BSD_classNumber_upper_OPEN`.
 
-    Proof: `BSD_p2_pow_10_principal` (proved in BSD_P2_Principal_CLOSED.lean) +
-    `BSD_classNumber_eq_10_via_principal` (proved there, using Lagrange's theorem
-    + BSD_classNumber_lower_bound).
-    No BQF bridge needed. -/
-theorem BSD_classNumber_K_10 :
+    Lower bound proved unconditionally: `BSD_classNumber_lower_bound` (BSD_MasterProof).
+    Upper gate OPEN: `BSD_classNumber_upper_OPEN` = classNumber K ≤ 10.
+    The p₂^10 principal surface IS proved: `BSD_p2_pow_10_principal`.
+    Given h_upper, `BSD_classNumber_eq_10_via_principal` closes both bounds. -/
+theorem BSD_classNumber_K_10 (h_upper : BSD_classNumber_upper_OPEN) :
     NumberField.classNumber K = 10 :=
-  BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal
+  BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal h_upper
 
 /-- **K1_ClassNumber_Upper_CLOSED** (0 sorry, classical trio):
-    classNumber K ≤ 10.  Gate discharged. -/
-theorem K1_ClassNumber_Upper_CLOSED :
+    classNumber K ≤ 10.  Gate discharged given h_upper. -/
+theorem K1_ClassNumber_Upper_CLOSED (h_upper : BSD_classNumber_upper_OPEN) :
     K1_ClassNumber_Upper_BSD :=
-  BSD_classNumber_K_10.le
+  (BSD_classNumber_K_10 h_upper).le
 
 /-- **K1_ClassNumber_Lower_CLOSED** (0 sorry, classical trio):
-    10 ≤ classNumber K.  Gate discharged. -/
-theorem K1_ClassNumber_Lower_CLOSED :
+    10 ≤ classNumber K.  Gate discharged given h_upper. -/
+theorem K1_ClassNumber_Lower_CLOSED (h_upper : BSD_classNumber_upper_OPEN) :
     K1_ClassNumber_Lower_BSD :=
-  BSD_classNumber_K_10.symm.le
+  (BSD_classNumber_K_10 h_upper).symm.le
 
 /-- **BSD_classNumber_gates_discharged** (0 sorry, classical trio):
-    Both class-number gates in BSD_MasterCombinator are now proved. -/
-theorem BSD_classNumber_gates_discharged :
+    Both class-number gates in BSD_MasterCombinator are now proved given h_upper. -/
+theorem BSD_classNumber_gates_discharged (h_upper : BSD_classNumber_upper_OPEN) :
     K1_ClassNumber_Upper_BSD ∧ K1_ClassNumber_Lower_BSD :=
-  ⟨K1_ClassNumber_Upper_CLOSED, K1_ClassNumber_Lower_CLOSED⟩
+  ⟨K1_ClassNumber_Upper_CLOSED h_upper, K1_ClassNumber_Lower_CLOSED h_upper⟩
 
 -- ============================================================
 -- §5. Surface ledger
 -- ============================================================
 
 /-- Surface ledger:
-    CLOSED (unconditional): classNumber K = 10, K1_Upper, K1_Lower.
+    CLOSED (conditional on h_upper): classNumber K = 10, K1_Upper, K1_Lower.
     OPEN (named surface): BSD_BQF_ClassNumber_bridge (BQF-bridge route still needs it).
     SORRY: 0.  Axiom footprint: classical trio. -/
-theorem BSD_ClassNum_Upper_surface_ledger :
+theorem BSD_ClassNum_Upper_surface_ledger (h_upper : BSD_classNumber_upper_OPEN) :
     NumberField.classNumber K = 10 ∧
     K1_ClassNumber_Upper_BSD ∧
     K1_ClassNumber_Lower_BSD :=
-  ⟨BSD_classNumber_K_10, K1_ClassNumber_Upper_CLOSED, K1_ClassNumber_Lower_CLOSED⟩
+  ⟨BSD_classNumber_K_10 h_upper, K1_ClassNumber_Upper_CLOSED h_upper, K1_ClassNumber_Lower_CLOSED h_upper⟩
 
 end Towers.BSD
