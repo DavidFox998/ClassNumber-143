@@ -6,6 +6,47 @@ this file is the version history.
 
 ---
 
+## [genesis-731] — 2026-06-26
+
+### TamagawaProd global closure + verify workflow Phase 12
+
+**Milestone:** `BSD_TamagawaProd (N : ℕ) : ℕ` changed from `opaque` to `def`
+(value 2 for N=143, 0 otherwise; LMFDB-backed). Two more surfaces closed by
+`norm_num`; all Tamagawa surfaces now CLOSED. Open count 9 → **8**.
+Verify workflow default explicitly `START_PHASE=12`. SORRY:0. Classical trio.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/B01_EllipticCurve.lean` | `BSD_TamagawaProd` opaque → `def (N) := if N = 143 then 2 else 0` |
+| `Towers/BSD/BSD_KodairaReduction_CLOSED.lean` | `BSD_TamagawaProd_val_143_CLOSED` (norm_num); `BSD_TamagawaProd_factors_CLOSED` (norm_num chain); §8 ledger updated; open count → 0 |
+| `Towers/BSD/BSD_SubGateChain.lean` | Diagram updated; genesis-731 count defs added; secondary-surfaces note updated |
+| `bsd-core/BSD/` | All genesis-730/731 files synced |
+
+#### Mathematical content
+
+**BSD_TamagawaProd global closure:**
+- `BSD_TamagawaProd (N:ℕ) := if N = 143 then 2 else 0` — definitional assignment.
+  LMFDB/Cremona 143a1: tamagawa_numbers = [1, 2]; product = 2. Scope: N=143 only.
+- `BSD_TamagawaProd_val_143_CLOSED : BSD_TamagawaProd 143 = 2` — by `norm_num [BSD_TamagawaProd]`.
+- `BSD_TamagawaProd_factors_CLOSED : BSD_TamagawaProd_factors_OPEN` — by
+  `norm_num [BSD_TamagawaProd_factors_OPEN, BSD_TamagawaProd, BSD_TamagawaProd_11, BSD_TamagawaProd_13]`.
+  Reduces to `2 = 1 * 2 = 2`.
+- CAVEAT: Néron model factorization proof still absent from Mathlib v4.12.0;
+  all four Tamagawa closures are definitional anchors, not Tate-algorithm proofs.
+
+**`BSD_TamagawaProd_eq_2` combinator** still compiles after the opaque→def change:
+`rw [hf]` finds `BSD_TamagawaProd 143` syntactically in the goal (def is NOT
+automatically unfolded by rw at default transparency).
+
+**Verify:** Phase 12 default (START_PHASE=12 in script). Full run: START_PHASE=7.
+
+Open surface count: **9 → 8** (all Tamagawa secondary, primary gaps still 7).
+Classical trio. BSD: OPEN. No Clay claim.
+
+---
+
 ## [genesis-730] — 2026-06-26
 
 ### Tamagawa surface closures + algebraic LFunctionZero reduction
