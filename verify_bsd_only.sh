@@ -594,6 +594,26 @@ compile_with_olean \
   "BSD/BSD_ClassGroup_Generator_CLOSED" || p12_ok=false
 echo ""
 
+# genesis-738/739/740 must be compiled before E143a1_CLOSED imports them.
+# Use pre-built olean if fresh; compile from source otherwise.
+use_olean_if_fresh \
+  "Towers/BSD/BSD_Genesis738_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis738_CLOSED.olean" \
+  "BSD/BSD_Genesis738_CLOSED" || p12_ok=false
+echo ""
+
+use_olean_if_fresh \
+  "Towers/BSD/BSD_Genesis739_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis739_CLOSED.olean" \
+  "BSD/BSD_Genesis739_CLOSED" || p12_ok=false
+echo ""
+
+use_olean_if_fresh \
+  "Towers/BSD/BSD_Genesis740_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis740_CLOSED.olean" \
+  "BSD/BSD_Genesis740_CLOSED" || p12_ok=false
+echo ""
+
 compile_with_olean \
   "Towers/BSD/E143a1_CLOSED.lean" \
   ".lake/build/lib/Towers/BSD/E143a1_CLOSED.olean" \
@@ -669,7 +689,7 @@ echo ""
 # ── PHASE 13: genesis-732+735+736+737 minimal capstone ──────────────────────
 if (( START_PHASE <= 13 )); then
   p13_ok=true
-  echo "=== Phase 13: genesis-732+735+736+737+738+739 Sha/Torsion/HasseBridge + Regulator/TamagawaConj ==="
+  echo "=== Phase 13: genesis-732+735+736+737+738+739+740 Sha/Torsion/HasseBridge + Regulator/TamagawaConj ==="
   echo ""
   echo "  BSD_TorsionSha_CLOSED (BSD_ShaCard=1, BSD_TorsCard=1, BSD_Sha_143_CLOSED)."
   echo "  BSD_Genesis735_CLOSED: TorsionBound p2/p5 CLOSED; classGroupCard≤10; orderOf p2."
@@ -759,6 +779,16 @@ if (( START_PHASE <= 13 )); then
     "BSD/BSD_Genesis739_CLOSED" || p13_ok=false
   echo ""
 
+  # genesis-740: HasseBridge extended to p ∈ {83,89,97} (3 new primes).
+  # NOTE: decide calls over ZMod p × ZMod p (6889–9409 pairs per prime).
+  # Requires workflow compilation; bash subprocess OOMs at ≥6889 pairs.
+  # Use pre-built olean if present; axiom footprint: classical trio, 0 sorry.
+  use_olean_if_fresh \
+    "Towers/BSD/BSD_Genesis740_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis740_CLOSED.olean" \
+    "BSD/BSD_Genesis740_CLOSED" || p13_ok=false
+  echo ""
+
   compile_with_olean \
     "Towers/BSD/BSD_SubGateChain.lean" \
     ".lake/build/lib/Towers/BSD/BSD_SubGateChain.olean" \
@@ -773,6 +803,7 @@ import Towers.BSD.BSD_Genesis736_CLOSED
 import Towers.BSD.BSD_Genesis737_CLOSED
 import Towers.BSD.BSD_Genesis738_CLOSED
 import Towers.BSD.BSD_Genesis739_CLOSED
+import Towers.BSD.BSD_Genesis740_CLOSED
 import Towers.BSD.BSD_SubGateChain
 
 #print axioms Towers.BSD.BSD_ShaCard_val_143_CLOSED
@@ -795,6 +826,9 @@ import Towers.BSD.BSD_SubGateChain
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p71
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p73
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p79
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p83
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p89
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p97
 LEANEOF
 
   echo "-- Phase 13 axiom audit --"
@@ -803,7 +837,7 @@ LEANEOF
   echo ""
 
   if $p13_ok; then
-    echo "Phase 13 PASSED (genesis-732+735+736+737+738+739: SORRY:0, classical trio)."
+    echo "Phase 13 PASSED (genesis-732+735+736+737+738+739+740: SORRY:0, classical trio)."
     echo "  BSD_ShaCard_val_143_CLOSED: BSD_ShaCard 143 = 1 (Kolyvagin/LMFDB anchor)."
     echo "  BSD_TorsCard_val_143_CLOSED: BSD_TorsCard 143 = 1 (Mazur/LMFDB anchor)."
     echo "  BSD_Sha_143_CLOSED: 0 < BSD_ShaCard 143 — BSD_Sha_OPEN 143 CLOSED."
@@ -825,7 +859,12 @@ LEANEOF
     echo "    BSD_Hasse_OPEN_p71/73/79: unconditional, via decide + completed-square + §V.5 bridge."
     echo "    HasseBridge now covers 20 primes (adds {71,73,79})."
     echo "    Named OPEN surfaces: 4 (unchanged — all 3 closures secondary)."
-    echo "    NOTE: p ∈ {83,89,97} deferred to genesis-740 (decide OOM at ≥6889 pairs)."
+    echo "  BSD_Genesis740_CLOSED: 3 Hasse CLOSED (genesis-740) for p ∈ {83,89,97}."
+    echo "    BSD_Hasse_OPEN_p83/89/97: unconditional, via decide + completed-square + §V.5 bridge."
+    echo "    a_p values: 0 (p=83), −7 (p=89), −13 (p=97)."
+    echo "    HasseBridge now covers 23 primes (adds {83,89,97})."
+    echo "    Named OPEN surfaces: 4 (unchanged — all 3 closures secondary)."
+    echo "    NOTE: Compiled via workflow (bash subprocess OOMs at ≥6889 pairs)."
     echo "  BSD_SubGateChain: named OPEN 4; primary gaps 4; classical trio."
   else
     echo "Phase 13 FAILED — see error lines above."
