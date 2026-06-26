@@ -550,4 +550,83 @@ def BSD_clay_open_count_740 : ℕ := 4
     new closures are secondary Hasse surfaces). -/
 def BSD_clay_primary_gap_count_740 : ℕ := 4
 
+
+/-- Open surface count after genesis-741.
+
+    Named OPEN primary surfaces: **4** (unchanged — all 5 new closures are secondary
+    Hasse surfaces, not primary gaps).
+
+    **genesis-741** (`BSD_Genesis741_CLOSED.lean`, 2026-06-26):
+    HasseBridge extended to 5 more primes via the §V.5 Frobenius-degree route.
+    New primes covered: p ∈ {101, 103, 107, 109, 113}.
+    Each proved by: `decide` (affine point count over ZMod p × ZMod p) →
+    `omega` (exact a_p) → completed-square discriminant check (all negative) →
+    `BSD_hasse_of_degree_nonneg` bridge.
+    p=113 has odd a_p (+1) → half-integer completed-square witness (r−1/2)²+451/4.
+    Compiled via workflow (bash subprocess OOMs at ≥10201 pairs).
+
+    a_p values (LMFDB 143a1 trace table):
+      a_101 = +18 (card= 83; disc = 324−404 =  −80)
+      a_103 =  +8 (card= 95; disc =  64−412 = −348)
+      a_107 =  +8 (card= 99; disc =  64−428 = −364)
+      a_109 =  +4 (card=105; disc =  16−436 = −420)
+      a_113 =  +1 (card=112; disc =   1−452 = −451; half-int witness)
+
+    HasseBridge after genesis-741 covers **28 good primes**:
+      {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪
+      {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113}.
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation
+      (d) BSD_143_OPEN             — BSD conjecture itself
+
+    Verify workflow: START_PHASE=13 (Phase 13 extended to include genesis-741). -/
+def BSD_clay_open_count_741 : ℕ := 4
+
+/-- Primary gap count after genesis-741 (4 remain; 0 primary gaps closed — all 5
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_741 : ℕ := 4
+
+
+/-- Open surface count after genesis-742.
+
+    Named OPEN primary surfaces: **4** (unchanged — all 5 new closures are secondary
+    Hasse surfaces, not primary gaps).
+
+    **genesis-742** (`BSD_Genesis742_CLOSED.lean`, 2026-06-26):
+    HasseBridge extended to 5 more primes via the §V.5 Frobenius-degree route.
+    New primes covered: p ∈ {127, 131, 137, 139, 149}.
+    Each proved by: `decide` (affine point count over ZMod p × ZMod p) →
+    `omega` (exact a_p) → completed-square discriminant check (all negative) →
+    `BSD_hasse_of_degree_nonneg` bridge.
+    p=137 has odd a_p (−17) → half-integer completed-square witness (r+17/2)²+259/4.
+    `set_option maxHeartbeats 800000` required (pairs ≥16129).
+    Compiled via workflow.
+
+    a_p values (LMFDB 143a1 trace table):
+      a_127 =  −8 (card=135; disc =   64−508 = −444)
+      a_131 = +18 (card=113; disc =  324−524 = −200)
+      a_137 = −17 (card=154; disc =  289−548 = −259; half-int witness)
+      a_139 = +18 (card=121; disc =  324−556 = −232)
+      a_149 = +14 (card=135; disc =  196−596 = −400)
+
+    HasseBridge after genesis-742 covers **33 good primes**:
+      {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪
+      {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149}.
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation
+      (d) BSD_143_OPEN             — BSD conjecture itself
+
+    Verify workflow: START_PHASE=14 (Phase 14: genesis-742). -/
+def BSD_clay_open_count_742 : ℕ := 4
+
+/-- Primary gap count after genesis-742 (4 remain; 0 primary gaps closed — all 5
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_742 : ℕ := 4
+
 end Towers.BSD
