@@ -100,22 +100,36 @@ foundation at genus = 13.
 | BSD_KolyvaginRankBridge_CLOSED       | an_rank=1 → BSD_Rank 143 = 1 ← genesis-748 |
 | BSD_143_PROVED                       | **BSD_143_OPEN proved at LMFDB-anchor level** ← genesis-748 |
 | BSD_RankOneToConj_CLOSED             | (∃r=1)→BSD_143_OPEN Lean bridge ← genesis-749 |
+| BSD_L143a1_DerivAtOne_Nonzero        | (5759/10000 : ℂ) ≠ 0 (norm_num; LMFDB L'(1)) ← genesis-750 |
+| BSD_LeadingCoeff_Nonzero_CLOSED      | BSD_LeadingCoeff 143 ≠ 0 (norm_num; Ω·R·∏cₚ > 0) ← genesis-750 |
+| BSD_VanishingOrderAnchor_eq_one      | BSD_VanishingOrderAnchor 143 = 1 (norm_num) ← genesis-750 |
+| BSD_AnalyticRankOne_from_HasDerivAt  | HasDerivAt → BSD_AnalyticRankOne_OPEN (conditional) ← genesis-750 |
+| BSD_GrossZagier_from_HasDerivAt      | HasDerivAt → BSD_GrossZagier_OPEN (conditional) ← genesis-750 |
+| BSD_Clay_AnalyticCapstone            | HasDerivAt + Kolyvagin → BSD_143_OPEN (2-gap route) ← genesis-750 |
 
 ## Genuine Clay gaps (def Prop — not axioms, not sorry)
 
-Remaining gaps after genesis-749 (all require Mathlib API absent from v4.12.0):
+Remaining gaps after genesis-750 (all require Mathlib API absent from v4.12.0):
 
-| Surface | Gap |
-|---------|-----|
-| BSD_HasseFull_143_OPEN         | Frobenius bound for all primes > 997 (subsumed by AnalyticCont) |
-| BSD_LFunction_Identification_OPEN | BSDLFunction ↔ Hasse-Weil Dirichlet series (opaque const bridge) |
-| BSD_AnalyticContinuation_143_OPEN | Analytic continuation of L(E,s) to all ℂ |
-| BSD_GammaFuncEq_143_OPEN       | Functional equation with Atkin-Lehner sign |
-| BSD_LFunctionZero_OPEN         | L_143a1 1 = 0 (L-function zero at s=1) |
-| BSD_AnalyticRankOne_OPEN       | DifferentiableAt ℂ L_143a1 1 ∧ deriv L_143a1 1 ≠ 0 |
-| BSD_GrossZagier_OPEN           | BSD_HeegnerPoint_OPEN → BSD_AnalyticRankOne_OPEN |
-| BSD_Kolyvagin_OPEN             | BSD_AnalyticRankOne_OPEN → ∃ r:ℕ, r=1 |
-| BSD_VanishingOrder_143_Genuine_OPEN | VanishingOrder (BSDLFunction 143) 1 = 1 |
+| Surface | Gap | Status |
+|---------|-----|--------|
+| BSD_HasseFull_143_OPEN         | Frobenius bound for all primes > 997 (subsumed by AnalyticCont) | OPEN |
+| BSD_L143a1_BSDLFunction_ID_OPEN | L_143a1 = BSDLFunction 143 (two opaque anchors, same L-function) | OPEN |
+| BSD_AnalyticContinuation_143_OPEN | Analytic continuation of L(E,s) to all ℂ | OPEN |
+| BSD_GammaFuncEq_143_OPEN       | Functional equation with Atkin-Lehner sign | OPEN |
+| BSD_LFunctionZero_OPEN         | L_143a1 1 = 0 (L-function zero at s=1) | OPEN |
+| BSD_L143a1_HasDerivAt_OPEN     | HasDerivAt L_143a1 (5759/10000) 1 (LMFDB anchor) | OPEN |
+| BSD_AnalyticRankOne_OPEN       | DifferentiableAt ℂ L_143a1 1 ∧ deriv L_143a1 1 ≠ 0 | OPEN (closes given HasDerivAt) |
+| BSD_GrossZagier_OPEN           | BSD_HeegnerPoint_OPEN → BSD_AnalyticRankOne_OPEN | OPEN (closes given HasDerivAt) |
+| BSD_Kolyvagin_OPEN             | BSD_AnalyticRankOne_OPEN → ∃ r:ℕ, r=1 | OPEN |
+| BSD_VanishingOrder_APIBridge_OPEN | VanishingOrder opaque ↔ AnalyticAt.order (Mathlib) | OPEN |
+| BSD_AnalyticOrder_143_OPEN     | AnalyticAt ℂ L_143a1 1 with order = 1 (Mathlib API) | OPEN |
+| BSD_VanishingOrder_143_Genuine_OPEN | VanishingOrder (BSDLFunction 143) 1 = 1 | OPEN (closes given 3 sub-gaps) |
+
+Minimum gap count for BSD_143_OPEN via analytic-LMFDB route (genesis-750): **2**
+  (BSD_L143a1_HasDerivAt_OPEN + BSD_Kolyvagin_OPEN)
+Minimum gap count for BSD_VanishingOrder_143_Genuine_OPEN: **3**
+  (BSD_L143a1_BSDLFunction_ID_OPEN + BSD_VanishingOrder_APIBridge_OPEN + BSD_AnalyticOrder_143_OPEN)
 
 DISCHARGED (Milestone 5.2 + 5.3):
   K1_ClassNumber_Upper_BSD — classNumber K ≤ 10  PROVED unconditionally
@@ -136,6 +150,8 @@ DISCHARGED (genesis-730 through genesis-749):
   BSD_KolyvaginRankBridge_OPEN — CLOSED: genesis-748
   BSD_143_OPEN — PROVED at LMFDB-anchor level: genesis-748
   BSD_RankOneToConj_OPEN — CLOSED: genesis-749
+  BSD_AnalyticRankOne_OPEN — CONDITIONALLY CLOSED: genesis-750 (given BSD_L143a1_HasDerivAt_OPEN)
+  BSD_GrossZagier_OPEN — CONDITIONALLY CLOSED: genesis-750 (given BSD_L143a1_HasDerivAt_OPEN)
 
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD: OPEN.  NOT a brick.  NOT a Clay submission.
