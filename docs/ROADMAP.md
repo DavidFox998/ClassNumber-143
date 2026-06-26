@@ -420,15 +420,34 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     determined: ∏c_p = 2, |tors| = 1, rational point (2,0), h(K)=10, N=143.
     0 sorry, axiom footprint = classical trio.  Registered in
     verify_weil_cluster.sh Phase 10.
-  - **ClassGroup generator** (`BSD_ClassGroup_Generator_CLOSED.lean`):
+  - **ClassGroup generator** (`BSD_ClassGroup_Generator_CLOSED.lean`, genesis-721):
     `ClassGroup(𝓞 K) = ⟨[p₂]⟩` — cyclic of order 10.
-  - **Capstone** (`E143a1_CLOSED.lean`): Weierstrass coefficients,
-    conductor 143 = 11×13, rational point (4,6), 168 Frobenius traces
-    a_p for primes p ≤ 997, Hasse bound |a_p|² ≤ 4p (all 168 primes).
-    `#print axioms E143a1_classNumber` → classical trio only.
-  - **BSD conjecture for 143a1**: OPEN (named surface `BSD_143_OPEN`;
-    rank = ord L is not proved and requires Wiles–Taylor modularity +
-    Gross–Zagier + Kolyvagin, absent from Mathlib v4.12.0).
+    `BSD_classGroup_gen_by_p2_CLOSED` closes `BSD_classGroup_gen_by_p2_hyp`.
+    Key fix: `Subgroup.eq_top_of_card_eq` takes `H : Subgroup G` as first
+    explicit arg, then the cardinality proof.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **Genus certificate** (`Genus_X0_143.lean`, genesis-721):
+    `genus_X0_143`: genus(X₀(143)) = 13 (Diamond-Shurman §3.1.1, norm_num).
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **Bost bound** (`BostBound_143.lean`, genesis-721):
+    `BostBound_143_cert`: C(S₄) > 2·√13 for S₄ = {2, 3, 19, 191}.
+    Proved via rational enclosures + norm_num + nlinarith + Real.sqrt_lt'.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **BQF bridge** (`BSD_BQF_Bridge_Closed.lean`, genesis-721):
+    `BSD_BQF_classNumber_eq_numForms`: classNumber K = reducedForms143.length = 10.
+    Wires BSD_classNumber_eq_10_via_principal + BSD_ClassNum_Unconditional.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **E143a1 capstone** (`E143a1_CLOSED.lean`, genesis-721):
+    Collects all proved arithmetic facts for 143a1 in one file:
+    Weierstrass model [0,−1,1,−1,−2]; points (2,0)/(4,6)/(4,−7) by norm_num;
+    conductor 143=11×13; Frobenius traces a_p for p∈{2,3,5,7,11,13,19,191};
+    genus=13; Bost bound; classNumber=10; ClassGroup=⟨[p₂]⟩;
+    open surface `E143a1_BSD_OPEN = BSD_Analytic_OPEN` named.
+    `#print axioms E143a1_CLOSED.E143a1_coefficients` → classical trio only.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
+    rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
+    absent from Mathlib v4.12.0).
   - Mirror repository: `DavidFox998/ClassNumber-143` (standalone;
     purely algebraic; NO BSD conjecture claim).
 - Honest note: "M9.OUT SHA + VALOR_min = 1084" certifies *bytes*
