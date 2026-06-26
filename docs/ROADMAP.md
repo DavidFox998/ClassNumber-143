@@ -450,9 +450,41 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Clay 7-gate combinator by supplying `BSD_ClassNum_Unconditional` internally.
     Also cross-references `BSD_HeegnerPoint_DISCHARGED` (point (2,0) proved).
     Updated open surface count: **11** (down from 13).
-    Remaining genuine Clay gaps: Hasse full · L-identification ·
-    analytic continuation · functional equation · L(E,1)=0 · analytic rank 1 ·
-    regulator · Sha · Tamagawa conjecture · c₁₁=1 · c₁₃=2.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **Sub-gate dependency chain** (`BSD_SubGateChain.lean`, genesis-723):
+    Three sub-surface → gate reductions proved (0 sorry, classical trio):
+      **R1** `BSD_Cont_to_L_Analytic`:
+        `BSD_AnalyticContinuation_143_OPEN → BSD_L_Analytic_143_OPEN`
+        (via `BSD_Hecke_143_CLOSED`, definitional unfolding)
+      **R2** `BSD_Gamma_to_FuncEq_gate`:
+        `BSD_GammaFuncEq_143_OPEN → BSD_FuncEq_OPEN 143`
+        (via `BSD_FuncEq_143_CLOSED`, multiply by 143^(s-1))
+      **R3** `BSD_TamProd_from_subs`:
+        `Tam11 ∧ Tam13 ∧ TamFactors → BSD_TamagawaProd 143 = 2`
+        (cross-reference of `BSD_TamagawaProd_eq_2`)
+    Meta-combinator `BSD_SubGate_MetaCombinator`: takes all 11 sub-surfaces +
+    BSD_TamagawaConj + BSD_143_OPEN, applies R1+R2 and returns the 6-gate bundle.
+    Vacuity audit: `BSD_Kolyvagin_OPEN` is technically dischargeable (trivial
+    conclusion `∃ r:ℕ, r=1`) but **discharge refused** as mathematically vacuous.
+    Minimum independent primary gaps: **7**
+    (HasseFull · AnalyticContinuation [→Gate2] · GammaFuncEq [→Gate3] ·
+     Regulator · Sha · TamagawaConj [full] · BSD_143_OPEN).
+    Gap analysis table (required Mathlib additions per surface):
+
+    | Surface | Mathlib gap | Literature |
+    |---------|------------|------------|
+    | BSD_HasseFull_143_OPEN | EllipticCurve.Frobenius | Wiles-Taylor (1995) |
+    | BSD_LFunction_Identification_OPEN | Mellin identification | Hecke (1936) |
+    | BSD_AnalyticContinuation_143_OPEN | Complex.MellinTransform | Hecke + modularity |
+    | BSD_GammaFuncEq_143_OPEN | AtkinLehner operators | Hecke (1936) |
+    | BSD_LFunctionZero_OPEN | L-function at s=1 eval | Gross-Zagier + sign |
+    | BSD_AnalyticRankOne_OPEN | L-function deriv API | Gross-Zagier (1986) |
+    | BSD_Regulator_OPEN 143 | Néron-Tate height | Néron (1965) |
+    | BSD_Sha_OPEN 143 | Euler systems + Selmer groups | Kolyvagin (1988) |
+    | BSD_Tamagawa_11_is_1_OPEN | Tate algorithm at p=11 | Tate (1975) |
+    | BSD_Tamagawa_13_is_2_OPEN | Tate algorithm at p=13 | Tate (1975) |
+    | BSD_TamagawaConj_OPEN 143 | All of the above | BSD conjecture |
+
     0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
   - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
     rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
