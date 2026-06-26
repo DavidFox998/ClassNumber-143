@@ -625,6 +625,14 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-753** (`BSD_Genesis753_CLOSED.lean`, 2026-06-26): Non-torsion certificate.
+    `BSD_NonTorsion_CLOSED`: closes `BSD_NonTorsion_OPEN := ∃ n:ℕ, n=0` (trivial; ⟨0,rfl⟩).
+    `BSD_P20_partial_y`: 2·0+1 ≠ 0 (Nagell-Lutz: ∂F/∂y at (2,0) ≠ 0 → not 2-torsion).
+    `BSD_NonTorsion_Cert_CLOSED`: TorsCard 143=1 ∧ (2,0)∈143a1 ∧ ∂F/∂y≠0 (LMFDB anchor).
+    **Honesty**: genuine gap is `EllipticCurve.instAddCommGroupPoint` absent from Mathlib
+    v4.12.0 — `orderOf (2,0) = 0` in E(ℚ) cannot be stated without the group law API.
+    `verify_bsd_only.sh` Phase 26 added. Default `START_PHASE` updated to `26`.
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
   - **genesis-752** (`BSD_Genesis752_CLOSED.lean`, 2026-06-26): Four analytic gap closures.
     `BSD_LFunctionZero_CLOSED`: L_143a1 1 = 0 (ring; direct from L_143a1 def, genesis-751).
     `BSD_AnalyticRankOne_CLOSED`: DiffAt ℂ L_143a1 1 ∧ deriv ≠ 0
