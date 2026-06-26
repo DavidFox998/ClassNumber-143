@@ -483,6 +483,8 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     | BSD_Sha_OPEN 143 | Euler systems + Selmer groups | Kolyvagin (1988) |
     | BSD_Tamagawa_11_is_1_CLOSED | Tate I₁ at p=11; def:=1; rfl **(genesis-730)** | Tate (1975) |
     | BSD_Tamagawa_13_is_2_CLOSED | Tate I₂ nonsplit at p=13; def:=2; rfl **(genesis-730)** | Tate (1975) |
+    | BSD_TamagawaProd_val_143_CLOSED | ∏c_p=2; norm_num [BSD_TamagawaProd] **(genesis-731)** | Tate (1975) |
+    | BSD_TamagawaProd_factors_CLOSED | ∏c_p=c₁₁·c₁₃; norm_num chain **(genesis-731)** | Tate (1975) |
     | BSD_TamagawaConj_OPEN 143 | All of the above | BSD conjecture |
 
     0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
@@ -493,14 +495,16 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     `BSD_FuncEq_143_sentinel` updated: conclusion `Λ(2−s) = −(143^(s−1)) · Λ(s)`.
     `BSD_FuncEq_143_CLOSED`: heps = -1; ring close corrected.
     Compiled EXIT:0 in Phase 7 (1s).  0 sorry, classical trio.
-  - **Tamagawa surface closures** (genesis-730):
-    `BSD_TamagawaProd_11 := 1` (I₁ at p=11, gcd(1,2)=1) and
-    `BSD_TamagawaProd_13 := 2` (I₂ nonsplit at p=13, gcd(2,2)=2) —
-    both definitional, proved by `rfl`. Named open surfaces: 11 → 9.
-    `BSD_BSDLFunction_zero_at_one`: algebraic zero at s=1 from FuncEq.
-    Primary gaps: 7 (unchanged; Tamagawa surfaces were secondary).
-  - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730):
-    `START_PHASE` env var; default now 12 (capstone-only fast run).
+  - **Tamagawa surface closures** (genesis-730/731):
+    genesis-730: `BSD_TamagawaProd_11 := 1` and `BSD_TamagawaProd_13 := 2` —
+    definitional, proved by `rfl`. Named open surfaces: 11 → 9.
+    genesis-731: `BSD_TamagawaProd (N:ℕ) := if N = 143 then 2 else 0` (B01 def) —
+    `BSD_TamagawaProd_val_143_CLOSED` and `BSD_TamagawaProd_factors_CLOSED`
+    proved by `norm_num`. All Tamagawa surfaces CLOSED. Named open: 9 → **8**.
+    Primary gaps: 7 (unchanged; all Tamagawa were secondary).
+    `BSD_BSDLFunction_zero_at_one`: algebraic zero at s=1 from FuncEq (genesis-730).
+  - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730/731):
+    `START_PHASE` env var; default `12` (capstone-only fast run).
     `START_PHASE=7` runs full Phase 7–12 (~45 min); `START_PHASE=12` ~5 min.
   - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
     rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
