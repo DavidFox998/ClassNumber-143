@@ -6,6 +6,62 @@ this file is the version history.
 
 ---
 
+## [genesis-739] — 2026-06-26
+
+### HasseBridge extended to p ∈ {71, 73, 79}
+
+**3 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` (affine point count over ZMod p × ZMod p) → `omega`
+(exact a_p) → completed-square discriminant check (all negative) →
+`BSD_hasse_of_degree_nonneg` bridge.
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis739_CLOSED.lean` | NEW — 3 Hasse surfaces for p ∈ {71,73,79} |
+| `Towers/BSD/E143a1_CLOSED.lean` | Added §10b (BSD_Hasse_OPEN_p71/73/79); imports genesis-739 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-739 ledger entry (`BSD_clay_open_count_739 = 4`); doc comment added |
+| `scripts/verify_bsd_only.sh` | Phase 13 header updated to genesis-739; `use_olean_if_fresh` step + 3 axiom audit probes added |
+| `bsd-core/BSD_LEDGER.md` | genesis-739 section added; Summary table: 20 HasseBridge primes |
+
+#### Proof structure (identical four-step chain to genesis-736/738)
+
+For each p ∈ {71, 73, 79}:
+
+1. `BSD_E143_card_pN` — `(E143_Finset p).card = k` by `decide` over ZMod p × ZMod p
+2. `BSD_ap_pN` — `a_p p = N` by `omega` from card count
+3. `BSD_DegreeNonneg_pN` — `BSD_FrobeniusDegreeNonneg_OPEN p` by completed-square + `linarith [sq_nonneg ...]`
+4. `BSD_Hasse_OPEN_pN` — `BSD_Hasse_OPEN p` via `BSD_hasse_of_degree_nonneg` bridge
+
+#### Point counts and a_p values
+
+| p | card(𝔽_p-affine) | a_p | Discriminant |
+|---|-----------------|-----|-------------|
+| 71 | 80 | −9 | 81−284 = −203 |
+| 73 | 89 | −16 | 256−292 = −36 |
+| 79 | 71 | +8 | 64−316 = −252 |
+
+#### Notes
+
+- `set_option maxRecDepth 10000` required for p=73,79 (kernel decide recursion limit).
+- Primes p ∈ {83, 89, 97} deferred to genesis-740: `decide` over ≥6889 pairs causes
+  OOM in bash subprocess (Lean kernel memory limit). Planned for workflow compilation.
+- HasseBridge coverage: **20 primes**
+  ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79}).
+- Named OPEN primary surfaces: **4** (unchanged — all 3 new closures secondary).
+- BSD: OPEN. Classical trio. No Clay claim.
+
+#### HasseBridge cumulative coverage table (after genesis-739)
+
+| Genesis | Primes closed | Mechanism |
+|---------|--------------|-----------|
+| genesis-734 | {2, 3, 5, 7} | §V.5 bridge |
+| genesis-736 | {17, 19, 23, 29} | §V.5 bridge |
+| genesis-738 | {31, 37, 41, 43, 47, 53, 59, 61, 67} | §V.5 bridge |
+| genesis-739 | {71, 73, 79} | §V.5 bridge |
+| **Total** | **20 good primes** | |
+
+---
+
 ## [genesis-738] — 2026-06-26
 
 ### BSD_Genesis738_CLOSED.lean — HasseBridge extension to p ∈ {31,37,41,43,47,53,59,61,67}
