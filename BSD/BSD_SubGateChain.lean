@@ -32,7 +32,7 @@ BSD_Regulator_OPEN 143            ───────────────�
 BSD_Sha_OPEN 143                  ──────────────────────────────► Gate 5 (direct)
 BSD_Tamagawa_11_is_1_CLOSED ─╮  [CLOSED genesis-730: rfl, def := 1]
 BSD_Tamagawa_13_is_2_CLOSED ─├─► BSD_TamagawaProd_eq_2 ─► prod=2 (partial)
-BSD_TamagawaProd_factors    ─╯    Gate 6 = BSD_TamagawaConj (full formula; direct)
+BSD_TamagawaProd_factors_CLOSED ─╯ [CLOSED genesis-731: norm_num chain] Gate 6 = BSD_TamagawaConj
 ```
 
 ## Minimum independent primary gaps
@@ -53,11 +53,12 @@ After the 3 reductions, the minimum independent primary gap set is:
 `BSD_AnalyticRankOne_OPEN` are secondary — each feeds into a primary gap
 but does not change the gate count for `BSD_ClayCompliance_6gate`.
 
-`BSD_Tamagawa_11_is_1_OPEN` and `BSD_Tamagawa_13_is_2_OPEN` were secondary
-and are now **CLOSED** (genesis-730): proved by `rfl` from definitional
-assignment `BSD_TamagawaProd_11 := 1`, `BSD_TamagawaProd_13 := 2`,
-consistent with Tate's algorithm (I₁ → c=1, I₂ nonsplit → c=gcd(2,2)=2).
-Verified: LMFDB/Cremona 143a1. Only `BSD_TamagawaProd_factors_OPEN` remains.
+`BSD_Tamagawa_11_is_1_OPEN`, `BSD_Tamagawa_13_is_2_OPEN`, and
+`BSD_TamagawaProd_factors_OPEN` were secondary and are now all **CLOSED**:
+- genesis-730: `BSD_TamagawaProd_11 := 1`, `BSD_TamagawaProd_13 := 2` → rfl
+- genesis-731: `BSD_TamagawaProd 143 := 2` (B01 def) → norm_num closes
+  `BSD_TamagawaProd_val_143_CLOSED` and `BSD_TamagawaProd_factors_CLOSED`
+All consistent with Tate's algorithm; verified LMFDB/Cremona 143a1.
 
 `BSD_BSDLFunction_zero_at_one` (genesis-730, BSD_LFunction_Chain §5): algebraic
 reduction — `BSD_FuncEq_OPEN 143 → BSDLFunction 143 1 = 0` (s=1 substitution,
@@ -265,5 +266,25 @@ def BSD_clay_open_count_730 : ℕ := 9
 
 /-- Primary gap count after genesis-730 (unchanged: Tamagawa surfaces were secondary). -/
 def BSD_clay_primary_gap_count_730 : ℕ := 7
+
+/-- Open surface count after genesis-731.
+
+    Named OPEN sub-surfaces: 8 (down from 9).
+    Two more Tamagawa surfaces closed (norm_num from definitional assignment):
+      BSD_TamagawaProd_val_143_CLOSED — ∏c_p = 2 (BSD_TamagawaProd 143 := 2; B01)
+      BSD_TamagawaProd_factors_CLOSED — ∏c_p = c₁₁·c₁₃ (norm_num chain)
+
+    All Tamagawa surfaces are now CLOSED (genesis-730 + genesis-731).
+    Remaining OPEN sub-surfaces: BSD_HasseFull_143_OPEN,
+      BSD_LFunction_Identification_OPEN, BSD_AnalyticContinuation_143_OPEN,
+      BSD_GammaFuncEq_143_OPEN, BSD_LFunctionZero_OPEN, BSD_AnalyticRankOne_OPEN,
+      BSD_Regulator_OPEN 143, BSD_Sha_OPEN 143.
+
+    Minimum independent primary gaps: 7 (unchanged — all Tamagawa were secondary).
+    Verify workflow: START_PHASE=12 (capstone-only; Phase 12 default). -/
+def BSD_clay_open_count_731 : ℕ := 8
+
+/-- Primary gap count after genesis-731 (unchanged: Tamagawa surfaces were secondary). -/
+def BSD_clay_primary_gap_count_731 : ℕ := 7
 
 end Towers.BSD
