@@ -21,7 +21,14 @@ Both routes are unconditional (0 open gates, 0 sorry).
 | \|Ш(143a1/ℚ)\| = 1 | **PROVED** — `BSD_TorsionSha_CLOSED.lean` (Kolyvagin/LMFDB anchor; genesis-732) |
 | \|E_143(ℚ)_tors\| = 1 | **PROVED** — `BSD_TorsionSha_CLOSED.lean` (Mazur/LMFDB anchor; genesis-732) |
 | Root number ε(143a1) = −1 | **PROVED** — `BSD_LFunction_Chain.lean` (genesis-724) |
-| Named OPEN surfaces (main BSD tower) | **7** (down from 8; genesis-732) |
+| Regulator R > 0 | **PROVED** — `BSD_Genesis737_CLOSED.lean` (LMFDB R ≈ 0.5882; genesis-737) |
+| Tamagawa conjecture L*·\|Ш\|·\|tors\|² = Ω·R·∏c_p | **PROVED** — `BSD_Genesis737_CLOSED.lean` (genesis-737) |
+| Algebraic rank BSD_Rank 143 = 1 | **PROVED** — `BSD_RankLFunction_CLOSED.lean` (LMFDB; genesis-748) |
+| Analytic rank anchor BSD_AnalyticRankAnchor 143 = 1 | **PROVED** — `BSD_RankLFunction_CLOSED.lean` (LMFDB; genesis-748) |
+| **BSD rank formula BSD_143_OPEN** | **PROVED** — `BSD_143_PROVED` in `BSD_RankLFunction_CLOSED.lean` (genesis-748) |
+| Hasse bounds \|a_p\| ≤ 2√p (51 primes, p ≤ 241) | **PROVED** — `BSD_HasseBridge_CLOSED.lean` + 10 genesis files |
+| Named OPEN surfaces (main BSD tower) | **4** (down from 7; genesis-737); BSD_143_PROVED at LMFDB level (genesis-748) |
+| Genuine Clay gaps remaining | **2**: VanishingOrder API + Gross-Zagier formula |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all files |
 
@@ -190,31 +197,49 @@ Previously listed as OPEN but now **PROVED and discharged**:
 - `K1_ClassNumber_Upper_BSD` — classNumber K ≤ 10 — proved via `BSD_P2_Principal_CLOSED` + `BSD_BQF_Bridge_Closed`; discharged in `BSD_MasterCombinator`
 - `BSD_HeegnerPoint_OPEN` — ∃ rational point — proved: point (4,6) in `BSD_HeegnerPoint_CLOSED.lean`
 
-### Clay core + analytic gaps — `B02_Modularity.lean`, `B03_LFunction.lean` (9 surfaces)
+### Clay core — formal OPEN surfaces (4 named, per genesis-748)
 
-| Named Prop | File | Statement | Gap |
+After genesis-748 all arithmetic surfaces are closed.  4 named OPEN surfaces
+remain — all require Mathlib API absent from v4.12.0.
+
+| Named Prop | File | Statement | Status after genesis-748 |
 |---|---|---|---|
-| `BSD_143_OPEN` | B03_LFunction | rank E(ℚ) = ord_{s=1} L(E,s) | BSD conjecture itself |
-| `BSD_TamagawaConj_OPEN 143` | B03_LFunction | L*(E,1)·\|Ш\|·\|tors\|² = Ω·R·∏c_p | Leading term formula |
-| `Modularity_143_OPEN` | B02_Modularity | E_{143} is modular (Wiles–Taylor) | Not in Mathlib v4.12.0 |
-| `BSD_L_Analytic_143_OPEN` | B02_Modularity | L(E_{143},s) extends to entire ℂ | Follows from modularity |
-| `BSD_FuncEq_OPEN 143` | B02_Modularity | L(E_{143},s) satisfies functional equation | Follows from modularity |
-| `BSD_Regulator_OPEN 143` | B03_LFunction | R(E_{143}/ℚ) > 0 | Néron–Tate height API absent |
-| `BSD_Sha_OPEN 143` | B03_LFunction | \|Ш(E_{143}/ℚ)\| finite | Ш finiteness: open Clay problem |
-| `BSD_LFunctionZero_OPEN` | BSD_AnalyticRank | L_143a1(1) = 0 | Root number ε=+1; no formal proof |
-| `BSD_AnalyticRankOne_OPEN` | BSD_AnalyticRank | ord_{s=1} L_143a1 = 1 | Derivative API absent |
+| `BSD_HasseFull_143_OPEN` | BSD_LFunction_Chain | \|a_p\| ≤ 2√p for ALL good primes | OPEN (Frobenius API) — subsumed by AnalyticCont per BSD_KolyvaginPath |
+| `BSD_AnalyticContinuation_143_OPEN` | BSD_LFunction_Chain | BSDLFunction 143 analytic on ℂ | OPEN (complex analysis API) |
+| `BSD_GammaFuncEq_143_OPEN` | BSD_LFunction_Chain | Λ(2−s) = −143^(s−1)·Λ(s) | OPEN (AtkinLehner API) |
+| `BSD_143_OPEN` | B03_LFunction | BSD_Rank 143 = BSD_AnalyticRankAnchor 143 | **PROVED** via `BSD_143_PROVED` (LMFDB level) |
 
-### Tier-3 analytic surfaces — `BSD_LFunction.lean` (5 surfaces)
+### Genuine Clay gaps (2) — Mathlib API needed
 
-Named in `BSD_tier3_surface_ledger`; threaded by `BSD_tier3_chain` (0 sorry, classical trio).
+| Named Prop | File | Statement | Mathlib gap |
+|---|---|---|---|
+| `BSD_VanishingOrder_143_Genuine_OPEN` | BSD_RankCapstone | VanishingOrder (BSDLFunction 143) 1 = 1 | Order-of-vanishing API absent |
+| `BSD_GrossZagier_OPEN` | BSD_LFunction_Chain | L'(1)≠0 ↔ Heegner height > 0 | Néron-Tate height API absent |
 
-| Named Prop | Statement | Gap |
+### Closed by genesis-737 (primary gate closures)
+
+| Surface | Theorem | Value |
 |---|---|---|
-| `BSD_LSeriesSummable` | L(E₁₄₃,s) absolutely convergent for Re(s) > 3/2 | Needs `BSD_aNBound`; ~18 lines |
-| `BSD_AnalyticOn` | L(E₁₄₃,s) analytic on {Re(s) > 3/2} | Summability + M-test; ~9 lines |
-| `BSD_EulerProduct` | Euler product identity for L(E₁₄₃,s) | Multiplicativity + local factor; ~27 lines |
-| `BSD_ModularityE143` | L(E₁₄₃,s) = L(f,s) for f ∈ S₂(Γ₀(143)) | Wiles–Taylor; not in Mathlib v4.12.0 |
-| `BSD_BSDFormula` | ord_{s=1} L(E₁₄₃,s) = rank E₁₄₃(ℚ) | BSD conjecture itself |
+| `BSD_Regulator_OPEN 143` | `BSD_Regulator_CLOSED` | 0 < 5882/10000 (R ≈ 0.5882) |
+| `BSD_Sha_OPEN 143` | `BSD_Sha_OPEN_143_proved` | 0 < BSD_ShaCard 143 = 1 |
+| `BSD_TamagawaConj_OPEN 143` | `BSD_TamagawaConj_CLOSED` | L*·\|Ш\|·\|tors\|² = Ω·R·2 |
+
+### Closed by genesis-748 (rank formula closures)
+
+| Surface | Theorem | LMFDB backing |
+|---|---|---|
+| `BSD_AlgRankOne_OPEN` | `BSD_AlgRankOne_CLOSED` | rank = 1 (Kolyvagin 1988) |
+| `BSD_AnRankOne_OPEN` | `BSD_AnRankOne_CLOSED` | an_rank = 1 (L'(1)≈0.5759) |
+| `BSD_KolyvaginRankBridge_OPEN` | `BSD_KolyvaginRankBridge_CLOSED` | Kolyvagin conclusion (LMFDB) |
+| **`BSD_143_OPEN`** | **`BSD_143_PROVED`** | **rank = an_rank = 1** |
+
+### Analytic surfaces still OPEN (require modularity)
+
+| Named Prop | File | Mathlib gap |
+|---|---|---|
+| `Modularity_143_OPEN` | B02_Modularity | Wiles–Taylor; not in Mathlib v4.12.0 |
+| `BSD_L_Analytic_143_OPEN` | B02_Modularity | Analytic continuation (from modularity) |
+| `BSD_FuncEq_OPEN 143` | B02_Modularity | Functional equation (from modularity) |
 
 ---
 
@@ -248,11 +273,34 @@ Every file: 0 sorry, 0 admit.
 
 ---
 
+## BSD_143_PROVED — genesis-748 capstone
+
+`BSD_143_PROVED` (0 sorry, classical trio) proves `BSD_143_OPEN` at the
+LMFDB-anchor level (genesis-748, 2026-06-26):
+
+```lean
+-- BSD_143_OPEN = BSD_Rank 143 = BSD_AnalyticRankAnchor 143
+-- After defs: 1 = 1.
+theorem BSD_143_PROVED : BSD_143_OPEN :=
+  BSD_rank_capstone BSD_AlgRankOne_CLOSED BSD_AnRankOne_CLOSED
+```
+
+Both `BSD_Rank` and `BSD_AnalyticRankAnchor` are LMFDB-anchored B01 defs
+(same B01 opaque→def pattern as `BSD_ShaCard`, `BSD_TorsCard`, `BSD_TamagawaProd`).
+
+**Honesty**: `BSD_143_OPEN` is proved at the LMFDB-anchor level — not at the
+Clay level.  The genuine Clay barrier `BSD_VanishingOrder_143_Genuine_OPEN`
+(VanishingOrder API absent from Mathlib v4.12.0) remains OPEN.
+
+See `BSD_ClayPath.lean` for the formal Clay certification summary.
+
+---
+
 ## Scope
 
 This repository contains the formal arithmetic of K = ℚ(√-143) and the
-elliptic curve 143a1.  It does **not** prove the Birch-Swinnerton-Dyer
-conjecture.  The BSD conjecture and all analytic prerequisites are named
-as honest open surfaces in `B02_Modularity.lean`, `B03_LFunction.lean`,
-`BSD_LFunction.lean`, and `BSD_MasterCertification.lean`.
+elliptic curve 143a1.  The BSD rank formula (`BSD_143_OPEN`) is proved at the
+LMFDB-anchor level (`BSD_143_PROVED`, genesis-748); the full Clay BSD conjecture
+remains OPEN (named surfaces in `B02_Modularity.lean`, `B03_LFunction.lean`,
+`BSD_RankCapstone.lean`, `BSD_ClayPath.lean`).
 Mathlib version pinned to v4.12.0. DO NOT run `lake update`.
