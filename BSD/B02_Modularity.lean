@@ -15,7 +15,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Complex
   **Honesty upgrade (Milestone 3):** replaced vacuous `∃ _ : ℕ, True` and
   `∃ _ : ℂ → ℂ, True` stubs with proper named-Prop statements anchored to
   `BSDLFunction N` (opaque from B01).  None is a `True`-stub.  None is
-  discharged here.  `BSD_RootNumber 143 = 1` is proved by norm_num (definition).
+  discharged here.  `BSD_RootNumber 143 = -1` is proved by norm_num (definition).
 
   SORRY: 0. Axiom footprint: classical trio. NOT a brick.
   BSD Surface: OPEN.
@@ -38,22 +38,25 @@ Stated as: BSDLFunction N is analytic on Set.univ.
 
 **BSD_FuncEq_OPEN:**
 Λ(s) = ε_N · Λ(2-s) where ε_N ∈ {±1} is the global root number.
-For 143a1: ε_{143} = (+1) at p=11 (non-split mult.) × (+1) at p=13 (non-split mult.)...
-Actually ε_11 = -a_{11}/|a_{11}| = -(-1) = +1 for non-split reduction.
-And ε_13 = -a_{13}/|a_{13}| = -(-1) = +1 for non-split reduction.
-Product ε_{143} = +1. This means L(E_{143}, 1) is NOT forced to vanish by symmetry.
+For 143a1: global root number = ε_∞ × ε_{11} × ε_{13}.
+  ε_∞ = −1 (archimedean factor for weight-2 newforms; always −1 over ℝ).
+  ε_{11} = +1 (non-split multiplicative reduction at p=11).
+  ε_{13} = +1 (non-split multiplicative reduction at p=13).
+Product ε_{143} = (−1)×(+1)×(+1) = −1. This matches LMFDB/Cremona: 143a1 has
+analytic rank 1, so the parity conjecture requires ε = −1 (odd vanishing order).
 -/
 
 /-- The global root number ε_N of E_N/ℚ.
-    For N = 143: ε_{143} = +1 (both bad primes non-split multiplicative).
+    For N = 143: ε_{143} = −1 (archimedean factor −1 times both finite factors +1).
     Defined as a plain integer placeholder; only used in BSD_FuncEq_OPEN. -/
-def BSD_RootNumber (N : ℕ) : ℤ := if N = 143 then 1 else 0
+def BSD_RootNumber (N : ℕ) : ℤ := if N = 143 then -1 else 0
 
-/-- **Root number for 143a1 is +1** (PROVED, 0 sorry, by definition):
-    ε_{143} = +1 (non-split multiplicative at p=11 and p=13, each contributing +1).
-    The sign of ε is consistent with the analytic rank = 1 prediction (L(E,1) = 0
-    must come from the arithmetic, not from symmetry forcing it). -/
-theorem BSD_RootNumber_143 : BSD_RootNumber 143 = 1 := by
+/-- **Root number for 143a1 is −1** (PROVED, 0 sorry, by definition):
+    ε_{143} = ε_∞ × ε_{11} × ε_{13} = (−1)×(+1)×(+1) = −1.
+    Archimedean factor ε_∞ = −1 for weight-2 newforms over ℝ (always).
+    Both finite primes contribute +1 (non-split multiplicative reduction).
+    LMFDB/Cremona confirms: 143a1 has analytic rank 1, root number −1. -/
+theorem BSD_RootNumber_143 : BSD_RootNumber 143 = -1 := by
   simp [BSD_RootNumber]
 
 /-! ### Named OPEN surfaces -/
@@ -85,7 +88,9 @@ def BSD_Hecke_OPEN (N : ℕ) : Prop :=
 
 /-- **BSD_FuncEq_OPEN**: BSDLFunction N satisfies the functional equation.
     Precise statement: (N : ℂ)^(s−1) · L(E,2−s) = ε_N · L(E,s) for all s ∈ ℂ.
-    For N = 143: ε_{143} = +1, so L(E,s) = (143)^(s−1) · L(E,2−s).
+    For N = 143: ε_{143} = −1, so (143)^(s−1)·L(E,2−s) = −L(E,s).
+    This forces L(E_{143}, 1) = 0 (functional equation at s=1: LHS = L(2−1) = L(1),
+    RHS = −L(1), hence 2·L(1) = 0, so L(1) = 0).
     Gap: Atkin-Lehner operator + functional equation for Hecke L-functions
     absent from Mathlib v4.12.0.
     STATUS: OPEN. -/
@@ -116,14 +121,15 @@ theorem BSD_Modularity_Certificate
   ⟨h_mod, h_hecke⟩
 
 /-- **BSD_FuncEq_143_sentinel** (combinator, 0 sorry):
-    The functional equation for E_{143} relates L(E,s) and L(E,2-s)
-    with root number ε = +1, consistent with L(E_{143},1) not forced to 0 by symmetry. -/
+    The functional equation for E_{143}: with root number ε = −1,
+    (143)^(s−1)·L(2−s) = −L(s).
+    At s=1: L(1) = −L(1), so 2·L(E_{143},1) = 0, i.e. L(E_{143},1) = 0. -/
 theorem BSD_FuncEq_143_sentinel
     (h_feq : BSD_FuncEq_OPEN 143) (s : ℂ) :
-    (143 : ℂ) ^ (s - 1) * BSDLFunction 143 (2 - s) = BSDLFunction 143 s := by
+    (143 : ℂ) ^ (s - 1) * BSDLFunction 143 (2 - s) = -(BSDLFunction 143 s) := by
   have h := h_feq s
-  have hrn : (BSD_RootNumber 143 : ℂ) = 1 := by exact_mod_cast BSD_RootNumber_143
-  rw [hrn, one_mul] at h
+  have hrn : (BSD_RootNumber 143 : ℂ) = -1 := by exact_mod_cast BSD_RootNumber_143
+  rw [hrn, neg_one_mul] at h
   exact h
 
 /-! ### Gap audit sentinels -/
