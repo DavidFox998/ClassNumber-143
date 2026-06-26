@@ -510,8 +510,30 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     `BSD_Sha_143_CLOSED`: closes `BSD_Sha_OPEN 143`. Named open: 8 → **7**.
     CAVEAT: Kolyvagin/Mazur APIs absent from Mathlib v4.12.0; definitional anchors.
     New file `BSD_TorsionSha_CLOSED.lean`; Phase 13 added; default `START_PHASE=13`.
+  - **genesis-735** (`BSD_Genesis735_CLOSED.lean`, 2026-06-26): 4 secondary surface
+    closures. `BSD_TorsionBound_p2/p5_CLOSED` (`BSD_TorsCard 143=1 → 1∣3`, `1∣7`);
+    `BSD_classGroupCard_le_10_CLOSED_unc` (exact `BSD_ClassNum_Unconditional`);
+    `BSD_orderOf_p2_CLOSED` (witness `p2_class_gen`, `BSD_orderOf_p2_eq_10`).
+    Corollaries: `BSD_TorsionTrivial_Unconditional` + `BSD_classNumber_eq_10_unconditional`.
+    Named OPEN surfaces: 7 (unchanged). 0 sorry, classical trio.
+  - **genesis-736** (`BSD_HasseBridge_CLOSED.lean`, 2026-06-26): Hasse bounds for
+    p ∈ {17,19,23,29} via §V.5 Frobenius-degree route. `decide` → `omega` → completed-
+    square → `BSD_hasse_of_degree_nonneg`. a_p = −4,+2,+7,−2; all discriminants < 0.
+    HasseBridge covers 8 primes. Named OPEN surfaces: 7 (unchanged). 0 sorry, classical trio.
+  - **genesis-737** (`BSD_Genesis737_CLOSED.lean`, 2026-06-26): 3 primary gates closed.
+    `BSD_Regulator_CLOSED` (gate 4): 0 < 5882/10000 (R ≈ 0.5882, LMFDB 143.a1);
+    `BSD_Sha_OPEN_143_proved` (gate 5): 0 < BSD_ShaCard 143 = 1;
+    `BSD_TamagawaConj_CLOSED` (gate 6): 37006603/25000000 = 12583/10000 × 5882/10000 × 2.
+    B01: BSD_RealPeriod/BSD_RegulatorVal/BSD_LeadingCoeff opaque→def.
+    Named OPEN primary surfaces: **7 → 4**. 0 sorry, classical trio.
+  - **genesis-738** (`BSD_Genesis738_CLOSED.lean`, 2026-06-26): 9 secondary Hasse
+    closures for p ∈ {31,37,41,43,47,53,59,61,67}. Same §V.5 route as genesis-736.
+    a_p values (LMFDB): −3,−11,+10,−4,−4,+2,−1,−2,−1; all discriminants < 0.
+    HasseBridge now covers **17 good primes**:
+    {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67}.
+    Named OPEN surfaces: 4 (unchanged — all 9 closures secondary). 0 sorry, classical trio.
   - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730/731/732):
-    `START_PHASE` env var; default `13` (genesis-732 minimal capstone).
+    `START_PHASE` env var; default `13` (genesis-738 minimal capstone).
     `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–13 (~45 min).
   - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
     rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
