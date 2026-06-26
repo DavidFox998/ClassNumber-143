@@ -6,6 +6,76 @@ this file is the version history.
 
 ---
 
+## [genesis-742] — 2026-06-26
+
+### HasseBridge extended to p ∈ {127, 131, 137, 139, 149}
+
+**5 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` → `omega` → completed-square → `BSD_hasse_of_degree_nonneg` bridge.
+Curve model [0,−1,1,−1,−2]: y²+y = x³−x²−x−2.
+p=137 has odd a_p (−17): half-integer witness (r+17/2)²+259/4.
+**Compiled via workflow** (bash subprocess OOMs / heartbeat-limit at ≥16129 pairs;
+`set_option maxHeartbeats 800000` required for p≥127).
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis742_CLOSED.lean` | NEW — 5 Hasse surfaces for p ∈ {127,131,137,139,149} |
+| `scripts/verify_bsd_only.sh` | Phase 14 added: genesis-742 `use_olean_if_fresh` + 5 audit probes |
+| `bsd-core/BSD_LEDGER.md` | genesis-742 section; Summary table: 33 HasseBridge primes |
+
+#### Point counts and a_p values
+
+| p | card(Fp-affine) | a_p | Completed-square | Discriminant |
+|---|-----------------|-----|-----------------|-------------|
+| 127 | 135 | −8 | (r+4)²+111 | 64−508 = −444 |
+| 131 | 113 | +18 | (r−9)²+50 | 324−524 = −200 |
+| 137 | 154 | −17 | (r+17/2)²+259/4 | 289−548 = −259 (half-int) |
+| 139 | 121 | +18 | (r−9)²+58 | 324−556 = −232 |
+| 149 | 135 | +14 | (r−7)²+100 | 196−596 = −400 |
+
+#### HasseBridge coverage after genesis-742
+
+**33 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149}
+
+Named OPEN primary surfaces: 4 (unchanged). BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
+## [genesis-741] — 2026-06-26
+
+### HasseBridge extended to p ∈ {101, 103, 107, 109, 113}
+
+**5 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` → `omega` → completed-square → `BSD_hasse_of_degree_nonneg` bridge.
+p=113 has odd a_p (+1): half-integer witness (r−1/2)²+451/4; other four use integer witnesses.
+**Compiled via workflow** (bash subprocess OOMs at ≥10201 pairs).
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis741_CLOSED.lean` | NEW — 5 Hasse surfaces for p ∈ {101,103,107,109,113} |
+| `Towers/BSD/E143a1_CLOSED.lean` | Added §10d; import changed to genesis-741 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-741 ledger entry (`BSD_clay_open_count_741 = 4`) |
+| `scripts/verify_bsd_only.sh` | Phase 13: genesis-741 `use_olean_if_fresh` + 5 audit probes |
+| `bsd-core/BSD_LEDGER.md` | genesis-741 section; Summary table: 28 HasseBridge primes |
+
+#### Point counts and a_p values
+
+| p | card(Fp-affine) | a_p | Completed-square | Discriminant |
+|---|-----------------|-----|-----------------|-------------|
+| 101 | 83 | +18 | (r−9)²+20 | 324−404 = −80 |
+| 103 | 95 | +8 | (r−4)²+87 | 64−412 = −348 |
+| 107 | 99 | +8 | (r−4)²+91 | 64−428 = −364 |
+| 109 | 105 | +4 | (r−2)²+105 | 16−436 = −420 |
+| 113 | 112 | +1 | (r−1/2)²+451/4 | 1−452 = −451 (half-int) |
+
+#### HasseBridge coverage after genesis-741
+
+**28 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113}
+
+Named OPEN primary surfaces: 4 (unchanged). BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
 ## [genesis-740] — 2026-06-26
 
 ### HasseBridge extended to p ∈ {83, 89, 97}
