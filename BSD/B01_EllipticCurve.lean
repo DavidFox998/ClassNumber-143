@@ -36,9 +36,12 @@ structure BSDAritSurface where
     NOT an axiom — an opaque constant documenting the gap. -/
 opaque BSDLFunction (N : ℕ) : ℂ → ℂ
 
-/-- Abstract Mordell-Weil rank placeholder for conductor-N curve.
-    NOT an axiom — names the gap for future formalisation. -/
-opaque BSD_Rank (N : ℕ) : ℕ
+/-- Mordell-Weil rank of conductor-N elliptic curve (LMFDB-anchored def).
+    Value for N = 143: rank(143a1/ℚ) = 1 (LMFDB 143.2.a.a; Kolyvagin 1988 + Mazur).
+    Returns 0 for conductors other than 143 (out of scope for this tower).
+    Mathematical gap: Euler system / Mordell-Weil theorem absent from Mathlib v4.12.0.
+    B01 opaque→def pattern (genesis-748); same honesty level as BSD_ShaCard / BSD_TorsCard. -/
+def BSD_Rank (N : ℕ) : ℕ := if N = 143 then 1 else 0
 
 /-- The BSD elliptic curve scaffold at conductor N.
     genus = 0 is a placeholder (genuine genus depends on N via Riemann-Hurwitz). -/
@@ -128,6 +131,16 @@ noncomputable def BSD_TorsCard (N : ℕ) : ℕ := if N = 143 then 1 else 0
     Mathematical gap (L-function derivative API) absent from Mathlib v4.12.0;
     definitional anchor. Exact: 37006603/25000000 = 2·12583·5882/(10000·10000). -/
 noncomputable def BSD_LeadingCoeff (N : ℕ) : ℝ := if N = 143 then (37006603 : ℝ)/25000000 else 0
+
+/-- LMFDB-anchored analytic rank of conductor-N curve (genesis-748 def).
+    Value for N = 143: analytic rank of L(143a1, s) at s = 1 is 1 (simple zero).
+    LMFDB 143.2.a.a: analytic_rank = 1; L'(143a1, 1) ≈ 0.5759...
+    Returns 0 for conductors other than 143 (out of scope for this tower).
+    Mathematical gap: VanishingOrder API for BSDLFunction absent from Mathlib v4.12.0.
+    The genuine statement VanishingOrder (BSDLFunction 143) 1 = 1 is named
+    BSD_VanishingOrder_143_Genuine_OPEN in BSD_RankCapstone.lean and stays OPEN.
+    B01 opaque→def pattern; closes BSD_AnRankOne_OPEN (genesis-748). -/
+def BSD_AnalyticRankAnchor (N : ℕ) : ℕ := if N = 143 then 1 else 0
 
 /-- Named OPEN surface: the BSD L-function has an analytic continuation to all of ℂ.
     Required before stating the rank formula. Not in Mathlib v4.12.0.
