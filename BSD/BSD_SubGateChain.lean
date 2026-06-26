@@ -4,6 +4,7 @@ import Towers.BSD.BSD_KodairaReduction_CLOSED
 import Towers.BSD.BSD_AnalyticRank
 import Towers.BSD.BSD_TorsionSha_CLOSED
 import Towers.BSD.BSD_Genesis737_CLOSED
+import Towers.BSD.BSD_Genesis738_CLOSED
 
 /-!
 # BSD_SubGateChain — genesis-723
@@ -428,5 +429,45 @@ def BSD_clay_open_count_737 : ℕ := 4
 
 /-- Primary gap count after genesis-737 (4 remain; 3 closed: gates 4, 5, 6). -/
 def BSD_clay_primary_gap_count_737 : ℕ := 4
+
+/-- Open surface count after genesis-738.
+
+    Named OPEN primary surfaces: **4** (unchanged — all 9 new closures are secondary
+    Hasse surfaces, not primary gaps).
+
+    **genesis-738** (`BSD_Genesis738_CLOSED.lean`, 2026-06-26):
+    HasseBridge extended to 9 more primes via the §V.5 Frobenius-degree route.
+    New primes covered: p ∈ {31, 37, 41, 43, 47, 53, 59, 61, 67}.
+    Each proved by: `decide` (affine point count over ZMod p × ZMod p) →
+    `omega` (exact a_p) → completed-square discriminant check (all negative) →
+    `BSD_hasse_of_degree_nonneg` bridge.
+
+    a_p values (LMFDB 143a1 trace table):
+      a_31 = −3  (disc = 9−124 = −115)
+      a_37 = −11 (disc = 121−148 = −27)
+      a_41 = +10 (disc = 100−164 = −64)
+      a_43 = −4  (disc = 16−172 = −156)
+      a_47 = −4  (disc = 16−188 = −172)
+      a_53 = +2  (disc = 4−212 = −208)
+      a_59 = −1  (disc = 1−236 = −235)
+      a_61 = −2  (disc = 4−244 = −240)
+      a_67 = −1  (disc = 1−268 = −267)
+
+    HasseBridge after genesis-738 covers **17 good primes**:
+      {2,3,5,7} (genesis-734) ∪ {17,19,23,29} (genesis-736) ∪
+      {31,37,41,43,47,53,59,61,67} (genesis-738).
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation
+      (d) BSD_143_OPEN             — BSD conjecture itself
+
+    Verify workflow: START_PHASE=13 (Phase 13 extended to include genesis-738). -/
+def BSD_clay_open_count_738 : ℕ := 4
+
+/-- Primary gap count after genesis-738 (4 remain; 0 primary gaps closed — all 9
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_738 : ℕ := 4
 
 end Towers.BSD
