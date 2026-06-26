@@ -394,6 +394,15 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Conditional combinator `BSD_TamagawaProd_eq_2` gives c₁₁·c₁₃ = 1·2 = 2.
     0 sorry, axiom footprint = classical trio.  Registered in
     verify_weil_cluster.sh Phase 9.
+  - **ClassNumber upper-bound gate closed unconditionally** (`BSD_ClassNum_Unconditional_CLOSED.lean`, 2026-06-26, genesis-720):
+    `NumberField.classNumber K ≤ 10` proved with **zero open hypotheses**.
+    Chain: `BSD_K_disc_neg143` (new — disc K = -143, from v_BSD squarefree argument)
+    + `BSD_finrank_proved` + `BSD_small_norm_in_zpowers_CLOSED`
+    → `BSD_classGroupCard_le_10_CLOSED` → `BSD_ClassNum_Unconditional`.
+    Unlocks 8 downstream theorems (classNumber_10_FINAL, classGroupCard_le_10,
+    BQF_bridge, K1_Upper/Lower gates, completion — all now unconditional).
+    0 sorry, axiom footprint = classical trio.  Registered in
+    verify_weil_cluster.sh Phase 11.
   - **Torsion triviality** (`BSD_TorsionBound_CLOSED.lean`, 2026-06-26):
     Proves |E(ℚ)_tors| = 1 for 143a1, conditional on the reduction-injection
     theorem (absent from Mathlib v4.12.0).
