@@ -94,7 +94,7 @@ theorem forms143_valid :
     - `b ≥ 0`: `Int.mul_self_le_mul_self` with `0 ≤ b ≤ a`.
     - `b < 0`: `0 ≤ -b ≤ a` (from strict `-a < b`), same lemma on `-b`,
       then `Int.neg_mul_neg b b` converts `(-b)·(-b)` back to `b·b`. -/
-private theorem sq_bound (a b : Int) (hcond1 : -a < b) (hcond2 : b ≤ a) :
+theorem sq_bound (a b : Int) (hcond1 : -a < b) (hcond2 : b ≤ a) :
     b * b ≤ a * a := by
   rcases (show 0 ≤ b ∨ b < 0 from by omega) with hb | hb
   · exact Int.mul_self_le_mul_self hb hcond2
