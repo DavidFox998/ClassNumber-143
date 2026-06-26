@@ -400,7 +400,17 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 | `BSD_DegreeNonneg_p71/73/79` | Completed-square nonneg: disc −203, −36, −252 (linarith+sq_nonneg) |
 | `BSD_Hasse_OPEN_p71/73/79` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
 
-*Note: p∈{83,89,97} (6889–9409 pairs) deferred to genesis-740 — decide OOM in bash subprocess.*
+---
+
+### BSD_Genesis740_CLOSED.lean — 3 secondary Hasse closures p∈{83,89,97} (genesis-740)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p83/89/97` | Point counts: 83, 96, 110 (decide; 6889–9409 pairs; workflow only) |
+| `BSD_ap_p83/89/97` | Exact traces: 0, −7, −13 (omega from card) |
+| `BSD_DegreeNonneg_p83/89/97` | Completed-square nonneg: disc −332, −307, −219 (linarith+sq_nonneg) |
+| `BSD_Hasse_OPEN_p83/89/97` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: Compiled via workflow (bash subprocess OOMs at ≥6889 pairs). Next batch p∈{101,103,107,109,113} in genesis-741.*
 
 ---
 
@@ -408,12 +418,12 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 
 | Category | Count |
 |----------|-------|
-| Fully proved files (0 sorry anywhere) | 36 |
-| Total proved `theorem`/`lemma` declarations | **≈820** |
+| Fully proved files (0 sorry anywhere) | 37 |
+| Total proved `theorem`/`lemma` declarations | **≈832** |
 | Files with sorry only in documentation strings | 4 (B03, BSD_AP_Table, BSD_ClassNumber, BSD_ClassNumberBounds) |
 | Actual proof-body sorry count | **0** |
 | Named OPEN surfaces (main tower) | **4** (down from 7 after genesis-733..737) |
-| HasseBridge primes covered | **20** ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79}) |
+| HasseBridge primes covered | **23** ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97}) |
 
 ## Named OPEN surfaces (def Prop — roadmap markers, not sorry, not axiom)
 
