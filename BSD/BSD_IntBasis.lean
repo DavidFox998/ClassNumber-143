@@ -34,36 +34,36 @@ open Polynomial NumberField FiniteDimensional Matrix Algebra
 
 /-! ### Candidate spanning vectors 1 and ω as elements of 𝓞 K -/
 
-private noncomputable def one_OK : 𝓞 K := ⟨1, isIntegral_one⟩
-private noncomputable def ω_OK  : 𝓞 K := ⟨ω, ω_integral_BSD⟩
+noncomputable def one_OK : 𝓞 K := ⟨1, isIntegral_one⟩
+noncomputable def ω_OK  : 𝓞 K := ⟨ω, ω_integral_BSD⟩
 
-private lemma one_OK_coe : (one_OK : K) = 1 := rfl
-private lemma ω_OK_coe   : (ω_OK  : K) = ω := rfl
+lemma one_OK_coe : (one_OK : K) = 1 := rfl
+lemma ω_OK_coe   : (ω_OK  : K) = ω := rfl
 
 /-! ### ℤ-trace computations via Algebra.coe_trace_int -/
 
-private lemma trace_11_int : Algebra.trace ℤ (𝓞 K) (one_OK * one_OK) = 2 := by
+lemma trace_11_int : Algebra.trace ℤ (𝓞 K) (one_OK * one_OK) = 2 := by
   have h : (Algebra.trace ℤ (𝓞 K) (one_OK * one_OK) : ℚ) = 2 := by
     rw [Algebra.coe_trace_int]
     have heq : ((one_OK * one_OK : 𝓞 K) : K) = 1 := by simp [one_OK]
     rw [heq]; exact_mod_cast trace_one_BSD
   exact_mod_cast h
 
-private lemma trace_1ω_int : Algebra.trace ℤ (𝓞 K) (one_OK * ω_OK) = 1 := by
+lemma trace_1ω_int : Algebra.trace ℤ (𝓞 K) (one_OK * ω_OK) = 1 := by
   have h : (Algebra.trace ℤ (𝓞 K) (one_OK * ω_OK) : ℚ) = 1 := by
     rw [Algebra.coe_trace_int]
     have heq : ((one_OK * ω_OK : 𝓞 K) : K) = ω := by simp [one_OK, ω_OK]
     rw [heq]; exact_mod_cast trace_ω_BSD
   exact_mod_cast h
 
-private lemma trace_ω1_int : Algebra.trace ℤ (𝓞 K) (ω_OK * one_OK) = 1 := by
+lemma trace_ω1_int : Algebra.trace ℤ (𝓞 K) (ω_OK * one_OK) = 1 := by
   have h : (Algebra.trace ℤ (𝓞 K) (ω_OK * one_OK) : ℚ) = 1 := by
     rw [Algebra.coe_trace_int]
     have heq : ((ω_OK * one_OK : 𝓞 K) : K) = ω := by simp [one_OK, ω_OK]
     rw [heq]; exact_mod_cast trace_ω_BSD
   exact_mod_cast h
 
-private lemma trace_ωω_int : Algebra.trace ℤ (𝓞 K) (ω_OK * ω_OK) = -71 := by
+lemma trace_ωω_int : Algebra.trace ℤ (𝓞 K) (ω_OK * ω_OK) = -71 := by
   have h : (Algebra.trace ℤ (𝓞 K) (ω_OK * ω_OK) : ℚ) = -71 := by
     rw [Algebra.coe_trace_int]
     have heq : ((ω_OK * ω_OK : 𝓞 K) : K) = ω ^ 2 := by simp [ω_OK, sq]
@@ -72,14 +72,14 @@ private lemma trace_ωω_int : Algebra.trace ℤ (𝓞 K) (ω_OK * ω_OK) = -71 
 
 /-! ### Candidate pair as a function Fin 2 → 𝓞 K -/
 
-private noncomputable def v_BSD : Fin 2 → 𝓞 K := ![one_OK, ω_OK]
+noncomputable def v_BSD : Fin 2 → 𝓞 K := ![one_OK, ω_OK]
 
-private lemma v_BSD_zero : v_BSD 0 = one_OK := rfl
-private lemma v_BSD_one  : v_BSD 1 = ω_OK  := rfl
+lemma v_BSD_zero : v_BSD 0 = one_OK := rfl
+lemma v_BSD_one  : v_BSD 1 = ω_OK  := rfl
 
 /-! ### Trace matrix = !![2, 1; 1, -71] -/
 
-private lemma traceMatrix_v_BSD :
+lemma traceMatrix_v_BSD :
     Algebra.traceMatrix ℤ v_BSD = !![2, 1; 1, -71] := by
   have h00 : Algebra.traceMatrix ℤ v_BSD 0 0 = 2 := by
     simp [Algebra.traceMatrix_apply, Algebra.traceForm_apply,
@@ -100,7 +100,7 @@ private lemma traceMatrix_v_BSD :
 
 /-! ### Discriminant of v_BSD = -143 -/
 
-private lemma discr_v_BSD : Algebra.discr ℤ v_BSD = -143 := by
+lemma discr_v_BSD : Algebra.discr ℤ v_BSD = -143 := by
   rw [Algebra.discr_def, traceMatrix_v_BSD]
   norm_num [Matrix.det_fin_two]
 
@@ -204,12 +204,12 @@ theorem BSD_IntegralSpanning_CLOSED :
 
 /-! ### Public ℤ-basis of 𝓞 K, for absNorm computations -/
 
-private lemma _v_BSD_li : LinearIndependent ℤ v_BSD := by
+lemma _v_BSD_li : LinearIndependent ℤ v_BSD := by
   by_contra hNLI
   have h0 := Algebra.discr_zero_of_not_linearIndependent (A := ℤ) (B := 𝓞 K) hNLI
   rw [discr_v_BSD] at h0; norm_num at h0
 
-private lemma _v_BSD_span : ⊤ ≤ Submodule.span ℤ (Set.range v_BSD) := by
+lemma _v_BSD_span : ⊤ ≤ Submodule.span ℤ (Set.range v_BSD) := by
   have hrank : finrank ℤ (𝓞 K) = 2 := by rw [RingOfIntegers.rank]; exact BSD_finrank_proved
   let b₁ : Basis (Fin 2) ℤ (𝓞 K) := finBasisOfFinrankEq ℤ (𝓞 K) hrank
   let P : Matrix (Fin 2) (Fin 2) ℤ := b₁.toMatrix v_BSD
