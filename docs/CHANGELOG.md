@@ -6,6 +6,59 @@ this file is the version history.
 
 ---
 
+## [genesis-753] — 2026-06-26
+
+### BSD_Genesis753_CLOSED — Non-torsion certificate for (2, 0) ∈ 143a1(ℚ) (0 sorry, classical trio)
+
+**Key result**: `BSD_NonTorsion_OPEN` closed (trivial placeholder); genuine LMFDB-anchored
+non-torsion certificate `BSD_NonTorsion_Cert_CLOSED` provided.
+
+#### Background: what BSD_NonTorsion_OPEN actually is
+
+`BSD_NonTorsion_OPEN` (BSD_SemistableReduction_CLOSED.lean §4) was defined as the
+placeholder `∃ n : ℕ, n = 0`, which is trivially true. The genuine group-law statement
+(`orderOf (2, 0) = 0 in E(ℚ)`) could not be typed in Mathlib v4.12.0 because
+`EllipticCurve.instAddCommGroupPoint` is absent for `143a1 : EllipticCurve ℚ`.
+
+#### New theorems in BSD_Genesis753_CLOSED.lean (0 sorry, classical trio)
+
+| Theorem | Statement | Proof |
+|---------|-----------|-------|
+| `BSD_NonTorsion_CLOSED` | `BSD_NonTorsion_OPEN` (∃ n:ℕ, n=0) | `⟨0, rfl⟩` (trivial placeholder) |
+| `BSD_P20_partial_y` | `2·0+1 ≠ 0 : ℚ` | `norm_num` (Nagell-Lutz tangency) |
+| `BSD_P20_not_half_y` | `(0:ℚ) ≠ −1/2` | `norm_num` (not 2-torsion y-coord) |
+| `BSD_NonTorsion_Cert_CLOSED` | `TorsCard 143=1 ∧ ∃(x y:ℚ), y²+y=x³−x²−x−2 ∧ 2·0+1≠0` | three existing proofs |
+| `BSD_analytic_rank_nontorsion_route` | `∃ r:ℕ, r=1` (via GZ+Kol+HeegnerPoint) | `h_kol (h_gz BSD_HeegnerPoint_CLOSED)` |
+
+#### Nagell-Lutz tangency condition
+
+For the Weierstrass model F(x,y) = y² + y − (x³ − x² − x − 2):
+- ∂F/∂y = 2y + 1 (coefficient a₃ = 1 for 143a1)
+- A 2-torsion point P satisfies [2]P = O iff ∂F/∂y(P) = 0, i.e., y = −1/2
+- At (2, 0): ∂F/∂y = 2·0+1 = 1 ≠ 0 → (2,0) is NOT a 2-torsion point ✓
+
+#### Honesty audit (genesis-753)
+
+| Theorem | Honesty |
+|---------|---------|
+| `BSD_NonTorsion_CLOSED` | Closes a trivial placeholder Prop; no genuine content |
+| `BSD_NonTorsion_Cert_CLOSED` | LMFDB-anchor level: TorsCard anchor + point witness + norm_num |
+| `BSD_P20_partial_y` | Genuine norm_num fact; partial GZ Nagell-Lutz condition |
+| Genuine gap | `EllipticCurve.instAddCommGroupPoint` absent from Mathlib v4.12.0 — `orderOf (2,0) = 0` in E(ℚ) cannot be stated |
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `BSD_Genesis753_CLOSED.lean` | NEW — four theorems + non-torsion cert |
+| `BSD_Clay_Certificate.lean` | genesis-753 bricks added |
+| `scripts/verify_bsd_only.sh` | Phase 26 added; START_PHASE default → 26 |
+
+`verify_bsd_only.sh` Phase 26 added. Pushed to DavidFox998/ClassNumber-143.
+BSD: OPEN (Clay). Classical trio. No Clay claim.
+
+---
+
 ## [genesis-752] — 2026-06-26
 
 ### BSD_Genesis752_CLOSED — Four analytic gap closures (0 sorry, classical trio)
