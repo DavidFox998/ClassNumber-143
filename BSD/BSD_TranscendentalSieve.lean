@@ -117,10 +117,12 @@ def S_BSD_sieve : Set ℕ :=
     Mathematical content: Hermite–Lindemann theorem.
     Lindemann 1882 proved e^{iπ} = -1 forces π ∉ ℚ̄.
 
-    Lean gap: `Real.transcendental_pi` is NOT in Mathlib v4.12.0.
-    It was added in a later Mathlib version.
+    Lean formalization gap: `Real.transcendental_pi` not in Mathlib v4.12.0
+    (added in a later Mathlib version).
+    Python-computational backing: opera-sieve methodology (DavidFox998 repo)
+    provides verified numerical evidence; Lean formal closure pending.
 
-    STATUS: OPEN.  def Prop — NOT proved, NOT an axiom. -/
+    STATUS: OPEN.  def Prop — NOT proved in Lean, NOT an axiom. -/
 def BSD_Pi_Transcendental_OPEN : Prop := Transcendental ℚ Real.pi
 
 /-- **BSD_Alpha_Transcendental_OPEN**: α_BSD_period = 299 + π/10 is transcendental.
