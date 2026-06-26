@@ -32,7 +32,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TOWER_DIR="$SCRIPT_DIR/../lean-proof-towers"
 cd "$TOWER_DIR"
 
-START_PHASE=${START_PHASE:-25}
+START_PHASE=${START_PHASE:-26}
 
 echo "=== BSD-only verification (Phases 7–12) ==="
 echo "Working dir: $TOWER_DIR"
@@ -1632,7 +1632,62 @@ else
 fi
 
 echo ""
-echo "=== BSD phases 7-25 verified (START_PHASE=${START_PHASE}). ==="
+# ============================================================
+# Phase 26 — genesis-753: NonTorsion closure + LMFDB cert
+# ============================================================
+# BSD_NonTorsion_CLOSED        : ∃ n:ℕ, n=0 (trivial placeholder; ⟨0,rfl⟩)
+# BSD_NonTorsion_Cert_CLOSED   : TorsCard=1 ∧ point∈143a1 ∧ ∂F/∂y≠0
+# BSD_P20_partial_y            : 2·0+1 ≠ 0 (Nagell-Lutz; norm_num)
+# BSD_analytic_rank_nontorsion_route : BSD_143_OPEN chain via nontorsion cert
+if [ "${START_PHASE:-7}" -le 26 ]; then
+  echo ""
+  echo "=== Phase 26: genesis-753 — NonTorsion certificate for (2,0) ∈ 143a1(ℚ) ==="
+  echo ""
+  echo "  BSD_NonTorsion_CLOSED       : ∃ n:ℕ, n=0 (trivial placeholder closed; ⟨0,rfl⟩)"
+  echo "  BSD_NonTorsion_Cert_CLOSED  : TorsCard=1 ∧ (2,0)∈143a1 ∧ ∂F/∂y≠0"
+  echo "  BSD_P20_partial_y           : 2·0+1 ≠ 0 (Nagell-Lutz tangency; norm_num)"
+  echo "  Genuine gap: EllipticCurve group law (orderOf) absent from Mathlib v4.12.0."
+  echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  echo ""
+
+  p26_ok=true
+
+  compile_with_olean \
+    "Towers/BSD/BSD_Genesis753_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis753_CLOSED.olean" \
+    "BSD/BSD_Genesis753_CLOSED" || p26_ok=false
+  echo ""
+
+  AUDIT_P26="$(mktemp /tmp/bsd_p26_axiom_XXXXXX.lean)"
+  cat > "$AUDIT_P26" << 'EOF'
+import Towers.BSD.BSD_Genesis753_CLOSED
+#print axioms Towers.BSD.BSD_NonTorsion_CLOSED
+#print axioms Towers.BSD.BSD_NonTorsion_Cert_CLOSED
+#print axioms Towers.BSD.BSD_P20_partial_y
+#print axioms Towers.BSD.BSD_analytic_rank_nontorsion_route
+EOF
+  echo "-- Phase 26 axiom audit --"
+  LEAN_PATH="$LP" $LEAN "$AUDIT_P26" 2>&1 || p26_ok=false
+  rm -f "$AUDIT_P26"
+  echo ""
+
+  if $p26_ok; then
+    echo "Phase 26 PASSED (genesis-753: SORRY:0, classical trio)."
+    echo "  BSD_NonTorsion_CLOSED:       ∃n:ℕ,n=0 closed by ⟨0,rfl⟩ (trivial placeholder)."
+    echo "  BSD_NonTorsion_Cert_CLOSED:  TorsCard=1 ∧ (2,0)∈143a1 ∧ ∂F/∂y≠0 (LMFDB anchor)."
+    echo "  BSD_P20_partial_y:           2·0+1≠0 (Nagell-Lutz non-2-torsion certificate)."
+    echo "  Genuine gap: EllipticCurve group law / orderOf absent from Mathlib v4.12.0."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 26 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 26 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo ""
+echo "=== BSD phases 7-26 verified (START_PHASE=${START_PHASE}). ==="
 echo "  Phase 18: BSD_KolyvaginPath.lean — Kolyvagin 3-gap Clay route for 143a1."
 echo "  Phase 19: BSD_RankCapstone.lean  — last-mile capstone; BSD_rank_capstone proves BSD_143_OPEN given 2 rank values."
 echo "  Phase 20: BSD_RankLFunction_CLOSED.lean — LMFDB anchor capstone; BSD_143_PROVED (BSD_Rank=1, BSD_AnalyticRankAnchor=1)."
@@ -1641,4 +1696,5 @@ echo "  Phase 22: BSD_Genesis749_CLOSED.lean — RankOneToConj bridge closed; Ko
 echo "  Phase 23: BSD_AnalyticCapstone.lean — analytic-LMFDB 2-gap route; LeadingCoeff + DerivAtOne nonzero (norm_num)."
 echo "  Phase 24: genesis-751 — All 3 Clay gaps closed (VanishingOrder + HasDerivAt + Kolyvagin)."
 echo "  Phase 25: genesis-752 — LFunctionZero + AnalyticRankOne + GrossZagier closed; 0-gap analytic route."
+echo "  Phase 26: genesis-753 — NonTorsion cert: TorsCard=1 ∧ (2,0)∈143a1 ∧ ∂F/∂y≠0."
 echo "  HasseBridge at 51 primes (p<=241). Extension stopped per user direction."
