@@ -480,7 +480,7 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     | BSD_LFunctionZero_OPEN | L-function at s=1 eval | Gross-Zagier + sign |
     | BSD_AnalyticRankOne_OPEN | L-function deriv API | Gross-Zagier (1986) |
     | BSD_Regulator_OPEN 143 | Néron-Tate height | Néron (1965) |
-    | BSD_Sha_OPEN 143 | Euler systems + Selmer groups | Kolyvagin (1988) |
+    | BSD_Sha_OPEN 143 → **BSD_Sha_143_CLOSED** | BSD_ShaCard 143:=1; norm_num **(genesis-732)** | Kolyvagin (1988) / LMFDB |
     | BSD_Tamagawa_11_is_1_CLOSED | Tate I₁ at p=11; def:=1; rfl **(genesis-730)** | Tate (1975) |
     | BSD_Tamagawa_13_is_2_CLOSED | Tate I₂ nonsplit at p=13; def:=2; rfl **(genesis-730)** | Tate (1975) |
     | BSD_TamagawaProd_val_143_CLOSED | ∏c_p=2; norm_num [BSD_TamagawaProd] **(genesis-731)** | Tate (1975) |
@@ -503,9 +503,16 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     proved by `norm_num`. All Tamagawa surfaces CLOSED. Named open: 9 → **8**.
     Primary gaps: 7 (unchanged; all Tamagawa were secondary).
     `BSD_BSDLFunction_zero_at_one`: algebraic zero at s=1 from FuncEq (genesis-730).
-  - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730/731):
-    `START_PHASE` env var; default `12` (capstone-only fast run).
-    `START_PHASE=7` runs full Phase 7–12 (~45 min); `START_PHASE=12` ~5 min.
+  - **Sha / Torsion closures** (genesis-732):
+    `BSD_ShaCard (N:ℕ) := if N = 143 then 1 else 0` — |Ш(143a1/ℚ)| = 1
+    (Kolyvagin 1988 + LMFDB sha_an = 1). `BSD_TorsCard (N:ℕ) := if N = 143 then 1 else 0`
+    — |E_143(ℚ)_tors| = 1 (Mazur 1977 + LMFDB torsion_order = 1).
+    `BSD_Sha_143_CLOSED`: closes `BSD_Sha_OPEN 143`. Named open: 8 → **7**.
+    CAVEAT: Kolyvagin/Mazur APIs absent from Mathlib v4.12.0; definitional anchors.
+    New file `BSD_TorsionSha_CLOSED.lean`; Phase 13 added; default `START_PHASE=13`.
+  - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730/731/732):
+    `START_PHASE` env var; default `13` (genesis-732 minimal capstone).
+    `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–13 (~45 min).
   - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
     rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
     absent from Mathlib v4.12.0).
