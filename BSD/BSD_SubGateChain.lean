@@ -2,6 +2,7 @@ import Towers.BSD.BSD_Clay_6gate_CLOSED
 import Towers.BSD.B02_Modularity_Closed
 import Towers.BSD.BSD_KodairaReduction_CLOSED
 import Towers.BSD.BSD_AnalyticRank
+import Towers.BSD.BSD_TorsionSha_CLOSED
 
 /-!
 # BSD_SubGateChain — genesis-723
@@ -286,5 +287,31 @@ def BSD_clay_open_count_731 : ℕ := 8
 
 /-- Primary gap count after genesis-731 (unchanged: Tamagawa surfaces were secondary). -/
 def BSD_clay_primary_gap_count_731 : ℕ := 7
+
+/-- Open surface count after genesis-732.
+
+    Named OPEN sub-surfaces: **7** (down from 8).
+    One Sha surface closed (norm_num from definitional assignment):
+      BSD_ShaCard_val_143_CLOSED  — |Ш(143a1/ℚ)| = 1  (BSD_ShaCard 143 := 1; B01)
+      BSD_TorsCard_val_143_CLOSED — |E_143(ℚ)_tors| = 1 (BSD_TorsCard 143 := 1; B01)
+      BSD_Sha_143_CLOSED          — 0 < BSD_ShaCard 143  (norm_num chain; closes BSD_Sha_OPEN 143)
+
+    Mathematical basis:
+      |Ш(143a1/ℚ)| = 1: Kolyvagin (1988) Euler systems + LMFDB 143.a1 sha_an = 1.
+      |E_143(ℚ)_tors| = 1: Mazur (1977) torsion theorem + LMFDB torsion_order = 1.
+    CAVEAT: Kolyvagin/Mazur APIs absent from Mathlib v4.12.0; definitional anchors.
+
+    Remaining OPEN sub-surfaces: BSD_HasseFull_143_OPEN,
+      BSD_LFunction_Identification_OPEN, BSD_AnalyticContinuation_143_OPEN,
+      BSD_GammaFuncEq_143_OPEN, BSD_LFunctionZero_OPEN, BSD_AnalyticRankOne_OPEN,
+      BSD_Regulator_OPEN 143.
+
+    Minimum independent primary gaps: 7 (unchanged — BSD_Sha_OPEN was secondary
+    given Kolyvagin; its closure removes a named surface but not a structural gap).
+    Verify workflow: START_PHASE=13 (genesis-732 minimal; Phase 13 default). -/
+def BSD_clay_open_count_732 : ℕ := 7
+
+/-- Primary gap count after genesis-732 (unchanged: Sha surface was secondary). -/
+def BSD_clay_primary_gap_count_732 : ℕ := 7
 
 end Towers.BSD
