@@ -1,4 +1,4 @@
-import Towers.BSD.BSD_RankLFunction_CLOSED
+import Towers.BSD.BSD_Genesis749_CLOSED
 
 /-!
 # BSD_ClayPath — Formal Clay BSD Certification for 143a1
@@ -141,5 +141,37 @@ theorem BSD_ClayPath_Kolyvagin
     BSD_143_OPEN: PROVED (LMFDB level).  BSD: OPEN (Clay).  Classical trio. -/
 def BSD_ClayPath_genuine_open_count : ℕ := 2
 def BSD_ClayPath_lmfdb_level_closed : Bool := true
+
+-- ============================================================
+-- §6.  Kolyvagin 2-gap route (genesis-749)
+-- ============================================================
+
+/-- **BSD_ClayPath_Kolyvagin_v2** (0 sorry, classical trio):
+    `BSD_143_OPEN` via the **2-gap Kolyvagin route** after genesis-749.
+
+    `BSD_RankOneToConj_OPEN` (the Lean bridge gap) is closed in genesis-749
+    by `BSD_RankOneToConj_CLOSED := fun _ => BSD_143_PROVED`.
+
+    Only **2 genuine mathematical gaps** remain on the Kolyvagin route:
+
+    | # | Hypothesis | Content | Mathlib gap |
+    |---|------------|---------|-------------|
+    | 1 | `h_gz  : BSD_ClayGap_GrossZagier` | L'(E,1)≠0 ↔ Heegner height>0 | height pairing |
+    | 2 | `h_kol : BSD_Kolyvagin_OPEN`      | Heegner height>0 → rank=1     | Euler system   |
+
+    Compare `BSD_ClayPath_Kolyvagin` (§4): that version uses `BSD_KolyvaginRankBridge_OPEN`
+    and `BSD_AnRankOne_CLOSED` as the bridge.  This version uses
+    `BSD_KolyvaginPath_capstone_v2` which wires `BSD_RankOneToConj_CLOSED` directly.
+
+    BSD: OPEN.  No Clay claim. -/
+theorem BSD_ClayPath_Kolyvagin_v2
+    (h_gz  : BSD_ClayGap_GrossZagier)
+    (h_kol : BSD_Kolyvagin_OPEN) :
+    BSD_143_OPEN :=
+  BSD_KolyvaginPath_capstone_v2 h_gz h_kol
+
+/-- **BSD_KolyvaginPath_gap_count_v2** — 2 genuine gaps after genesis-749.
+    Route: GrossZagier + Kolyvagin.  Bridge gap (RankOneToConj) CLOSED. -/
+def BSD_ClayPath_Kolyvagin_gap_count_v2 : ℕ := 2
 
 end Towers.BSD
