@@ -6,6 +6,83 @@ this file is the version history.
 
 ---
 
+## [genesis-738] — 2026-06-26
+
+### BSD_Genesis738_CLOSED.lean — HasseBridge extension to p ∈ {31,37,41,43,47,53,59,61,67}
+
+**Milestone:** New file `BSD_Genesis738_CLOSED.lean` (0 sorry, classical trio).
+9 secondary Hasse surfaces closed via the §V.5 Frobenius-degree route.
+HasseBridge now covers **17 good primes** for 143a1.
+Named OPEN primary surfaces: **4 (unchanged)**.  BSD: OPEN.  Classical trio.  No Clay claim.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis738_CLOSED.lean` | **New file** — §1 point counts (decide), §2 exact a_p values (omega), §3 degree non-negativity (completed-square), §4 BSD_Hasse_OPEN_pN closures for 9 primes |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-738 ledger entry (`BSD_clay_open_count_738 = 4`, `BSD_clay_primary_gap_count_738 = 4`); import added |
+| `scripts/verify_bsd_only.sh` | Phase 13 header updated to genesis-738; `BSD_Genesis738_CLOSED` compile step + axiom audit for p31/p53/p67 added |
+| `docs/ROADMAP.md` | genesis-735/736/737/738 entries added to BSD milestones section |
+
+#### Proof structure (four-step chain, identical to genesis-736)
+
+For each prime p ∈ {31, 37, 41, 43, 47, 53, 59, 61, 67} (all good reduction; p ∤ 143):
+
+**Step 1** — `BSD_E143_card_pN : (E143_Finset p).card = k`
+Proved by `decide` over ZMod p × ZMod p.
+Affine point counts (LMFDB 143a1):
+
+| p  | card | a_p | discriminant a_p²−4p |
+|----|------|-----|----------------------|
+| 31 | 34   | −3  | 9−124 = **−115** |
+| 37 | 48   | −11 | 121−148 = **−27** |
+| 41 | 31   | +10 | 100−164 = **−64** |
+| 43 | 47   | −4  | 16−172 = **−156** |
+| 47 | 51   | −4  | 16−188 = **−172** |
+| 53 | 51   | +2  | 4−212 = **−208** |
+| 59 | 60   | −1  | 1−236 = **−235** |
+| 61 | 63   | −2  | 4−244 = **−240** |
+| 67 | 68   | −1  | 1−268 = **−267** |
+
+**Step 2** — `BSD_ap_pN : a_p N = k`  via `omega` from Step 1.
+
+**Step 3** — `BSD_DegreeNonneg_pN : BSD_FrobeniusDegreeNonneg_OPEN p`
+Completed-square witnesses (all nine discriminants strictly negative; key+linarith).
+Witnesses: (r+3/2)², (r+11/2)², (r−5)², (r+2)², (r+2)², (r−1)², (r+1/2)², (r+1)², (r+1/2)².
+
+**Step 4** — `BSD_Hasse_OPEN_pN : BSD_Hasse_OPEN p`
+Via `BSD_hasse_of_degree_nonneg` bridge (genesis-733, §V.5 skeleton).
+
+#### HasseBridge cumulative coverage
+
+| Batch | Primes | Source |
+|-------|--------|--------|
+| genesis-734 | {2, 3, 5, 7} | Option A + B, §V.5 |
+| genesis-736 | {17, 19, 23, 29} | §V.5 bridge |
+| genesis-738 | {31, 37, 41, 43, 47, 53, 59, 61, 67} | §V.5 bridge |
+| **Total** | **17 good primes** | |
+
+#### Honest scope
+
+- `BSD_HasseFull_143_OPEN` remains OPEN: 143a1 has infinitely many good primes.
+  The full Hasse–Weil theorem requires `EllipticCurve.Frobenius` API absent from
+  Mathlib v4.12.0.
+- Named OPEN primary surfaces: **4** (unchanged after genesis-737).
+- Remaining 4 primary gaps: BSD_HasseFull_143_OPEN, BSD_AnalyticContinuation_143_OPEN,
+  BSD_GammaFuncEq_143_OPEN, BSD_143_OPEN — all require API absent from Mathlib v4.12.0.
+- NOT registered in BRICKS[].  No Clay claim.
+
+#### Axiom footprint
+
+```
+'Towers.BSD.BSD_Hasse_OPEN_p31' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Towers.BSD.BSD_Hasse_OPEN_p53' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Towers.BSD.BSD_Hasse_OPEN_p67' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+(All nine Hasse theorems: classical trio only.)
+
+---
+
 ## [genesis-737] — 2026-06-26
 
 ### BSD_Genesis737_CLOSED.lean — Regulator, Sha (ack), and TamagawaConj closures (gates 4, 5, 6)
