@@ -60,7 +60,7 @@ theorem X_sq_add_143_irred_BSD : Irreducible (X ^ 2 + C (143 : ℚ)) := by
   simp only [IsRoot, eval_add, eval_pow, eval_X, eval_C] at hroot
   linarith [sq_nonneg r]
 
-private instance : Fact (Irreducible (X ^ 2 + C (143 : ℚ))) :=
+instance instFactIrred_BSD : Fact (Irreducible (X ^ 2 + C (143 : ℚ))) :=
   ⟨X_sq_add_143_irred_BSD⟩
 
 /-! ### Field K = ℚ(√-143) -/
@@ -100,7 +100,7 @@ lemma κ_BSD_pos : 0 < κ_BSD := by
 
 /-! ### No real embeddings → NrRealPlaces = 0 -/
 
-private lemma no_real_embedding_BSD (φ : K →+* ℂ) : ¬ IsReal φ := by
+lemma no_real_embedding_BSD (φ : K →+* ℂ) : ¬ IsReal φ := by
   intro hreal
   have hα : hreal.embedding α ^ 2 = -(143 : ℝ) := by
     have h := congr_arg hreal.embedding α_sq_BSD
@@ -138,7 +138,7 @@ theorem nrComplexPlaces_one_BSD (h_finrank : BSD_finrank_CLOSED) : NrComplexPlac
 
 /-! ### Minkowski bound -/
 
-private lemma sqrt_143_lt_twelve_BSD : Real.sqrt 143 < 12 := by
+lemma sqrt_143_lt_twelve_BSD : Real.sqrt 143 < 12 := by
   have h : Real.sqrt 143 < Real.sqrt 144 := by
     apply Real.sqrt_lt_sqrt <;> norm_num
   have h12 : Real.sqrt 144 = 12 := by
