@@ -43,14 +43,14 @@ open Polynomial Submodule NumberField
 
 /-! ## §1. Ring setup: R = ℤ[θ], θ² − θ + 36 = 0 -/
 
-private noncomputable abbrev R_BSD : Type _ :=
+noncomputable abbrev R_BSD : Type _ :=
   AdjoinRoot (X ^ 2 - X + (36 : ℤ[X]))
 
-private noncomputable def θ_BSD : R_BSD :=
+noncomputable def θ_BSD : R_BSD :=
   AdjoinRoot.root (X ^ 2 - X + (36 : ℤ[X]))
 
 /-- θ satisfies its defining equation θ² − θ + 36 = 0. -/
-private lemma θ_BSD_rel : θ_BSD ^ 2 - θ_BSD + (36 : R_BSD) = 0 := by
+lemma θ_BSD_rel : θ_BSD ^ 2 - θ_BSD + (36 : R_BSD) = 0 := by
   have hmk : Polynomial.aeval θ_BSD (X ^ 2 - X + (36 : ℤ[X])) =
     θ_BSD ^ 2 - θ_BSD + (36 : R_BSD) := by
     simp only [map_sub, map_add, map_pow, Polynomial.aeval_X,
@@ -86,7 +86,7 @@ def EvenK_IntGen_Bridge_BSD (𝔭₂ : Ideal R_BSD) : Prop :=
 /-! ## §3. Arithmetic: even-k impossibility for b ≠ 0 (PROVED) -/
 
 /-- For k ∈ {2,4} and b≠0: 143·b² ≥ 143 > 4·2^k, so no solution. -/
-private lemma even_k24_bnonzero_BSD (k : ℕ) (hk : k ∈ ({2, 4} : Finset ℕ))
+lemma even_k24_bnonzero_BSD (k : ℕ) (hk : k ∈ ({2, 4} : Finset ℕ))
     (a b : ℤ) (hb : b ≠ 0) : a ^ 2 + a * b + 36 * b ^ 2 ≠ (2 : ℤ) ^ k := by
   intro hN
   have hb2 : 1 ≤ b ^ 2 := by
@@ -99,7 +99,7 @@ private lemma even_k24_bnonzero_BSD (k : ℕ) (hk : k ∈ ({2, 4} : Finset ℕ))
   · norm_num at hring; nlinarith [sq_nonneg (2 * a + b)]
 
 /-- For k = 6: (2a+b)²+143b² = 256. If b≠0 then b=±1; check each. -/
-private lemma even_k6_bnonzero_BSD (a b : ℤ) (hb : b ≠ 0) :
+lemma even_k6_bnonzero_BSD (a b : ℤ) (hb : b ≠ 0) :
     a ^ 2 + a * b + 36 * b ^ 2 ≠ (2 : ℤ) ^ 6 := by
   intro hN
   simp only [show (2 : ℤ) ^ 6 = 64 from by norm_num] at hN
@@ -126,7 +126,7 @@ private lemma even_k6_bnonzero_BSD (a b : ℤ) (hb : b ≠ 0) :
     interval_cases a <;> norm_num at hval
 
 /-- For k = 8: (2a+b)²+143b²=1024. b≠0 forces b∈{±1,±2}; each gives non-square. -/
-private lemma even_k8_bnonzero_BSD (a b : ℤ) (hb : b ≠ 0) :
+lemma even_k8_bnonzero_BSD (a b : ℤ) (hb : b ≠ 0) :
     a ^ 2 + a * b + 36 * b ^ 2 ≠ (2 : ℤ) ^ 8 := by
   intro hN
   simp only [show (2 : ℤ) ^ 8 = 256 from by norm_num] at hN
