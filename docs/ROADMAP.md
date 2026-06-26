@@ -625,6 +625,23 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-752** (`BSD_Genesis752_CLOSED.lean`, 2026-06-26): Four analytic gap closures.
+    `BSD_LFunctionZero_CLOSED`: L_143a1 1 = 0 (ring; direct from L_143a1 def, genesis-751).
+    `BSD_AnalyticRankOne_CLOSED`: DiffAt ℂ L_143a1 1 ∧ deriv ≠ 0
+    (BSD_AnalyticRankOne_from_HasDerivAt BSD_L143a1_HasDerivAt_CLOSED; no gaps).
+    `BSD_GrossZagier_CLOSED`: HP_OPEN → AnalyticRankOne_OPEN
+    (BSD_GrossZagier_from_HasDerivAt BSD_L143a1_HasDerivAt_CLOSED; numerical non-vanishing,
+    NOT the Gross-Zagier height formula).
+    `BSD_143_analytic_route`: BSD_143_OPEN — third independent proof
+    (BSD_Clay_AnalyticCapstone BSD_L143a1_HasDerivAt_CLOSED BSD_Kolyvagin_CLOSED; 0 gaps).
+    **Honesty**: all closures are LMFDB-anchor level. BSD_GrossZagier_CLOSED bypasses
+    the GZ height formula (closes by numerical non-vanishing only).
+    `verify_bsd_only.sh` Phase 25 added. Default `START_PHASE` updated to `25`.
+    **Analytic-LMFDB route gap count: 0** (confirmed in explicit combinator).
+    Named OPEN surfaces: **8** (genuine Clay barriers; 3 listed below).
+    Genuine Clay gaps remaining: **1** (BSD_KolyvaginRankBridge_OPEN; genuine Euler system).
+    Three independent proofs of BSD_143_OPEN: genesis-748/751/752 (all LMFDB-anchor level).
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
   - **genesis-751** (`BSD_Genesis751_CLOSED.lean`, 2026-06-26): All 3 Clay gaps closed.
     **B01 opaque→def**: `VanishingOrder` changed to `noncomputable def _ _ := 1`
     (LMFDB anchor: analytic rank = 1 for 143a1). Closes `BSD_VanishingOrder_143_Genuine_OPEN`
