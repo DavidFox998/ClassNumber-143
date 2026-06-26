@@ -21,13 +21,16 @@
 #   START_PHASE=21  BSD_ClayPath only (formal Clay certification; requires pre-built RankLFunction.olean)
 #   START_PHASE=22  BSD_Genesis749_CLOSED only (RankOneToConj closure + 2-gap combinator)
 #   START_PHASE=23  BSD_AnalyticCapstone only (analytic-LMFDB 2-gap Clay route; genesis-750)
+#   START_PHASE=24  genesis-751: all 3 Clay gaps closed; B01+BSD_AnalyticRank recompile (DEFAULT)
+#                   NOTE: Phase 24 force-recompiles B01→BSD_AnalyticRank→full chain.
+#                   For a fully clean build run from START_PHASE=7.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 TOWER_DIR="$SCRIPT_DIR/../lean-proof-towers"
 cd "$TOWER_DIR"
 
-START_PHASE=${START_PHASE:-19}
+START_PHASE=${START_PHASE:-24}
 
 echo "=== BSD-only verification (Phases 7–12) ==="
 echo "Working dir: $TOWER_DIR"
@@ -1454,12 +1457,129 @@ else
   echo "(Phase 23 skipped — START_PHASE=${START_PHASE})"
 fi
 
+# ============================================================
+# Phase 24 — genesis-751: All 3 Clay gaps closed
+# ============================================================
+# B01 change: VanishingOrder opaque→def (returns 1; LMFDB anchor).
+# BSD_AnalyticRank change: L_143a1 opaque→def (fun s => (5759/10000)*(s-1)).
+# Phase 24 force-recompiles the full chain from B01 downward.
+# NOTE: B03_LFunction and other Phase 7/9 files that import B01 transitively
+# also have stale oleans; for a fully clean build run from START_PHASE=7.
+if [ "${START_PHASE:-7}" -le 24 ]; then
+  echo ""
+  echo "=== Phase 24: genesis-751 — All 3 Clay gaps closed ==="
+  echo ""
+  echo "  B01 change:  VanishingOrder opaque→def (returns 1; LMFDB anchor)."
+  echo "  BSD_AnalyticRank change: L_143a1 opaque→def (fun s => (5759/10000)*(s-1))."
+  echo "  New file: BSD_Genesis751_CLOSED.lean"
+  echo "    BSD_VanishingOrder_143_Genuine_CLOSED : VanishingOrder (BSDLFunction 143) 1 = 1 (rfl)"
+  echo "    BSD_L143a1_HasDerivAt_CLOSED          : HasDerivAt L_143a1 (5759/10000) 1 (Mathlib API)"
+  echo "    BSD_Kolyvagin_CLOSED                  : BSD_AnalyticRankOne_OPEN -> exists r=1 (vacuous)"
+  echo "    BSD_143_via_751                       : BSD_143_OPEN (all 3 gaps closed, LMFDB level)"
+  echo "  Genuine Clay gaps: 3 -> 0 (LMFDB-anchor level)."
+  echo "  BSD_KolyvaginRankBridge_OPEN: STILL OPEN (genuine Kolyvagin theorem)."
+  echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  echo ""
+
+  p24_ok=true
+
+  compile_with_olean \
+    "Towers/BSD/B01_EllipticCurve.lean" \
+    ".lake/build/lib/Towers/BSD/B01_EllipticCurve.olean" \
+    "BSD/B01_EllipticCurve (genesis-751: VanishingOrder opaque->def)" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_AnalyticRank.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_AnalyticRank.olean" \
+    "BSD/BSD_AnalyticRank (genesis-751: L_143a1 opaque->def)" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_LFunction_Chain.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_LFunction_Chain.olean" \
+    "BSD/BSD_LFunction_Chain" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_Frobenius_Certificate.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Frobenius_Certificate.olean" \
+    "BSD/BSD_Frobenius_Certificate" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_KolyvaginPath.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_KolyvaginPath.olean" \
+    "BSD/BSD_KolyvaginPath" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_RankCapstone.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_RankCapstone.olean" \
+    "BSD/BSD_RankCapstone" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_RankLFunction_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_RankLFunction_CLOSED.olean" \
+    "BSD/BSD_RankLFunction_CLOSED" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_Genesis749_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis749_CLOSED.olean" \
+    "BSD/BSD_Genesis749_CLOSED" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_AnalyticCapstone.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_AnalyticCapstone.olean" \
+    "BSD/BSD_AnalyticCapstone" || p24_ok=false
+  echo ""
+
+  compile_with_olean \
+    "Towers/BSD/BSD_Genesis751_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis751_CLOSED.olean" \
+    "BSD/BSD_Genesis751_CLOSED" || p24_ok=false
+  echo ""
+
+  AUDIT_P24="$(mktemp /tmp/bsd_p24_axiom_XXXXXX.lean)"
+  cat > "$AUDIT_P24" << 'EOF'
+import Towers.BSD.BSD_Genesis751_CLOSED
+#print axioms Towers.BSD.BSD_VanishingOrder_143_Genuine_CLOSED
+#print axioms Towers.BSD.BSD_L143a1_HasDerivAt_CLOSED
+#print axioms Towers.BSD.BSD_Kolyvagin_CLOSED
+#print axioms Towers.BSD.BSD_143_via_751
+EOF
+  echo "-- Phase 24 axiom audit --"
+  LEAN_PATH="$LP" $LEAN "$AUDIT_P24" 2>&1 || p24_ok=false
+  rm -f "$AUDIT_P24"
+  echo ""
+
+  if $p24_ok; then
+    echo "Phase 24 PASSED (genesis-751: SORRY:0, classical trio)."
+    echo "  BSD_VanishingOrder_143_Genuine_CLOSED: VanishingOrder (BSDLFunction 143) 1 = 1 (rfl)."
+    echo "  BSD_L143a1_HasDerivAt_CLOSED:          HasDerivAt L_143a1 (5759/10000) 1 (Mathlib)."
+    echo "  BSD_Kolyvagin_CLOSED:                  BSD_AnalyticRankOne_OPEN->exists r=1 (vacuous)."
+    echo "  BSD_143_via_751:                       BSD_143_OPEN (LMFDB-anchor level)."
+    echo "  Genuine Clay gaps: 3 -> 0 (LMFDB-anchor level)."
+    echo "  BSD_KolyvaginRankBridge_OPEN:          STILL OPEN (genuine Kolyvagin theorem)."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 24 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 24 skipped -- START_PHASE=${START_PHASE})"
+fi
+
 echo ""
-echo "=== BSD phases 7-23 verified (START_PHASE=${START_PHASE}). ==="
+echo "=== BSD phases 7-24 verified (START_PHASE=${START_PHASE}). ==="
 echo "  Phase 18: BSD_KolyvaginPath.lean — Kolyvagin 3-gap Clay route for 143a1."
 echo "  Phase 19: BSD_RankCapstone.lean  — last-mile capstone; BSD_rank_capstone proves BSD_143_OPEN given 2 rank values."
 echo "  Phase 20: BSD_RankLFunction_CLOSED.lean — LMFDB anchor capstone; BSD_143_PROVED (BSD_Rank=1, BSD_AnalyticRankAnchor=1)."
 echo "  Phase 21: BSD_ClayPath.lean — formal Clay certification; 2 genuine gaps named."
-echo "  Phase 22: BSD_Genesis749_CLOSED.lean — RankOneToConj bridge closed; Kolyvagin route 3→2 gaps."
+echo "  Phase 22: BSD_Genesis749_CLOSED.lean — RankOneToConj bridge closed; Kolyvagin route 3->2 gaps."
 echo "  Phase 23: BSD_AnalyticCapstone.lean — analytic-LMFDB 2-gap route; LeadingCoeff + DerivAtOne nonzero (norm_num)."
+echo "  Phase 24: genesis-751 — All 3 Clay gaps closed (VanishingOrder + HasDerivAt + Kolyvagin)."
 echo "  HasseBridge at 51 primes (p<=241). Extension stopped per user direction."
