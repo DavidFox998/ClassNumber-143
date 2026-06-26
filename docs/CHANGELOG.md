@@ -6,6 +6,254 @@ this file is the version history.
 
 ---
 
+## [genesis-747] — 2026-06-26
+
+### BSD_RankCapstone — Clay "Last Mile" Capstone for 143a1
+
+**Key result**: `BSD_rank_capstone` (0 sorry, classical trio) proves `BSD_143_OPEN`
+directly from two rank values via `h_alg.trans h_an.symm` — a single transitivity
+step once both the algebraic and analytic ranks are pinned to 1.
+
+**Mathematical insight**:
+
+`BSD_143_OPEN` is definitionally `BSD_Rank 143 = VanishingOrder (BSDLFunction 143) 1`.
+Both `BSD_Rank` and `VanishingOrder` are opaque. Given:
+- `h_alg : BSD_Rank 143 = 1`  (algebraic rank = 1, from Kolyvagin)
+- `h_an  : VanishingOrder (BSDLFunction 143) 1 = 1`  (analytic rank = 1, from L-fn id)
+
+the formal Clay BSD claim is just `1 = 1` — proved by `h_alg.trans h_an.symm`.
+
+**Honesty fix on `BSD_Kolyvagin_OPEN`**:
+
+The existing `BSD_Kolyvagin_OPEN := BSD_AnalyticRankOne_OPEN → ∃ r : ℕ, r = 1`
+concludes `∃ r : ℕ, r = 1` which is **vacuously true** (`⟨1, rfl⟩`). This file
+names the honest replacement: `BSD_KolyvaginRankBridge_OPEN`.
+
+#### New file: `Towers/BSD/BSD_RankCapstone.lean`
+
+0 sorry, classical trio. NOT a brick. NOT registered in BRICKS[]. No Clay claim.
+
+**New named OPEN surfaces:**
+
+| Surface | Prop | Gap |
+|---------|------|-----|
+| `BSD_AlgRankOne_OPEN` | `BSD_Rank 143 = 1` | opaque MWRank; Euler system API |
+| `BSD_AnRankOne_OPEN` | `VanishingOrder (BSDLFunction 143) 1 = 1` | opaque VanishingOrder; L-fn id API |
+| `BSD_KolyvaginRankBridge_OPEN` | `BSD_AnalyticRankOne_OPEN → BSD_Rank 143 = 1` | honest Kolyvagin (replaces vacuous `BSD_Kolyvagin_OPEN`) |
+
+**New combinators (0 sorry, classical trio):**
+
+| Theorem | Statement | Proof |
+|---------|-----------|-------|
+| `BSD_rank_capstone` | `BSD_AlgRankOne_OPEN → BSD_AnRankOne_OPEN → BSD_143_OPEN` | `h_alg.trans h_an.symm` |
+| `BSD_kolyvagin_fullchain` | `BSD_GrossZagier_OPEN → BSD_KolyvaginRankBridge_OPEN → BSD_AnRankOne_OPEN → BSD_143_OPEN` | 3 honest gaps; no vacuous ∃ |
+
+#### Effective gap table after genesis-747
+
+| # | Surface | Content | Barrier |
+|---|---------|---------|---------|
+| 1 | `BSD_GrossZagier_OPEN` | L'(1) ≠ 0 ↔ Heegner height > 0 | Height pairing API |
+| 2 | `BSD_KolyvaginRankBridge_OPEN` | L'(1) ≠ 0 → BSD_Rank 143 = 1 | Euler system API |
+| 3 | `BSD_AnRankOne_OPEN` | VanishingOrder (BSDLFunction 143) 1 = 1 | L-function id API |
+
+`BSD_143_OPEN` follows from gaps 2+3 via `BSD_rank_capstone`.
+`BSD_143_OPEN` follows from gaps 1+2+3 via `BSD_kolyvagin_fullchain`.
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_RankCapstone.lean` | NEW — last-mile Clay capstone |
+| `scripts/verify_bsd_only.sh` | Phase 19 added; START_PHASE=19 default |
+
+Named OPEN primary surfaces: **4** (formal count unchanged; 3 effective via Kolyvagin route).
+BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
+## [genesis-746] — 2026-06-26
+
+### BSD_KolyvaginPath — Clay-Minimal Kolyvagin Route for 143a1
+
+**Strategic pivot**: stopped extending HasseBridge prime-by-prime (was at 51 primes,
+p ≤ 241) and wrote a cleaner combinator showing the Clay-minimal Kolyvagin path.
+
+**Key insight**: `BSD_HasseFull_143_OPEN` is NOT a separate Clay gap from
+`BSD_AnalyticContinuation_143_OPEN`. Any proof of analytic continuation to ℂ
+presupposes the Euler product converges on {Re s > 3/2}, which requires the Hasse
+bound. Listing HasseFull separately is a structural redundancy; the effective primary
+gap count via the Kolyvagin route is **3**, not 4.
+
+#### New file: `Towers/BSD/BSD_KolyvaginPath.lean`
+
+0 sorry, classical trio (`{propext, Classical.choice, Quot.sound}`). NOT a brick.
+NOT registered in BRICKS[]. No Clay claim.
+
+**New named OPEN surfaces:**
+
+| Surface | Type | Gap |
+|---------|------|-----|
+| `BSD_HasseSubsumedByCont_OPEN` | `BSD_AnalyticCont → BSD_LFunctionId → BSD_HasseFull` | structural (shows HasseFull ⊆ AnalyticCont) |
+| `BSD_RankOneToConj_OPEN` | `(∃ r:ℕ, r=1) → BSD_143_OPEN` | rank-1 → Clay BSD bridge (absent API) |
+
+**New combinators (0 sorry, classical trio):**
+
+| Theorem | Statement | Note |
+|---------|-----------|------|
+| `BSD_hasse_not_separate_gap` | AnalyticCont + Id + h_subsumes → HasseFull | conditional; shows HasseFull derivable |
+| `BSD_kolyvagin_rank1` | (h_gz, h_kol) → ∃ r:ℕ, r=1 | wraps `BSD_rank1_from_analytic` |
+| `BSD_KolyvaginPath_capstone` | (h_gz, h_kol, h_iso) → BSD_143_OPEN | 3-gap Clay route capstone |
+
+#### Clay-minimal gap table after genesis-746
+
+| # | Surface | Content | Mathlib gap |
+|---|---------|---------|-------------|
+| 1 | `BSD_GrossZagier_OPEN` | L'(1) ≠ 0 ↔ Heegner height > 0 | height pairing API |
+| 2 | `BSD_Kolyvagin_OPEN` | Heegner height > 0 → rank = 1 | Euler system API |
+| 3 | `BSD_RankOneToConj_OPEN` | ∃ r=1 → BSD_143_OPEN | rank/L-fn id API |
+
+**Already proved (unconditional):**
+- `BSD_HeegnerPoint_CLOSED` — rational point (2, 0) on 143a1
+- `BSD_RootNumber_CLOSED` — ε(143a1) = −1
+
+**HasseBridge**: 51 primes covered (p ≤ 241). Extension **stopped** per user direction —
+individual prime-by-prime bounds are not Clay-relevant and do not close BSD_HasseFull_143_OPEN.
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_KolyvaginPath.lean` | NEW — Kolyvagin 3-gap Clay combinator |
+| `Towers/BSD/BSD_SubGateChain.lean` | Kolyvagin path ledger entry added |
+| `scripts/verify_bsd_only.sh` | Phase 18 added; genesis-744/745 soft-skip in Phase 12; START_PHASE=18 default |
+
+Named OPEN primary surfaces: **4** (formal count unchanged; KolyvaginPath shows effective
+count is 3 via Kolyvagin route, with HasseFull subsumed). BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
+## [genesis-745] — 2026-06-26
+
+### HasseBridge extended to p ∈ {227, 229, 233, 239, 241}
+
+**5 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` → `omega` → completed-square → `BSD_hasse_of_degree_nonneg` bridge.
+Curve model [0,−1,1,−1,−2]: y²+y = x³−x²−x−2.
+p=229 has odd a_p (+9): half-integer witness (r−9/2)²+835/4.
+**Compiled via workflow** (bash subprocess OOMs at ≥51529 pairs; `set_option maxHeartbeats 800000`).
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis745_CLOSED.lean` | NEW — 5 Hasse surfaces for p ∈ {227,229,233,239,241} |
+| `Towers/BSD/E143a1_CLOSED.lean` | §10h added; import extended to genesis-745 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-745 ledger entry (`BSD_clay_open_count_745 = 4`) |
+| `scripts/verify_bsd_only.sh` | Phase 17 added; genesis-745 `use_olean_if_fresh` in Phase 12 |
+| `bsd-core/BSD/` | genesis-745 synced |
+
+#### Point counts and a_p values
+
+| p | card(Fp-affine) | a_p | Completed-square | Discriminant | Note |
+|---|-----------------|-----|-----------------|-------------|------|
+| 227 | 227 | 0 | r²+227 | 0−908 = −908 | trivial (no linear term) |
+| 229 | 220 | +9 | (r−9/2)²+835/4 | 81−916 = −835 | half-int |
+| 233 | 249 | −16 | (r+8)²+169 | 256−932 = −676 | |
+| 239 | 269 | −30 | (r+15)²+14 | 900−956 = −56 | |
+| 241 | 251 | −10 | (r+5)²+216 | 100−964 = −864 | |
+
+#### HasseBridge coverage after genesis-745
+
+**51 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪
+{83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪ {151,157,163,167,173,179,181,191} ∪
+{193,197,199,211,223} ∪ {227,229,233,239,241}
+
+Named OPEN primary surfaces: 4 (unchanged). BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
+## [genesis-744] — 2026-06-26
+
+### HasseBridge extended to p ∈ {193, 197, 199, 211, 223}
+
+**5 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` → `omega` → completed-square → `BSD_hasse_of_degree_nonneg` bridge.
+Curve model [0,−1,1,−1,−2]: y²+y = x³−x²−x−2.
+p=223 has odd a_p (+5): half-integer witness (r−5/2)²+867/4.
+**Compiled via workflow** (bash subprocess OOMs at ≥37249 pairs; `set_option maxHeartbeats 800000`).
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis744_CLOSED.lean` | NEW — 5 Hasse surfaces for p ∈ {193,197,199,211,223} |
+| `Towers/BSD/E143a1_CLOSED.lean` | §10g added; import changed to genesis-744 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-744 ledger entry (`BSD_clay_open_count_744 = 4`) |
+| `scripts/verify_bsd_only.sh` | Phase 16 added; genesis-744 `use_olean_if_fresh` in Phase 12 |
+| `bsd-core/BSD/` | genesis-744, E143a1_CLOSED, SubGateChain synced |
+
+#### Point counts and a_p values
+
+| p | card(Fp-affine) | a_p | Completed-square | Discriminant | Note |
+|---|-----------------|-----|-----------------|-------------|------|
+| 193 | 217 | −24 | (r+12)²+49 | 576−772 = −196 | |
+| 197 | 207 | −10 | (r+5)²+172 | 100−788 = −688 | |
+| 199 | 203 | −4 | (r+2)²+195 | 16−796 = −780 | |
+| 211 | 235 | −24 | (r+12)²+67 | 576−844 = −268 | |
+| 223 | 218 | +5 | (r−5/2)²+867/4 | 25−892 = −867 | half-int |
+
+#### HasseBridge coverage after genesis-744
+
+**46 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪
+{83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪ {151,157,163,167,173,179,181,191} ∪
+{193,197,199,211,223}
+
+Named OPEN primary surfaces: 4 (unchanged). BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
+## [genesis-743] — 2026-06-26
+
+### HasseBridge extended to p ∈ {151, 157, 163, 167, 173, 179, 181, 191} — S4 completion
+
+**8 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` → `omega` → completed-square → `BSD_hasse_of_degree_nonneg` bridge.
+Curve model [0,−1,1,−1,−2]: y²+y = x³−x²−x−2.
+**S4 completion**: p=191 is the fourth S4 exceptional prime (S4={2,3,19,191}).
+All four S4 primes now carry unconditional `BSD_Hasse_OPEN` certificates via §V.5.
+**Compiled via workflow** (bash subprocess OOMs at ≥22801 pairs; `set_option maxHeartbeats 800000`).
+
+**S4 killshot analysis** (v1.6 report, 4 exceptional primes vs. 4 OPEN surfaces):
+- Surfaces 2–4 (`BSD_AnalyticContinuation_143_OPEN`, `BSD_GammaFuncEq_143_OPEN`,
+  `BSD_143_OPEN`) require API absent from Mathlib v4.12.0 (`BSDLFunction 143` is
+  `noncomputable opaque`). No S4 killshot possible for these three.
+- Surface 1 (`BSD_HasseFull_143_OPEN`): all 4 S4 primes {2,3,19,191} now in HasseBridge
+  (p=191 closed here). Requires all primes; HasseBridge progress = 41/168 towards 997-prime
+  table coverage; Frobenius API gap (p>997) remains `BSD_HasseFull_HighPrimes_OPEN`.
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis743_CLOSED.lean` | NEW — 8 Hasse surfaces for p ∈ {151,157,163,167,173,179,181,191} |
+| `Towers/BSD/E143a1_CLOSED.lean` | §10e (genesis-742 p127-149) + §10f (genesis-743 p151-191); imports 742+743 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-743 ledger entry (`BSD_clay_open_count_743 = 4`) |
+| `scripts/verify_bsd_only.sh` | Phase 15 added; START_PHASE default changed to 14 |
+| `bsd-core/BSD/` | genesis-743, E143a1_CLOSED, SubGateChain synced |
+
+#### Point counts and a_p values
+
+| p | card(Fp-affine) | a_p | Completed-square | Discriminant | Note |
+|---|-----------------|-----|-----------------|-------------|------|
+| 151 | 147 | +4 | (r−2)²+147 | 16−604 = −588 | |
+| 157 | 152 | +5 | (r−5/2)²+603/4 | 25−628 = −603 | half-int |
+| 163 | 167 | −4 | (r+2)²+159 | 16−652 = −636 | |
+| 167 | 163 | +4 | (r−2)²+163 | 16−668 = −652 | |
+| 173 | 181 | −8 | (r+4)²+157 | 64−692 = −628 | |
+| 179 | 194 | −15 | (r+15/2)²+491/4 | 225−716 = −491 | half-int |
+| 181 | 174 | +7 | (r−7/2)²+675/4 | 49−724 = −675 | half-int |
+| 191 | 206 | −15 | (r+15/2)²+539/4 | 225−764 = −539 | S4 prime, half-int |
+
+#### HasseBridge coverage after genesis-743
+
+**41 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪
+{71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪
+{151,157,163,167,173,179,181,191}
+
+Named OPEN primary surfaces: **4 (unchanged)**. BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
 ## [genesis-742] — 2026-06-26
 
 ### HasseBridge extended to p ∈ {127, 131, 137, 139, 149}
