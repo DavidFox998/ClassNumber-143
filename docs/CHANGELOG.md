@@ -6,6 +6,64 @@ this file is the version history.
 
 ---
 
+## [genesis-720] — 2026-06-26
+
+### ClassNumber upper-bound gate closed unconditionally — BSD_ClassNum_Unconditional_CLOSED.lean
+
+**Milestone:** `BSD_classNumber_upper_OPEN` (the last internal gate in the BSD tower —
+`NumberField.classNumber K ≤ 10`) is now proved with **zero open hypotheses**.
+0 sorry, classical trio throughout.
+
+#### Mathematical content
+
+`BSD_classNumber_upper_OPEN` was previously only provable conditionally (e.g.
+given `BSD_BQF_ClassNumber_bridge_OPEN` or other gates).  This batch closes it
+unconditionally by assembling already-proved building blocks:
+
+| Step | Theorem | Source file | Content |
+|------|---------|-------------|---------|
+| 1 | `discr_v_BSD` | BSD_IntBasis | `Algebra.discr ℤ v_BSD = -143` |
+| 2 | `BSD_K_disc_neg143` *(new)* | BSD_IntBasis | `NumberField.discr K = -143` |
+| 3 | `BSD_finrank_proved` | BSD_Discriminant | `finrank ℚ K = 2` |
+| 4 | `BSD_small_norm_in_zpowers_CLOSED` | BSD_SurfaceClose_CLOSED | every norm≤7 ideal class ∈ ⟨[𝔭₂]⟩ |
+| 5 | `BSD_classGroupCard_le_10_CLOSED` | BSD_ClassNumber_UpperBound_CLOSED | `classNumber K ≤ 10` (given 2–4) |
+| 6 | `BSD_ClassNum_Unconditional` *(new)* | BSD_ClassNum_Unconditional_CLOSED | `classNumber K ≤ 10` — NO gate |
+
+**`BSD_K_disc_neg143` proof sketch:**
+The change-of-basis matrix P (from the ℤ-basis b₁ to v_BSD = {1,ω}) satisfies
+`P.det^2 * NumberField.discr K = Algebra.discr ℤ v_BSD = -143`.
+Squarefree(-143) (proved via `interval_cases p ≤ 11`) → `IsUnit P.det` →
+`P.det^2 = 1` → `NumberField.discr K = -143`.
+
+**Effect on downstream theorems:**
+Every theorem that previously took `h_upper : BSD_classNumber_upper_OPEN` as
+a hypothesis is now unconditionally proved (apply `BSD_ClassNum_Unconditional`):
+
+| Theorem | Previously conditional on | Now |
+|---------|--------------------------|-----|
+| `BSD_classNumber_10_FINAL` | `h_upper` | Unconditional |
+| `BSD_ClassNumber_Upper_CLOSED` | `h_upper` | Unconditional |
+| `BSD_ClassNumber_Lower_CLOSED` | `h_upper` | Unconditional |
+| `BSD_classGroupCard_le_10_CLOSED` | `h_upper` | Unconditional |
+| `BSD_BQF_ClassNumber_bridge_CLOSED` | `h_upper` | Unconditional |
+| `K1_Upper_Gate_CLOSED` | `h_upper` | Unconditional |
+| `K1_Lower_Gate_CLOSED` | `h_upper` | Unconditional |
+| `BSD_ClassNumber_completion_CLOSED` | `h_upper` | Unconditional |
+
+#### Files changed
+
+- `lean-proof-towers/Towers/BSD/BSD_IntBasis.lean` — added `neg143_squarefree`
+  (private helper) and `BSD_K_disc_neg143` (new public theorem).
+- `lean-proof-towers/Towers/BSD/BSD_ClassNum_Unconditional_CLOSED.lean` — new file.
+  Proves `BSD_ClassNum_Unconditional` unconditionally.
+- `bsd-core/BSD/` — synced.
+- `scripts/verify_weil_cluster.sh` Phase 11 added.
+- ROADMAP + CHANGELOG updated.
+
+**SORRY: 0 | AXIOMS: classical trio | Internal gates remaining: 0**
+
+---
+
 ## [genesis-719] — 2026-06-26
 
 ### BSD Torsion Triviality & Certificate/ROADMAP correction — BSD_TorsionBound_CLOSED.lean
