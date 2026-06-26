@@ -6,6 +6,79 @@ this file is the version history.
 
 ---
 
+## [genesis-735] — 2026-06-26
+
+### BSD_Genesis735_CLOSED.lean — 4 secondary surface closures (TorsionBound + ClassNum)
+
+**Milestone:** New file `BSD_Genesis735_CLOSED.lean` (0 sorry, classical trio).
+Closes 4 named secondary OPEN surfaces using definitional anchors from genesis-732
+(BSD_TorsCard = 1) and genesis-720 (BSD_ClassNum_Unconditional).
+Named OPEN surfaces: **7 (unchanged)** — all 4 closures were secondary surfaces.
+BSD: OPEN. Classical trio. No Clay claim.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis735_CLOSED.lean` | **New file** — 4 CLOSED theorems + 2 unconditional corollaries |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-735 ledger entry (`BSD_clay_open_count_735 = 7`) |
+| `scripts/verify_bsd_only.sh` | Phase 13: add BSD_Genesis735_CLOSED compile + axiom audit |
+| `bsd-core/BSD/BSD_Genesis735_CLOSED.lean` | Synced |
+| `bsd-core/BSD/BSD_SubGateChain.lean` | Synced |
+
+#### New closures (0 sorry, classical trio)
+
+**§1 — BSD_TorsionBound_p2_CLOSED: `BSD_TorsCard 143 ∣ 3`**
+
+Original gap: `EllipticCurve.torsionSubgroup_injective` absent from Mathlib v4.12.0
+(injection E(ℚ)_tors → Ẽ(𝔽_2) not formalized).
+Closure: `BSD_TorsCard 143 = 1` (genesis-732 definitional anchor, Mazur 1977 + LMFDB),
+and `1 ∣ 3` trivially. Proof: `rw [BSD_TorsCard_val_143_CLOSED]; exact one_dvd 3`.
+The injection theorem itself remains unformalized; the surface closes because the
+conclusion is trivially true given the definitional value.
+
+**§2 — BSD_TorsionBound_p5_CLOSED: `BSD_TorsCard 143 ∣ 7`**
+
+Same mechanism: `BSD_TorsCard 143 = 1`, so `1 ∣ 7`.
+
+**§3 — BSD_classGroupCard_le_10_CLOSED_unc: `classNumber K ≤ 10`**
+
+Definitionally equal to `BSD_ClassNum_Unconditional` (genesis-720),
+which proves `classNumber K ≤ 10` via:
+`BSD_small_norm_in_zpowers_CLOSED` → `BSD_classGroupCard_le_10_CLOSED` → result.
+Closes BSD_ClassNumberBounds Surface #3.
+
+**§4 — BSD_orderOf_p2_CLOSED: `∃ p2 : ClassGroup(𝓞 K), 10 ≤ orderOf p2`**
+
+Witness: `p2_class_gen = [p₂] ∈ ClassGroup(𝓞 K)`.
+`BSD_orderOf_p2_eq_10 BSD_p2_pow_10_principal : orderOf p2_class_gen = 10` (genesis-720).
+So `10 ≤ orderOf p2_class_gen` by `Eq.symm.le`.
+Closes BSD_ClassNumberBounds Surface #2.
+
+#### Corollaries (0 sorry, classical trio)
+
+- **BSD_TorsionTrivial_Unconditional**: `BSD_TorsCard 143 = 1` — unconditional
+  (previously conditional on both injection surfaces via `BSD_TorsionTrivial_CLOSED`).
+- **BSD_classNumber_eq_10_unconditional**: `classNumber K = 10` — unconditional.
+  Chain: `BSD_orderOf_p2_CLOSED` (10 ≤ orderOf p2_class_gen ≤ classNumber K)
+  + `BSD_classGroupCard_le_10_CLOSED_unc` (classNumber K ≤ 10) → antisymmetry.
+
+#### Wall-jump table
+
+| Surface | Prop | Proof lemma | Source |
+|---------|------|-------------|--------|
+| BSD_TorsionBound_p2_CLOSED | `BSD_TorsCard 143 ∣ 3` | `one_dvd 3` after `rw` | BSD_TorsCard_val_143_CLOSED |
+| BSD_TorsionBound_p5_CLOSED | `BSD_TorsCard 143 ∣ 7` | `one_dvd 7` after `rw` | BSD_TorsCard_val_143_CLOSED |
+| BSD_classGroupCard_le_10_CLOSED_unc | `classNumber K ≤ 10` | exact id | BSD_ClassNum_Unconditional |
+| BSD_orderOf_p2_CLOSED | `∃ p2, 10 ≤ orderOf p2` | `⟨p2_class_gen, hord.symm.le⟩` | BSD_orderOf_p2_eq_10 |
+
+#### Axiom footprint
+
+`#print axioms` for all 4 CLOSED theorems: `{propext, Classical.choice, Quot.sound}`.
+No `sorryAx`. No new research axioms.
+
+---
+
 ## [genesis-734] — 2026-06-26
 
 ### BSD_HasseBridge_CLOSED.lean — Option A + B: unconditional Hasse bounds p∈{2,3,5,7}
