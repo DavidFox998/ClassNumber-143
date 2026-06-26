@@ -470,4 +470,41 @@ def BSD_clay_open_count_738 : ℕ := 4
     new closures are secondary Hasse surfaces). -/
 def BSD_clay_primary_gap_count_738 : ℕ := 4
 
+/-- Open surface count after genesis-739.
+
+    Named OPEN primary surfaces: **4** (unchanged — all 3 new closures are secondary
+    Hasse surfaces, not primary gaps).
+
+    **genesis-739** (`BSD_Genesis739_CLOSED.lean`, 2026-06-26):
+    HasseBridge extended to 3 more primes via the §V.5 Frobenius-degree route.
+    New primes covered: p ∈ {71, 73, 79}.
+    Each proved by: `decide` (affine point count over ZMod p × ZMod p) →
+    `omega` (exact a_p) → completed-square discriminant check (all negative) →
+    `BSD_hasse_of_degree_nonneg` bridge.
+
+    a_p values (LMFDB 143a1 trace table):
+      a_71 = −9  (card=80; disc = 81−284 = −203)
+      a_73 = −16 (card=89; disc = 256−292 = −36)
+      a_79 = +8  (card=71; disc = 64−316 = −252)
+
+    HasseBridge after genesis-739 covers **20 good primes**:
+      {2,3,5,7} (genesis-734) ∪ {17,19,23,29} (genesis-736) ∪
+      {31,37,41,43,47,53,59,61,67} (genesis-738) ∪ {71,73,79} (genesis-739).
+
+    NOTE: Primes p ∈ {83, 89, 97} (card counts 6889–9409) deferred to genesis-740;
+    `decide` over ≥6889 pairs causes OOM in bash subprocess (Lean kernel limit).
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation
+      (d) BSD_143_OPEN             — BSD conjecture itself
+
+    Verify workflow: START_PHASE=13 (Phase 13 extended to include genesis-739). -/
+def BSD_clay_open_count_739 : ℕ := 4
+
+/-- Primary gap count after genesis-739 (4 remain; 0 primary gaps closed — all 3
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_739 : ℕ := 4
+
 end Towers.BSD
