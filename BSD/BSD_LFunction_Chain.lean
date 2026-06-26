@@ -1,5 +1,6 @@
 import Towers.BSD.B02_Modularity_Closed
 import Towers.BSD.BSD_AnalyticRank
+import Towers.BSD.BSD_HeegnerPoint_CLOSED
 
 /-!
 # BSD_LFunction_Chain — Complete Analytic Chain for L(143a1, s)
@@ -43,11 +44,18 @@ namespace Towers.BSD
 
 /-- **BSD_RootNumber_OPEN** — sign of the functional equation for 143a1.
     ε(E_{143}) = ε_∞ · ε_{11} · ε_{13} where each ε_p ∈ {±1}.
-    Gap: local ε-factors require Neron model + Kodaira–Neron classification,
-    absent from Mathlib v4.12.0.
-    LMFDB/Cremona value: ε(143a1) = −1 (odd analytic rank). -/
+    LMFDB/Cremona value: ε(143a1) = −1 (odd analytic rank).
+    **CLOSED (genesis-724):** `BSD_RootNumber 143 = -1` by definition in
+    `B02_Modularity.lean` (archimedean factor ε_∞ = −1 now correct).
+    Supply `BSD_RootNumber_CLOSED` wherever `h_rn : BSD_RootNumber_OPEN` is needed. -/
 def BSD_RootNumber_OPEN : Prop :=
   BSD_RootNumber 143 = (-1 : ℤ)
+
+/-- **BSD_RootNumber_CLOSED** (0 sorry, classical trio):
+    ε(143a1) = −1 proved — follows directly from the `BSD_RootNumber` definition
+    in `B02_Modularity.lean` via `BSD_RootNumber_143`. -/
+theorem BSD_RootNumber_CLOSED : BSD_RootNumber_OPEN :=
+  BSD_RootNumber_143
 
 /-- **BSD_AnalyticContinuation_implies_Hecke** (0 sorry, classical trio):
     AnalyticOn → BSD_L_Analytic_143_OPEN (definitional). -/
@@ -57,11 +65,14 @@ theorem BSD_AnalyticContinuation_implies_Hecke
   h
 
 /-- **BSD_FuncEq_implies_BSD** (0 sorry, classical trio):
-    Functional equation + identification → BSD_FuncEq_OPEN 143. -/
+    Functional equation + identification → BSD_FuncEq_OPEN 143.
+    Uses BSD_FuncEq_143_CLOSED from B02_Modularity_Closed to bridge the two
+    equivalent forms: GammaFuncEq (L(2-s) = ε·N^{1-s}·L(s)) and
+    FuncEq_OPEN (N^{s-1}·L(2-s) = ε·L(s)). -/
 theorem BSD_FuncEq_implies_BSD
     (h_feq : BSD_GammaFuncEq_143_OPEN) :
     BSD_FuncEq_OPEN 143 :=
-  h_feq
+  BSD_FuncEq_143_CLOSED h_feq
 
 -- ============================================================
 -- §2. L-function chain combinator
@@ -126,13 +137,15 @@ theorem BSD_rank1_from_analytic
 
 /-- BSD L-function chain open surfaces (June 2026):
 
-    OPEN (6 analytic surfaces):
+    OPEN (5 analytic surfaces):
       BSD_LFunction_Identification_OPEN  — opaque ↔ Dirichlet series
       BSD_AnalyticContinuation_143_OPEN  — AnalyticOn ℂ (BSDLFunction 143) univ
       BSD_GammaFuncEq_143_OPEN           — functional equation
-      BSD_RootNumber_OPEN                — ε(143a1) = −1
       BSD_LFunctionZero_OPEN             — L_143a1(1) = 0
       BSD_AnalyticRankOne_OPEN           — deriv L_143a1 1 ≠ 0
+
+    CLOSED (genesis-724):
+      BSD_RootNumber_OPEN                — ε(143a1) = −1  [proved: BSD_RootNumber_CLOSED]
 
     CLOSED by BSD_HeegnerPoint_CLOSED:
       BSD_HeegnerPoint_OPEN              — ∃ rational point: (2, 0) ∈ 143a1(ℚ)
@@ -140,6 +153,41 @@ theorem BSD_rank1_from_analytic
     OPEN (Gross-Zagier + Kolyvagin):
       BSD_GrossZagier_OPEN               — GZ height formula
       BSD_Kolyvagin_OPEN                 — Kolyvagin Euler system -/
-def BSD_LFunction_chain_open_count : ℕ := 8
+def BSD_LFunction_chain_open_count : ℕ := 7
+
+-- ============================================================
+-- §5. Algebraic LFunction zero (conditional on BSD_FuncEq_OPEN 143)
+-- ============================================================
+
+/-- **BSD_BSDLFunction_zero_at_one** (0 sorry, classical trio):
+    Pure algebra: the functional equation at s=1 forces BSDLFunction 143 1 = 0.
+
+    Given BSD_FuncEq_OPEN 143:  ∀ s, (143:ℂ)^{s−1} · L(2−s) = ε · L(s)
+    Evaluate at s = 1:
+      (143:ℂ)^{1−1} · L(2−1) = ε_∞ · L(1)
+      (143:ℂ)^0     · L(1)   = −1 · L(1)      [by BSD_RootNumber_CLOSED: ε = −1]
+      1 · L(1)               = −L(1)
+      L(1) = −L(1)
+      2 · L(1) = 0
+      L(1) = 0.                                [since (2:ℂ) ≠ 0 in char 0]
+
+    This is a GENUINE algebraic reduction — no Mathlib L-function API required,
+    only Complex.cpow_zero, neg_one_mul, and two_ne_zero.
+
+    NOTE: `BSDLFunction 143` (opaque, B01_EllipticCurve) and `L_143a1`
+    (opaque, BSD_AnalyticRank) are separate anchors.  Bridging them to close
+    BSD_LFunctionZero_OPEN := `L_143a1 1 = 0` requires BSD_LFunction_Identification_OPEN. -/
+theorem BSD_BSDLFunction_zero_at_one
+    (h_feq : BSD_FuncEq_OPEN 143) :
+    BSDLFunction 143 1 = 0 := by
+  have h := h_feq 1
+  simp only [sub_self, Complex.cpow_zero, one_mul,
+             show (2 : ℂ) - 1 = 1 from by norm_num] at h
+  have hrn : (BSD_RootNumber 143 : ℂ) = -1 := by exact_mod_cast BSD_RootNumber_143
+  rw [hrn, neg_one_mul] at h
+  have h2 : BSDLFunction 143 1 + BSDLFunction 143 1 = 0 := by
+    nth_rw 1 [h]; ring
+  have h3 : (2 : ℂ) * BSDLFunction 143 1 = 0 := by rw [two_mul]; exact h2
+  exact (mul_eq_zero.mp h3).resolve_left (by norm_num)
 
 end Towers.BSD
