@@ -24,7 +24,7 @@ open NumberField Polynomial IntermediateField FiniteDimensional
 
 /-! ### Step 1: natDegree -/
 
-private lemma gen_poly_natDegree : (X ^ 2 + C (53 : ℚ) * X + C 1024).natDegree = 2 := by
+lemma gen_poly_natDegree : (X ^ 2 + C (53 : ℚ) * X + C 1024).natDegree = 2 := by
   have h_C : (X ^ 2 + C (53 : ℚ) * X + C (1024 : ℚ)).natDegree =
              (X ^ 2 + C (53 : ℚ) * X).natDegree := natDegree_add_C
   have h_CX : natDegree (C (53 : ℚ) * X) = 1 := natDegree_C_mul_X _ (by norm_num)
@@ -35,13 +35,13 @@ private lemma gen_poly_natDegree : (X ^ 2 + C (53 : ℚ) * X + C 1024).natDegree
 
 /-! ### Step 2: Monic -/
 
-private lemma irred_gen_poly_monic : (X ^ 2 + C (53 : ℚ) * X + C 1024).Monic := by
+lemma irred_gen_poly_monic : (X ^ 2 + C (53 : ℚ) * X + C 1024).Monic := by
   rw [Monic, leadingCoeff, gen_poly_natDegree]
   norm_num [coeff_add, coeff_X_pow, coeff_C_mul, coeff_X, coeff_C]
 
 /-! ### Step 3: Irreducible -/
 
-private lemma irred_gen_poly : Irreducible (X ^ 2 + C (53 : ℚ) * X + C 1024) := by
+lemma irred_gen_poly : Irreducible (X ^ 2 + C (53 : ℚ) * X + C 1024) := by
   have hne1 : X ^ 2 + C (53 : ℚ) * X + C 1024 ≠ 1 := by
     intro h
     have := gen_poly_natDegree
@@ -63,12 +63,12 @@ private lemma irred_gen_poly : Irreducible (X ^ 2 + C (53 : ℚ) * X + C 1024) :
 /-! ### Step 4: Minimal polynomial -/
 
 /-- The key cast: gen_sq_BSD (in 𝓞 K) implies the same equation in K. -/
-private lemma gen_OK_sq_K : (gen_OK : K) ^ 2 + 53 * (gen_OK : K) + 1024 = 0 := by
+lemma gen_OK_sq_K : (gen_OK : K) ^ 2 + 53 * (gen_OK : K) + 1024 = 0 := by
   have h := congr_arg (algebraMap (𝓞 K) K) gen_sq_BSD
   simp only [map_add, map_pow, map_mul, map_ofNat, map_zero] at h
   exact h
 
-private lemma gen_OK_minpoly_eq :
+lemma gen_OK_minpoly_eq :
     X ^ 2 + C (53 : ℚ) * X + C 1024 = minpoly ℚ (gen_OK : K) := by
   apply minpoly.eq_of_irreducible_of_monic irred_gen_poly _ irred_gen_poly_monic
   have heq : Polynomial.aeval (gen_OK : K) (X ^ 2 + C (53 : ℚ) * X + C 1024) =
