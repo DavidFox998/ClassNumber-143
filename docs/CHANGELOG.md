@@ -6,6 +6,70 @@ this file is the version history.
 
 ---
 
+## [genesis-721] — 2026-06-26
+
+### BSD Capstone batch — Genus, Bost bound, BQF bridge, ClassGroup generator, E143a1 capstone
+
+**Milestone:** Five new files complete the proved-arithmetic spine of the BSD
+tower for 143a1. All 5 compile EXIT:0; SORRY:0; classical trio throughout.
+Registered as Phase 12 in `verify_bsd_only.sh` and `verify_weil_cluster.sh`.
+
+#### Files added / fixed
+
+| File | Content |
+|------|---------|
+| `Towers/BSD/Genus_X0_143.lean` | `genus_X0_143`: genus(X₀(143))=13 by Diamond-Shurman formula |
+| `Towers/BSD/BostBound_143.lean` | `BostBound_143_cert`: C(S₄) > 2·√13 for S₄={2,3,19,191} |
+| `Towers/BSD/BSD_BQF_Bridge_Closed.lean` | `BSD_BQF_classNumber_eq_numForms`: classNumber K = reducedForms143.length = 10 |
+| `Towers/BSD/BSD_ClassGroup_Generator_CLOSED.lean` | `BSD_classGroup_gen_by_p2_CLOSED`: ClassGroup(𝓞 K) = ⟨[p₂]⟩ cyclic order 10 |
+| `Towers/BSD/E143a1_CLOSED.lean` | Capstone collecting all proved arithmetic facts for 143a1 |
+
+#### Mathematical content
+
+- **Genus (Diamond-Shurman Theorem 3.1.1):** genus(X₀(143)) = 1 + 168/12 − 0/4 − 0/3 − 4/2 = 13.
+  Verified by `norm_num` on the explicit formula (level 143 = 11×13, cusps=4, irregular=0).
+
+- **Bost bound:** For S₄ = {2, 3, 19, 191}, the isogeny-class Bost constant
+  C(S₄) = log(6.0) + log(8.0) + log(4.0) + log(17.0) > 2·√13 ≈ 7.211.
+  Proved in three steps: rational-literal bridges + `norm_num` + `nlinarith` using
+  `Real.sqrt_lt'` + `Real.log_le_log` with explicit rational enclosures.
+
+- **BQF bridge:** `classNumber K = reducedForms143.length` closes via
+  `BSD_classNumber_eq_10_via_principal BSD_p2_pow_10_principal BSD_ClassNum_Unconditional`.
+  Both sides equal 10; the equality wires existing `BSD_BQF_Bridge_Closed`.
+
+- **ClassGroup generator fix:** `Subgroup.eq_top_of_card_eq` in Mathlib v4.12.0
+  takes the subgroup `H` as its first explicit argument (not the cardinality proof).
+  Correct call: `Subgroup.eq_top_of_card_eq (Subgroup.zpowers p2_class_gen) hcard`.
+  This was the sole compilation blocker (error: argument type mismatch — `hcard`
+  supplied where `Subgroup _` expected).
+
+- **E143a1 capstone:** collects all proved facts —
+  Weierstrass model `[0,−1,1,−1,−2]`, points (2,0)/(4,6)/(4,−7) by norm_num,
+  conductor 143=11×13, a_p for p∈{2,3,5,7,11,13,19,191} by rfl,
+  genus=13, Bost bound, classNumber=10, ClassGroup=⟨[p₂]⟩, `BSD_Analytic_OPEN` named.
+
+#### Key fix: `Subgroup.eq_top_of_card_eq` calling convention
+
+The theorem signature is:
+```
+theorem Subgroup.eq_top_of_card_eq [Finite H] (h : Nat.card H = Nat.card G) : H = ⊤
+```
+where `H : Subgroup G` is a VARIABLE, but the proof obligation surfaces it as
+an explicit positional argument in the `@`-form.  `Iff.intro (eq_top_of_card_eq H)` in
+Mathlib's own proof (line 121) confirms `H` is explicit.  Correct invocation:
+`Subgroup.eq_top_of_card_eq (Subgroup.zpowers p2_class_gen) hcard`.
+
+#### Verify scripts
+
+- `scripts/verify_bsd_only.sh` — Phase 12 appended (replaces closing line, now
+  "BSD phases 7–12 verified").
+- `scripts/verify_weil_cluster.sh` — Phase 12 appended (now "Phases 1–12").
+
+**SORRY: 0 | AXIOMS: classical trio | BSD conjecture: OPEN**
+
+---
+
 ## [genesis-720] — 2026-06-26
 
 ### ClassNumber upper-bound gate closed unconditionally — BSD_ClassNum_Unconditional_CLOSED.lean
