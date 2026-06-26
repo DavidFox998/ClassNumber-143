@@ -426,6 +426,42 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 
 ---
 
+### BSD_Genesis745_CLOSED.lean — 5 secondary Hasse closures p∈{227,229,233,239,241} (genesis-745)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p227/229/233/239/241` | Point counts: 227, 220, 249, 269, 251 (decide; 51529–58081 pairs; workflow only) |
+| `BSD_ap_p227/229/233/239/241` | Exact traces: 0, +9, −16, −30, −10 (omega from card) |
+| `BSD_DegreeNonneg_p227/229/233/239/241` | Completed-square nonneg: disc −908, −835, −676, −56, −864 (p=229: half-int witness) |
+| `BSD_Hasse_OPEN_p227/229/233/239/241` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p=229 has odd a_p (+9) → half-integer witness (r−9/2)²+835/4. Compiled via workflow (≥51529 pairs per prime).*
+
+---
+
+### BSD_Genesis744_CLOSED.lean — 5 secondary Hasse closures p∈{193,197,199,211,223} (genesis-744)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p193/197/199/211/223` | Point counts: 217, 207, 203, 235, 218 (decide; 37249–49729 pairs; workflow only) |
+| `BSD_ap_p193/197/199/211/223` | Exact traces: −24, −10, −4, −24, +5 (omega from card) |
+| `BSD_DegreeNonneg_p193/197/199/211/223` | Completed-square nonneg: disc −196, −688, −780, −268, −867 (p=223: half-int witness) |
+| `BSD_Hasse_OPEN_p193/197/199/211/223` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p=223 has odd a_p (+5) → half-integer witness (r−5/2)²+867/4. Compiled via workflow (≥37249 pairs per prime).*
+
+---
+
+### BSD_Genesis743_CLOSED.lean — 8 secondary Hasse closures p∈{151,157,163,167,173,179,181,191} (genesis-743)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p151/157/163/167/173/179/181/191` | Point counts: 147, 152, 167, 163, 181, 194, 174, 206 (decide; 22801–36481 pairs; workflow only) |
+| `BSD_ap_p151/157/163/167/173/179/181/191` | Exact traces: +4, +5, −4, +4, −8, −15, +7, −15 (omega from card) |
+| `BSD_DegreeNonneg_p151/157/163/167/173/179/181/191` | Completed-square nonneg: disc −588, −603, −636, −652, −628, −491, −675, −539 |
+| `BSD_Hasse_OPEN_p151/157/163/167/173/179/181/191` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p=157,179,181,191 have odd a_p → half-integer witnesses. p=191 is S4 prime (S4={2,3,19,191}): all 4 S4 primes now in HasseBridge. Compiled via workflow (≥22801 pairs per prime).*
+
+---
+
 ### BSD_Genesis742_CLOSED.lean — 5 secondary Hasse closures p∈{127,131,137,139,149} (genesis-742)
 | Theorem | Statement |
 |---------|-----------|
@@ -442,7 +478,7 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 
 | Category | Count |
 |----------|-------|
-| Fully proved files (0 sorry anywhere) | 38 |
+| Fully proved files (0 sorry anywhere) | 40 |
 | Total proved `theorem`/`lemma` declarations | **≈852** |
 | Files with sorry only in documentation strings | 4 (B03, BSD_AP_Table, BSD_ClassNumber, BSD_ClassNumberBounds) |
 | Actual proof-body sorry count | **0** |
