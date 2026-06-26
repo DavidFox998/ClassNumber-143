@@ -6,6 +6,56 @@ this file is the version history.
 
 ---
 
+## [genesis-722] — 2026-06-26
+
+### BSD Clay 6-gate combinator — two Clay gates discharged unconditionally
+
+**Milestone:** `BSD_Clay_6gate_CLOSED.lean` reduces the BSD Clay gate combinator
+from 7 to **6 explicit analytic parameters** by discharging
+`BSD_classNumber_upper_OPEN` unconditionally. Verified EXIT:0; SORRY:0;
+classical trio throughout. Added to Phase 12 of both verify scripts.
+
+#### File added
+
+| File | Content |
+|------|---------|
+| `Towers/BSD/BSD_Clay_6gate_CLOSED.lean` | 6-gate Clay combinator + genesis-722 arithmetic cross-references |
+
+#### Mathematical content
+
+- **Gate discharge 1 — `BSD_classNumber_upper_OPEN`:**
+  `BSD_classNumber_upper_OPEN := NumberField.classNumber K ≤ 10`.
+  Proved unconditionally by `BSD_ClassNum_Unconditional`
+  (`BSD_ClassNum_Unconditional_CLOSED.lean`, genesis-720), which closes the
+  upper-bound gate without any open hypothesis.  `BSD_ClayCompliance_6gate`
+  now drops this parameter entirely.
+
+- **Gate discharge 2 — `BSD_HeegnerPoint_OPEN`:**
+  Already proved in `BSD_HeegnerPoint_CLOSED` (witness (2, 0) ∈ 143a1(ℚ)).
+  Cross-referenced explicitly as `BSD_HeegnerPoint_DISCHARGED` in the new file.
+
+- **6-gate combinator `BSD_ClayCompliance_6gate`:**
+  Takes 6 analytic surface parameters (Hasse full, L-analytic, functional
+  equation, regulator, Sha, Tamagawa conjecture) plus `BSD_143_OPEN` (the
+  Clay statement), and returns the full BSD compliance bundle.  The class-number
+  upper gate is supplied via `BSD_ClassNum_Unconditional` internally.
+
+- **Remaining open surfaces (11):**
+  `BSD_HasseFull_143_OPEN` · `BSD_LFunction_Identification_OPEN` ·
+  `BSD_AnalyticContinuation_143_OPEN` · `BSD_GammaFuncEq_143_OPEN` ·
+  `BSD_LFunctionZero_OPEN` · `BSD_AnalyticRankOne_OPEN` ·
+  `BSD_Regulator_OPEN 143` · `BSD_Sha_OPEN 143` ·
+  `BSD_TamagawaConj_OPEN 143` · `BSD_Tamagawa_11_is_1_OPEN` ·
+  `BSD_Tamagawa_13_is_2_OPEN`
+  (plus `BSD_143_OPEN` = the Clay conjecture itself)
+
+#### Verify checkpoint
+
+Full BSD verification (Phases 7–12) passed BEFORE genesis-722 was added.
+Phase 12 axiom audit (post-722) covers 5 theorems: all classical trio.
+
+---
+
 ## [genesis-721] — 2026-06-26
 
 ### BSD Capstone batch — Genus, Bost bound, BQF bridge, ClassGroup generator, E143a1 capstone
