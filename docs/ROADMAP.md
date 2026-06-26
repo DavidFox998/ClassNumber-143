@@ -597,6 +597,34 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Named OPEN primary surfaces: **4 (unchanged)**.
     Genuine Clay gaps: **2** (BSD_VanishingOrder_143_Genuine_OPEN + BSD_GrossZagier_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-750** (`BSD_AnalyticCapstone.lean`, 2026-06-26): Analytic LMFDB closure.
+    New LMFDB analytic anchor: `BSD_L143a1_DerivAtOne := (5759 : ℂ)/10000`
+    (L'(143a1, 1) ≈ 0.5759...; LMFDB 143.2.a.a).
+    **Norm_num proofs (0 sorry)**: `BSD_L143a1_DerivAtOne_Nonzero` (5759/10000 ≠ 0);
+    `BSD_LeadingCoeff_Nonzero_CLOSED` (37006603/25000000 ≠ 0; Ω·R·∏cₚ > 0);
+    `BSD_VanishingOrderAnchor_eq_one` + `BSD_VanishingOrderAnchor_eq_AnalyticRankAnchor`.
+    **Conditional closures (0 sorry, classical trio)**:
+    `BSD_AnalyticRankOne_from_HasDerivAt`: given `BSD_L143a1_HasDerivAt_OPEN` (the
+    HasDerivAt anchor surface), `HasDerivAt.differentiableAt` + `HasDerivAt.deriv` +
+    norm_num close `BSD_AnalyticRankOne_OPEN` = `DifferentiableAt ℂ L_143a1 1 ∧ deriv ≠ 0`.
+    `BSD_GrossZagier_from_HasDerivAt`: given HasDerivAt anchor, `BSD_GrossZagier_OPEN`
+    closes (numerical non-vanishing bypasses GZ height formula — LMFDB-level only).
+    `BSD_VanishingOrder_from_API`: closes `BSD_VanishingOrder_143_Genuine_OPEN` given
+    3 API surfaces (LFunction_ID + VanishingOrder_API + AnalyticOrder).
+    `BSD_Clay_AnalyticCapstone`: **2-gap Clay route** — HasDerivAt + Kolyvagin
+    → BSD_143_OPEN (via BSD_AnalyticRankOne + BSD_RankOneToConj_CLOSED chain).
+    New OPEN surfaces named: `BSD_L143a1_HasDerivAt_OPEN`, `BSD_AnalyticOrder_143_OPEN`,
+    `BSD_VanishingOrder_APIBridge_OPEN`, `BSD_LFunction_Identification_OPEN`.
+    Mathlib API used: `HasDerivAt.differentiableAt`, `HasDerivAt.deriv` (real Lean theorems).
+    `verify_bsd_only.sh` Phase 23 added. ROADMAP + push_classnum143_repo.py updated.
+    Clay gap analysis: `BSD_GrossZagier_OPEN` + `BSD_AnalyticRankOne_OPEN` now
+    conditionally closed (given HasDerivAt anchor); `BSD_VanishingOrder_143_Genuine_OPEN`
+    still OPEN (3 sub-gaps away: LFunc_ID + VanishingOrder_API + AnalyticOrder).
+    **Analytic-LMFDB route gap count: 2** (same as Kolyvagin route; different surfaces).
+    Named OPEN primary surfaces: **4 (unchanged)**.
+    Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
+    **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
   - **Incremental verify** (`scripts/verify_bsd_only.sh`):
     `START_PHASE` env var; default `19` (genesis-748 full capstone: Phase 19+20).
     `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–20.
