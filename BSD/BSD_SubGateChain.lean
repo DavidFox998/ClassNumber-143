@@ -352,4 +352,42 @@ def BSD_clay_open_count_735 : ℕ := 7
 /-- Primary gap count after genesis-735 (unchanged: all 4 closures were secondary). -/
 def BSD_clay_primary_gap_count_735 : ℕ := 7
 
+/-- Open surface count after genesis-736.
+
+    Named OPEN sub-surfaces: **7** (unchanged — all closures are secondary Hasse surfaces).
+    Four Hasse surfaces closed via the §V.5 Frobenius-degree route (genesis-736):
+
+      BSD_Hasse_OPEN_p17 — |a₁₇(E₁₄₃)| ≤ 2√17:
+        card(𝔽₁₇) = 21 (decide); a₁₇ = −4 (omega); disc = 16−68 = −52 < 0;
+        completed square: r²+4r+17 = (r+2)²+13; BSD_hasse_of_degree_nonneg bridge.
+
+      BSD_Hasse_OPEN_p19 — |a₁₉(E₁₄₃)| ≤ 2√19:
+        card(𝔽₁₉) = 17 (decide); a₁₉ = +2 (omega); disc = 4−76 = −72 < 0;
+        completed square: r²−2r+19 = (r−1)²+18.
+
+      BSD_Hasse_OPEN_p23 — |a₂₃(E₁₄₃)| ≤ 2√23:
+        card(𝔽₂₃) = 16 (decide); a₂₃ = +7 (omega); disc = 49−92 = −43 < 0;
+        completed square: r²−7r+23 = (r−7/2)²+43/4.
+
+      BSD_Hasse_OPEN_p29 — |a₂₉(E₁₄₃)| ≤ 2√29:
+        card(𝔽₂₉) = 31 (decide); a₂₉ = −2 (omega); disc = 4−116 = −112 < 0;
+        completed square: r²+2r+29 = (r+1)²+28.
+
+    HasseBridge coverage: 8 primes ({2,3,5,7} from genesis-734;
+    {17,19,23,29} added here). BSD_HasseFull_143_OPEN remains OPEN
+    (infinitely many good primes require Frobenius API absent from v4.12.0).
+
+    Remaining OPEN sub-surfaces (7, unchanged):
+      BSD_HasseFull_143_OPEN, BSD_LFunction_Identification_OPEN,
+      BSD_AnalyticContinuation_143_OPEN, BSD_GammaFuncEq_143_OPEN,
+      BSD_LFunctionZero_OPEN, BSD_AnalyticRankOne_OPEN, BSD_Regulator_OPEN 143.
+
+    Minimum independent primary gaps: 7 (unchanged — all 4 closures are secondary
+    Hasse surfaces that follow from the §V.5 bridge + concrete decide computations).
+    Verify workflow: START_PHASE=13 (genesis-736; Phase 13 now covers genesis-732+735+736). -/
+def BSD_clay_open_count_736 : ℕ := 7
+
+/-- Primary gap count after genesis-736 (unchanged: all 4 closures were secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_736 : ℕ := 7
+
 end Towers.BSD
