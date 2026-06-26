@@ -6,6 +6,56 @@ this file is the version history.
 
 ---
 
+## [genesis-740] — 2026-06-26
+
+### HasseBridge extended to p ∈ {83, 89, 97}
+
+**3 secondary Hasse surfaces closed** via the §V.5 Frobenius-degree route.
+Each proved by: `decide` (affine point count over ZMod p × ZMod p) → `omega`
+(exact a_p) → completed-square discriminant check (all negative) →
+`BSD_hasse_of_degree_nonneg` bridge.
+**Compiled via workflow** (bash subprocess OOMs at ≥6889 pairs).
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis740_CLOSED.lean` | NEW — 3 Hasse surfaces for p ∈ {83,89,97} |
+| `Towers/BSD/E143a1_CLOSED.lean` | Added §10c (BSD_Hasse_OPEN_p83/89/97); imports genesis-740 |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-740 ledger entry (`BSD_clay_open_count_740 = 4`); structural note |
+| `scripts/verify_bsd_only.sh` | Phase 13 updated for genesis-740; `use_olean_if_fresh` + 3 audit probes |
+| `bsd-core/BSD_LEDGER.md` | genesis-740 section; Summary table: 23 HasseBridge primes |
+
+#### Proof structure (identical four-step chain to genesis-736/738/739)
+
+For each p ∈ {83, 89, 97}:
+
+1. `BSD_E143_card_pN` — `(E143_Finset p).card = k` by `decide` over ZMod p × ZMod p
+2. `BSD_ap_pN` — `a_p p = N` by `omega` from card count
+3. `BSD_DegreeNonneg_pN` — `BSD_FrobeniusDegreeNonneg_OPEN p` by completed-square + `linarith [sq_nonneg ...]`
+4. `BSD_Hasse_OPEN_pN` — `BSD_Hasse_OPEN p` via `BSD_hasse_of_degree_nonneg` bridge
+
+#### Point counts and a_p values
+
+| p | card(𝔽_p-affine) | a_p | Discriminant |
+|---|-----------------|-----|-------------|
+| 83 | 83 | 0 | 0−332 = −332 |
+| 89 | 96 | −7 | 49−356 = −307 |
+| 97 | 110 | −13 | 169−388 = −219 |
+
+#### HasseBridge coverage after genesis-740
+
+**23 good primes**: {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97}
+
+#### Primary surface analysis (honest scope)
+
+All 4 named OPEN primary surfaces unchanged. Full structural analysis documented in BSD_SubGateChain.lean:
+
+- **BSD_143_OPEN**: Clay conjecture — invariant-locked, REFUSED.
+- **BSD_AnalyticContinuation_143_OPEN**: BSDLFunction is opaque; Mellin/Hecke absent from Mathlib v4.12.0. No avenue.
+- **BSD_GammaFuncEq_143_OPEN**: Same opaque issue; Atkin-Lehner absent. No avenue.
+- **BSD_HasseFull_143_OPEN**: Decomposes (BSD_HasseFull_decomposes) into h_low (all 168 primes ≤ 997, needing compatibility bridge or full HasseBridge) + h_high (BSD_FrobeniusHighPrimes_OPEN, p>997, genuine Frobenius gap). Only avenue: progressive HasseBridge extension per prime via workflow.
+
+---
+
 ## [genesis-739] — 2026-06-26
 
 ### HasseBridge extended to p ∈ {71, 73, 79}
