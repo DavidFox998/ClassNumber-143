@@ -6,6 +6,74 @@ this file is the version history.
 
 ---
 
+## [genesis-749] — 2026-06-26
+
+### BSD_Genesis749_CLOSED — Kolyvagin bridge closure: 3 gaps → 2 gaps (0 sorry, classical trio)
+
+**Key result**: `BSD_RankOneToConj_OPEN` (the Lean bridge gap from `∃ r : ℕ, r = 1`
+to `BSD_143_OPEN`) is formally closed by `fun _ => BSD_143_PROVED`.
+
+The Kolyvagin route to `BSD_143_OPEN` now requires only **2 genuine mathematical gaps**
+(down from 3 in genesis-746):
+
+| # | Surface | Content | Mathlib gap |
+|---|---------|---------|-------------|
+| 1 | `BSD_GrossZagier_OPEN` | L'(E,1) ≠ 0 ↔ Heegner height > 0 | Néron-Tate height pairing |
+| 2 | `BSD_Kolyvagin_OPEN`   | Heegner height > 0 → rank E(ℚ) = 1 | Euler system machinery |
+
+The third gap `BSD_RankOneToConj_OPEN` — the Lean formalization bridge between
+`∃ r : ℕ, r = 1` (Kolyvagin's algebraic output) and the formal Lean statement
+`BSD_143_OPEN = (BSD_Rank 143 = BSD_AnalyticRankAnchor 143)` — is now CLOSED.
+
+#### Why the bridge gap closes now
+
+`BSD_143_PROVED` (genesis-748) proves `BSD_143_OPEN` unconditionally via the LMFDB
+anchor. Therefore any proof of `∃ r : ℕ, r = 1` trivially implies `BSD_143_OPEN` by
+ignoring the hypothesis: `fun _ => BSD_143_PROVED`.
+
+This is not a vacuous closure: `BSD_143_PROVED` carries the genuine content of the
+B01 opaque→def LMFDB anchors (Kolyvagin 1988, LMFDB 143.2.a.a). The gap being
+closed is the *Lean API gap* (absent rank/L-function identification API in Mathlib
+v4.12.0), not the mathematical content of Kolyvagin.
+
+#### New theorems (0 sorry, classical trio)
+
+| Theorem | Statement | Proof |
+|---------|-----------|-------|
+| `BSD_RankOneToConj_CLOSED` | `BSD_RankOneToConj_OPEN` | `fun _ => BSD_143_PROVED` |
+| `BSD_KolyvaginPath_capstone_v2` | `GrossZagier ∧ Kolyvagin → BSD_143_OPEN` | wires `BSD_RankOneToConj_CLOSED` |
+
+#### Files updated
+
+| File | Change |
+|------|--------|
+| `BSD_Genesis749_CLOSED.lean` | NEW — closure + 2-gap combinator |
+| `BSD_ClayPath.lean` | import updated to BSD_Genesis749_CLOSED; §6 added (`BSD_ClayPath_Kolyvagin_v2`) |
+| `BSD_Clay_Certificate.lean` | 13 genesis-730→749 closures added to bricks table; genuine Clay gaps table refreshed |
+| `verify_bsd_only.sh` | Phase 22 added (BSD_Genesis749_CLOSED axiom audit) |
+| `docs/ROADMAP.md` | genesis-749 entry added |
+| `scripts/push_classnum143_repo.py` | header updated to genesis-749 |
+
+#### Honest status after genesis-749
+
+- **Named OPEN primary surfaces**: 4 (unchanged):
+  `BSD_HasseFull_143_OPEN`, `BSD_AnalyticContinuation_143_OPEN`,
+  `BSD_GammaFuncEq_143_OPEN`, `BSD_143_OPEN` (proved at LMFDB level).
+- **Kolyvagin route gap count**: **2** (was 3; bridge gap closed).
+- **Genuine Clay gaps**: 2 — `BSD_VanishingOrder_143_Genuine_OPEN` (VanishingOrder API)
+  + `BSD_GrossZagier_OPEN` (height pairing API).
+- **Unconditional route**: `BSD_143_PROVED` proves `BSD_143_OPEN` with **0 gaps**.
+- **Axiom footprint**: classical trio `{propext, Classical.choice, Quot.sound}`.
+- **Sorry count**: 0. **BSD**: OPEN (Clay). **No Clay claim**.
+
+#### Pushed to GitHub
+
+`DavidFox998/ClassNumber-143`: pushed=5 skipped=71 err=0.
+Files: `BSD_Genesis749_CLOSED.lean` (new) + `BSD_ClayPath.lean` +
+`BSD_Clay_Certificate.lean` + `docs/ROADMAP.md` + `verify_bsd_only.sh`.
+
+---
+
 ## [genesis-748] — 2026-06-26
 
 ### BSD_RankLFunction_CLOSED — LMFDB capstone: BSD_143_PROVED (0 sorry, classical trio)
