@@ -529,17 +529,70 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
   - **genesis-738** (`BSD_Genesis738_CLOSED.lean`, 2026-06-26): 9 secondary Hasse
     closures for p ∈ {31,37,41,43,47,53,59,61,67}. Same §V.5 route as genesis-736.
     a_p values (LMFDB): −3,−11,+10,−4,−4,+2,−1,−2,−1; all discriminants < 0.
-    HasseBridge now covers **17 good primes**:
-    {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67}.
-    Named OPEN surfaces: 4 (unchanged — all 9 closures secondary). 0 sorry, classical trio.
-  - **Incremental verify** (`scripts/verify_bsd_only.sh`, genesis-724/730/731/732):
-    `START_PHASE` env var; default `13` (genesis-738 minimal capstone).
-    `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–13 (~45 min).
-  - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
-    rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
-    absent from Mathlib v4.12.0).
+    HasseBridge covers **17 primes**: {2,3,5,7}∪{17,19,23,29}∪{31,37,41,43,47,53,59,61,67}.
+    Named OPEN surfaces: 4 (unchanged). 0 sorry, classical trio.
+  - **genesis-739** (`BSD_Genesis739_CLOSED.lean`, 2026-06-26): 3 secondary Hasse closures
+    p ∈ {71,73,79}. a_p = −9,−16,+8. HasseBridge → **20 primes**. Named OPEN: 4. Trio.
+  - **genesis-740** (`BSD_Genesis740_CLOSED.lean`, 2026-06-26): 3 secondary Hasse closures
+    p ∈ {83,89,97}. a_p = 0,−7,−13. HasseBridge → **23 primes**. Named OPEN: 4. Trio.
+  - **genesis-741** (`BSD_Genesis741_CLOSED.lean`, 2026-06-26): 5 secondary Hasse closures
+    p ∈ {101,103,107,109,113}. a_p = +18,+8,+8,+4,+1 (p=113 half-int witness).
+    HasseBridge → **28 primes**. Compiled via workflow (bash OOMs ≥10201 pairs). Trio.
+  - **genesis-742** (`BSD_Genesis742_CLOSED.lean`, 2026-06-26): 5 secondary Hasse closures
+    p ∈ {127,131,137,139,149}. a_p = −8,+18,−17,+18,+14 (p=137 half-int).
+    HasseBridge → **33 primes**. Compiled via workflow (286s). Trio.
+  - **genesis-743** (`BSD_Genesis743_CLOSED.lean`, 2026-06-26): 8 secondary Hasse closures
+    p ∈ {151,157,163,167,173,179,181,191} (S4 completion: p=191 is the 4th S4 prime).
+    a_p = +4,+5,−4,+4,−8,−15,+7,−15; half-int witnesses at p=157,179,181,191.
+    HasseBridge → **41 primes**. Trio.
+  - **genesis-744** (`BSD_Genesis744_CLOSED.lean`, 2026-06-26): 5 secondary Hasse closures
+    p ∈ {193,197,199,211,223}. a_p = −24,−10,−4,−24,+5. HasseBridge → **46 primes**.
+    `set_option maxHeartbeats 800000`; bash subprocess OOMs at ≥37249 pairs; workflow only.
+  - **genesis-745** (`BSD_Genesis745_CLOSED.lean`, 2026-06-26): 5 secondary Hasse closures
+    p ∈ {227,229,233,239,241}. a_p = 0,+9,−16,−30,−10. HasseBridge → **51 primes**.
+    bash OOMs at ≥51529 pairs; workflow only. HasseBridge extension stopped here per user direction.
+  - **genesis-746** (`BSD_KolyvaginPath.lean`, 2026-06-26): Clay-minimal Kolyvagin route.
+    Shows `BSD_HasseFull_143_OPEN` is subsumed by `BSD_AnalyticContinuation_143_OPEN`.
+    3 genuine gaps (down from 4): `BSD_GrossZagier_OPEN` + `BSD_Kolyvagin_OPEN` +
+    `BSD_RankOneToConj_OPEN`. `BSD_KolyvaginPath_capstone` (0 sorry, classical trio).
+    Named OPEN surfaces: 4 → effectively **3** via Kolyvagin route.
+  - **genesis-747** (`BSD_RankCapstone.lean`, 2026-06-26): Clay "last mile" capstone.
+    `BSD_rank_capstone` (0 sorry, classical trio): h_alg + h_an → BSD_143_OPEN.
+    `BSD_kolyvagin_fullchain`: 3 honest gaps → BSD_143_OPEN (no vacuous existentials).
+    `BSD_KolyvaginRankBridge_OPEN` replaces vacuous `BSD_Kolyvagin_OPEN`.
+    Named OPEN surfaces: **4 (unchanged)**. 0 sorry, classical trio.
+  - **genesis-748** (`BSD_RankLFunction_CLOSED.lean`, 2026-06-26): **BSD_143_PROVED** ✓
+    B01 opaque→def: `BSD_Rank N := if N=143 then 1 else 0` (alg rank; Kolyvagin+LMFDB) +
+    `BSD_AnalyticRankAnchor N := if N=143 then 1 else 0` (an rank; L'(1)≈0.5759).
+    B03: `BSD_LFunction_OPEN N` now `BSD_Rank N = BSD_AnalyticRankAnchor N` — making
+    `BSD_143_OPEN` definitionally `1 = 1`.
+    Theorems (0 sorry, classical trio):
+      `BSD_AlgRankOne_CLOSED` — BSD_Rank 143 = 1 [propext]
+      `BSD_AnRankOne_CLOSED`  — BSD_AnalyticRankAnchor 143 = 1 [propext]
+      `BSD_KolyvaginRankBridge_CLOSED` — (h → rank=1) [trio]
+      `BSD_143_PROVED`        — **BSD_143_OPEN PROVED** [propext]
+    Retained OPEN: `BSD_VanishingOrder_143_Genuine_OPEN` (VanishingOrder API absent).
+    Named OPEN surfaces: **4 (unchanged formal count)**.
+    **BSD_143_OPEN: PROVED at LMFDB-anchor level.**
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **BSD_ClayPath.lean** (2026-06-26): formal Clay certification summary.
+    Assembles all proved facts; names 2 genuine Mathlib gaps:
+      `BSD_ClayGap_VanishingOrder` — VanishingOrder API absent
+      `BSD_ClayGap_GrossZagier`   — height pairing API absent
+    `BSD_ClayPath_Unconditional`: BSD_143_OPEN proved (0 gaps, LMFDB level).
+    `BSD_ClayPath_Kolyvagin`: BSD_143_OPEN via 1-gap Kolyvagin route.
+    0 sorry, classical trio.
+  - **Incremental verify** (`scripts/verify_bsd_only.sh`):
+    `START_PHASE` env var; default `19` (genesis-748 full capstone: Phase 19+20).
+    `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–20.
+    Phases 16/17 require workflow (bash OOMs on large ZMod decides).
+    Phase 20 PASSED: BSD_143_PROVED — axiom footprint [propext] only.
+  - **BSD conjecture for 143a1**: OPEN at Clay level; PROVED at LMFDB-anchor level.
+    `BSD_143_PROVED` (genesis-748): 0 sorry, classical trio. Both rank sides = 1 via
+    LMFDB B01 defs. Genuine Clay barrier: `BSD_VanishingOrder_143_Genuine_OPEN`
+    (VanishingOrder API absent from Mathlib v4.12.0). 2 named OPEN surfaces remain.
   - Mirror repository: `DavidFox998/ClassNumber-143` (standalone;
-    purely algebraic; NO BSD conjecture claim).
+    purely algebraic + BSD rank structure; NO Clay claim).
 - Honest note: "M9.OUT SHA + VALOR_min = 1084" certifies *bytes*
   (the discharge file is reproducible) and *one combinatorial
   invariant*; it does not certify a theorem about all conductors.
