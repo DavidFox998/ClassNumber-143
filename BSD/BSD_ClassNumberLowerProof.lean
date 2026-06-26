@@ -48,35 +48,35 @@ open NumberField Polynomial
 
 /-! ## §0. Private helpers -/
 
-private lemma pb_BSD_dim_two : pb_BSD.dim = 2 := by
+lemma pb_BSD_dim_two : pb_BSD.dim = 2 := by
   simp [pb_BSD, Polynomial.natDegree_X_pow_add_C]
 
-private instance pb_BSD_ne_zero : NeZero pb_BSD.dim :=
+instance pb_BSD_ne_zero : NeZero pb_BSD.dim :=
   ⟨by rw [pb_BSD_dim_two]; norm_num⟩
 
-private lemma fin_pb_zero_ne_one : (0 : Fin pb_BSD.dim) ≠ 1 := by
+lemma fin_pb_zero_ne_one : (0 : Fin pb_BSD.dim) ≠ 1 := by
   apply Fin.ne_of_val_ne
   simp [pb_BSD_dim_two]
 
-private theorem pb_basis_0_LP : pb_BSD.basis 0 = (1 : K) := by
+theorem pb_basis_0_LP : pb_BSD.basis 0 = (1 : K) := by
   simp [PowerBasis.coe_basis, pow_zero]
 
-private theorem pb_basis_1_LP : pb_BSD.basis 1 = α := by
+theorem pb_basis_1_LP : pb_BSD.basis 1 = α := by
   simp [PowerBasis.coe_basis, pow_one, pb_BSD_gen_eq_α, pb_BSD_dim_two]
 
-private theorem two_eq_smul_b0 : (2 : 𝓞 K) = (2 : ℤ) • BSD_intBasis 0 := by
+theorem two_eq_smul_b0 : (2 : 𝓞 K) = (2 : ℤ) • BSD_intBasis 0 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (2 : K) = (2 : ℤ) • (BSD_intBasis 0 : K)
   simp [BSD_intBasis_zero_coe, zsmul_eq_mul]
 
-private theorem nω_eq_b1 : nω_OK = BSD_intBasis 1 := by
+theorem nω_eq_b1 : nω_OK = BSD_intBasis 1 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (nω_OK : K) = (BSD_intBasis 1 : K)
   simp [nω_OK_coe, BSD_intBasis_one_coe]
 
 /-! ## §1. General ℚ-norm form via the pb_BSD power basis -/
 
-private theorem x_K_in_pb_basis (a b : ℤ) :
+theorem x_K_in_pb_basis (a b : ℤ) :
     (a : K) + (b : K) * ω =
     ((2 * (a : ℚ) + b) / 2) • pb_BSD.basis 0 + ((b : ℚ) / 2) • pb_BSD.basis 1 := by
   rw [pb_basis_0_LP, pb_basis_1_LP]
@@ -84,7 +84,7 @@ private theorem x_K_in_pb_basis (a b : ℤ) :
   simp only [Algebra.smul_def, map_inv₀, map_ofNat, RingHom.map_one]
   push_cast; field_simp; ring
 
-private theorem x_K_times_pb1 (a b : ℤ) :
+theorem x_K_times_pb1 (a b : ℤ) :
     ((a : K) + (b : K) * ω) * pb_BSD.basis 1 =
     ((-(143 : ℚ) * b) / 2) • pb_BSD.basis 0 + ((2 * (a : ℚ) + b) / 2) • pb_BSD.basis 1 := by
   rw [pb_basis_1_LP, pb_basis_0_LP,
@@ -151,7 +151,7 @@ theorem norm_form_BSD_rat (a b : ℤ) :
 /-! ## §2. General ℤ-norm form via BSD_intBasis -/
 
 /-- Express (r : K) as a₀ + a₁ * ω using BSD_intBasis coordinates. -/
-private theorem intBasis_repr_K (r : 𝓞 K) :
+theorem intBasis_repr_K (r : 𝓞 K) :
     (r : K) = (BSD_intBasis.repr r 0 : K) + (BSD_intBasis.repr r 1 : K) * ω := by
   have h : r = BSD_intBasis.repr r 0 • BSD_intBasis 0 +
                BSD_intBasis.repr r 1 • BSD_intBasis 1 := by
@@ -183,19 +183,19 @@ theorem norm_form_BSD (u : 𝓞 K) :
 /-- p2_OK := Ideal.span {2, nω_OK} — the prime of 𝓞 K above 2. -/
 noncomputable def p2_OK : Ideal (𝓞 K) := Ideal.span {(2 : 𝓞 K), nω_OK}
 
-private theorem two_mem_p2_OK : (2 : 𝓞 K) ∈ p2_OK :=
+theorem two_mem_p2_OK : (2 : 𝓞 K) ∈ p2_OK :=
   Ideal.subset_span (Set.mem_insert _ _)
 
-private theorem nω_mem_p2_OK : nω_OK ∈ p2_OK :=
+theorem nω_mem_p2_OK : nω_OK ∈ p2_OK :=
   Ideal.subset_span (Set.mem_insert_iff.mpr (Or.inr rfl))
 
 /-- Subtype basis vectors for ↥p2_OK. -/
-private noncomputable def v_p2_sub : Fin 2 → ↥p2_OK :=
+noncomputable def v_p2_sub : Fin 2 → ↥p2_OK :=
   ![ ⟨(2 : 𝓞 K), two_mem_p2_OK⟩, ⟨nω_OK, nω_mem_p2_OK⟩ ]
 
 /-! ### §3b. Linear independence of v_p2_sub -/
 
-private theorem v_p2_sub_li : LinearIndependent ℤ v_p2_sub := by
+theorem v_p2_sub_li : LinearIndependent ℤ v_p2_sub := by
   rw [Fintype.linearIndependent_iff]
   intro c hc
   -- Extract the 𝓞 K equation
@@ -222,7 +222,7 @@ private theorem v_p2_sub_li : LinearIndependent ℤ v_p2_sub := by
 
 /-! ### §3c. Span of v_p2_sub covers all of ↥p2_OK -/
 
-private theorem v_p2_sub_span : ⊤ ≤ Submodule.span ℤ (Set.range v_p2_sub) := by
+theorem v_p2_sub_span : ⊤ ≤ Submodule.span ℤ (Set.range v_p2_sub) := by
   intro ⟨x, hx⟩ _
   have hx' : x ∈ Submodule.span (𝓞 K)
       (insert (2 : 𝓞 K) ({nω_OK} : Set (𝓞 K))) := by
@@ -262,10 +262,10 @@ private theorem v_p2_sub_span : ⊤ ≤ Submodule.span ℤ (Set.range v_p2_sub) 
 
 /-! ### §3d. Basis.mk + det = 2 → absNorm p2_OK = 2 -/
 
-private noncomputable def p2_OK_basis : Basis (Fin 2) ℤ ↥p2_OK :=
+noncomputable def p2_OK_basis : Basis (Fin 2) ℤ ↥p2_OK :=
   Basis.mk v_p2_sub_li v_p2_sub_span
 
-private theorem det_p2_basis_eq : BSD_intBasis.det ![(2 : 𝓞 K), nω_OK] = 2 := by
+theorem det_p2_basis_eq : BSD_intBasis.det ![(2 : 𝓞 K), nω_OK] = 2 := by
   rw [Basis.det_apply, Matrix.det_fin_two]
   simp only [Basis.toMatrix_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
              Matrix.head_cons, Matrix.head_fin_const]
@@ -296,7 +296,7 @@ theorem absNorm_p2_eq_2 : Ideal.absNorm p2_OK = 2 := by
 /-! ## §4. Principality → norm-form represents 2^k -/
 
 /-- Helper: convert natAbs equality to integer equality given nonnegativity. -/
-private lemma natAbs_eq_of_nonneg {n : ℤ} (hpos : 0 ≤ n) {k : ℕ} (h : n.natAbs = 2 ^ k) :
+lemma natAbs_eq_of_nonneg {n : ℤ} (hpos : 0 ≤ n) {k : ℕ} (h : n.natAbs = 2 ^ k) :
     n = (2 : ℤ) ^ k := by
   have hcast := Int.natAbs_of_nonneg hpos
   rw [← hcast]
@@ -361,12 +361,12 @@ theorem BSD_p2_orderOf_geq_10_cond
 
 -- §7a. Coerce nω_OK^k to K
 
-private theorem coe_nω_OK_pow (k : ℕ) : ((nω_OK ^ k : 𝓞 K) : K) = ω ^ k := by
+theorem coe_nω_OK_pow (k : ℕ) : ((nω_OK ^ k : 𝓞 K) : K) = ω ^ k := by
   simp only [map_pow, nω_OK_coe]
 
 -- §7b. Express nω_OK^k as a ℤ-linear combination of BSD_intBasis 0 and 1
 
-private theorem nω_OK_decomp2 :
+theorem nω_OK_decomp2 :
     nω_OK ^ 2 = (1 : ℤ) • BSD_intBasis 1 + (-36 : ℤ) • BSD_intBasis 0 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (nω_OK : K) ^ 2 =
@@ -375,7 +375,7 @@ private theorem nω_OK_decomp2 :
              mul_one, one_mul]
   linear_combination ω_sq_eq_BSD
 
-private theorem nω_OK_decomp4 :
+theorem nω_OK_decomp4 :
     nω_OK ^ 4 = (-71 : ℤ) • BSD_intBasis 1 + (1260 : ℤ) • BSD_intBasis 0 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (nω_OK : K) ^ 4 =
@@ -389,7 +389,7 @@ private theorem nω_OK_decomp4 :
     _ = (ω - 36) - 72 * ω + 1296 := by rw [hω2]
     _ = -71 * ω + 1260 := by ring
 
-private theorem nω_OK_decomp6 :
+theorem nω_OK_decomp6 :
     nω_OK ^ 6 = (3745 : ℤ) • BSD_intBasis 1 + (-42804 : ℤ) • BSD_intBasis 0 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (nω_OK : K) ^ 6 =
@@ -409,7 +409,7 @@ private theorem nω_OK_decomp6 :
     _ = -71 * (ω - 36) + 71 * 36 * ω + 1260 * ω - 1260 * 36 := by rw [hω2]
     _ = 3745 * ω - 42804 := by ring
 
-private theorem nω_OK_decomp8 :
+theorem nω_OK_decomp8 :
     nω_OK ^ 8 = (-173879 : ℤ) • BSD_intBasis 1 + (1406124 : ℤ) • BSD_intBasis 0 := by
   apply_fun (Subtype.val : 𝓞 K → K) using Subtype.coe_injective
   change (nω_OK : K) ^ 8 =
@@ -432,19 +432,19 @@ private theorem nω_OK_decomp8 :
 
 -- §7c. The ω-coordinate (index 1) of nω_OK^k
 
-private theorem nω_repr1_pow2 : BSD_intBasis.repr (nω_OK ^ 2) 1 = 1 := by
+theorem nω_repr1_pow2 : BSD_intBasis.repr (nω_OK ^ 2) 1 = 1 := by
   rw [nω_OK_decomp2, map_add, map_smul, map_smul, Basis.repr_self, Basis.repr_self]
   simp [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply, fin_pb_zero_ne_one]
 
-private theorem nω_repr1_pow4 : BSD_intBasis.repr (nω_OK ^ 4) 1 = -71 := by
+theorem nω_repr1_pow4 : BSD_intBasis.repr (nω_OK ^ 4) 1 = -71 := by
   rw [nω_OK_decomp4, map_add, map_smul, map_smul, Basis.repr_self, Basis.repr_self]
   simp [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply, fin_pb_zero_ne_one]
 
-private theorem nω_repr1_pow6 : BSD_intBasis.repr (nω_OK ^ 6) 1 = 3745 := by
+theorem nω_repr1_pow6 : BSD_intBasis.repr (nω_OK ^ 6) 1 = 3745 := by
   rw [nω_OK_decomp6, map_add, map_smul, map_smul, Basis.repr_self, Basis.repr_self]
   simp [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply, fin_pb_zero_ne_one]
 
-private theorem nω_repr1_pow8 : BSD_intBasis.repr (nω_OK ^ 8) 1 = -173879 := by
+theorem nω_repr1_pow8 : BSD_intBasis.repr (nω_OK ^ 8) 1 = -173879 := by
   rw [nω_OK_decomp8, map_add, map_smul, map_smul, Basis.repr_self, Basis.repr_self]
   simp [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply, fin_pb_zero_ne_one]
 
