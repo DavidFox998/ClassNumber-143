@@ -1,3 +1,7 @@
+import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Data.Nat.Totient
+import Mathlib.Tactic.NormNum
+
 /-!
 # Genus of X₀(143) = 13
 
@@ -29,10 +33,6 @@ Ref: Diamond-Shurman, "A First Course in Modular Forms", Theorem 3.1.1.
 
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 -/
-
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Totient
-import Mathlib.Tactic.NormNum
 
 namespace Genus_X0_143
 
@@ -68,18 +68,7 @@ theorem nu_inf_143 :
 
 /-! ## §3. Genus formula -/
 
-/-- **genus(X₀(143)) = 13**  (Diamond-Shurman Thm 3.1.1, N = 143)
-
-    Integer form of the genus formula:
-      g = 1 + 168/12 − 0/4 − 0/3 − 4/2
-
-    Intermediate:
-      μ/12  = 168/12 = 14
-      ν₂/4  = 0  (since χ₋₄(11) = −1, product collapses to 0)
-      ν₃/3  = 0  (since χ₋₃(11) = −1, product collapses to 0)
-      ν∞/2  = 4/2 = 2
-
-    Result: g = 1 + 14 − 0 − 0 − 2 = **13**. -/
+/-- **genus(X₀(143)) = 13**  (Diamond-Shurman Thm 3.1.1, N = 143) -/
 theorem genus_X0_143 : (1 : ℤ) + 168 / 12 - 0 / 4 - 0 / 3 - 4 / 2 = 13 := by norm_num
 
 /-- **genus(X₀(143)) = 13** as a natural number (for downstream use). -/
