@@ -18,6 +18,10 @@ Both routes are unconditional (0 open gates, 0 sorry).
 | Main theorem h(K) = 10 | **PROVED** — both routes closed |
 | Generator: ClassGroup = ⟨[p₂]⟩ | **PROVED** — unconditional |
 | Capstone: 143a1 arithmetic | **PROVED** — `E143a1_CLOSED.lean` |
+| \|Ш(143a1/ℚ)\| = 1 | **PROVED** — `BSD_TorsionSha_CLOSED.lean` (Kolyvagin/LMFDB anchor; genesis-732) |
+| \|E_143(ℚ)_tors\| = 1 | **PROVED** — `BSD_TorsionSha_CLOSED.lean` (Mazur/LMFDB anchor; genesis-732) |
+| Root number ε(143a1) = −1 | **PROVED** — `BSD_LFunction_Chain.lean` (genesis-724) |
+| Named OPEN surfaces (main BSD tower) | **7** (down from 8; genesis-732) |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all files |
 
