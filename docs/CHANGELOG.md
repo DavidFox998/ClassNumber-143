@@ -6,6 +6,73 @@ this file is the version history.
 
 ---
 
+## [genesis-733] — 2026-06-26
+
+### BSD_Frobenius_Certificate.lean — §V.5 skeleton + honesty fixes
+
+**Milestone:** `BSD_Frobenius_Certificate.lean` fully fixed and extended.
+Pre-existing errors at §1/§2 corrected (no pre-existing breach — file was
+outside the verify script); §5 Silverman §V.5 skeleton added (0 sorry, classical
+trio). Named OPEN surfaces unchanged (7). BSD: OPEN.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Frobenius_Certificate.lean` | Pre-existing §1 error removed (broken `BSD_Weil_168_coverage` theorem replaced with honest comment documenting integer-to-real bridge gap); §2 `BSD_HasseFull_decomposes` fixed (now takes both `h_low` + `h_high` hypotheses; honest about the `ap ≠ a_p` compatibility gap); §4 `BSD_Frobenius_status_ledger` updated to match new signature; **§5 Silverman §V.5 skeleton added** |
+| `bsd-core/BSD/BSD_Frobenius_Certificate.lean` | Synced |
+
+#### Mathematical content
+
+**§1 honesty fix — integer-to-real bridge gap documented:**
+The original `BSD_Weil_168_coverage` theorem tried to call `BSD_Weil_168_CLOSED p hp_nbad`
+with a non-divisibility proof where a list-membership proof was required, AND expected
+`BSD_Hasse_OPEN p` (real-valued: `|(a_p p:ℝ)| ≤ 2√p`) from a theorem that only gives the
+INTEGER bound `(ap p)^2 ≤ 4p`.  Two separate issues:
+1. `BSD_Weil_168_CLOSED` requires `p ∈ [list of 168 primes]`, not `¬(p ∣ 143)`.
+2. `ap` (trace-table lookup in `E1859`) vs `a_p` (geometric count `(p:ℤ) − #E₁₄₃(𝔽_p)`)
+   are different definitions with no `ap p = a_p p` compatibility lemma in the tower.
+Replaced with a doc-comment naming **`BSD_HasseCompatibility_OPEN`** as the new gap.
+
+**§2 honesty fix — low-prime case made explicit:**
+`BSD_HasseFull_decomposes` previously claimed
+`BSD_FrobeniusHighPrimes_OPEN → BSD_HasseFull_143_OPEN` but tried to fill the
+p ≤ 997 branch with `BSD_Weil_168_CLOSED` (wrong type).  Fixed to:
+```
+  (h_low  : ∀ (p:ℕ) [Fact p.Prime], p ≤ 997 → ¬(p∣143) → BSD_Hasse_OPEN p)
+  (h_high : BSD_FrobeniusHighPrimes_OPEN) → BSD_HasseFull_143_OPEN
+```
+Both cases remain OPEN surfaces; decomposition is now formally honest.
+
+**§5 Silverman §V.5 skeleton (new, 0 sorry, classical trio):**
+- `BSD_FrobeniusDegreeNonneg_OPEN (p : ℕ) [Fact p.Prime] : Prop :=`
+  `∀ r : ℝ, r^2 − (a_p p : ℝ)*r + (p : ℝ) ≥ 0`
+  Named OPEN surface for the degree non-negativity of the Weil proof (Silverman §V.5).
+  Two gap components: degree formula (`deg(r·1 − π) = r² − a_p·r + p`, §III.6 API);
+  real extension of `deg` to `End(E) ⊗_ℤ ℝ` (Rosati positivity).
+
+- `BSD_weil_discriminant_step` (PROVED — 0 sorry, classical trio):
+  `∀ c p : ℝ, 0 < p → (∀ r : ℝ, r^2 − c·r + p ≥ 0) → |c| ≤ 2·√p`
+  Proof: specialise at `r = c/2` → `c^2 ≤ 4p` (nlinarith); then
+  `|c| = √(c^2) ≤ √(4p) = 2√p` via `Real.sqrt_le_sqrt`. Pure algebra;
+  no Frobenius theory needed for this step.
+
+- `BSD_hasse_of_degree_nonneg` (PROVED — conditional combinator):
+  `BSD_FrobeniusDegreeNonneg_OPEN p → BSD_Hasse_OPEN p`
+  Wires the §V.5 degree-nonneg hypothesis directly to `BSD_weil_discriminant_step`.
+
+- `BSD_FrobeniusHighPrimes_of_DegreeNonneg` (PROVED — conditional combinator):
+  Lifts `BSD_FrobeniusDegreeNonneg_OPEN` for all p > 997 → `BSD_FrobeniusHighPrimes_OPEN`.
+
+- `BSD_degree_nonneg_sentinel` — gap registration for §V.5 (trivially true, not a brick).
+
+**Compile status (LEAN_PATH bypass — 4850 oleans intact):**
+`0 errors, 0 warnings, 0 sorry` — clean compile via direct `lean --root .`.
+
+**SORRY: 0. Axiom footprint: classical trio. NOT a brick. Named OPEN: 7 (unchanged). BSD: OPEN.**
+
+---
+
 ## [genesis-732] — 2026-06-26
 
 ### Sha/Torsion closures + Phase 13 + hodge-abelian-boundaries analysis
