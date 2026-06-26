@@ -410,7 +410,31 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 | `BSD_DegreeNonneg_p83/89/97` | Completed-square nonneg: disc −332, −307, −219 (linarith+sq_nonneg) |
 | `BSD_Hasse_OPEN_p83/89/97` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
 
-*Note: Compiled via workflow (bash subprocess OOMs at ≥6889 pairs). Next batch p∈{101,103,107,109,113} in genesis-741.*
+*Note: Compiled via workflow (bash subprocess OOMs at ≥6889 pairs).*
+
+---
+
+### BSD_Genesis741_CLOSED.lean — 5 secondary Hasse closures p∈{101,103,107,109,113} (genesis-741)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p101/103/107/109/113` | Point counts: 83, 95, 99, 105, 112 (decide; 10201–12769 pairs; workflow only) |
+| `BSD_ap_p101/103/107/109/113` | Exact traces: +18, +8, +8, +4, +1 (omega from card) |
+| `BSD_DegreeNonneg_p101/103/107/109/113` | Completed-square nonneg: disc −80, −348, −364, −420, −451 (p=113: half-int witness) |
+| `BSD_Hasse_OPEN_p101/103/107/109/113` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p=113 has odd a_p (+1) → half-integer witness (r−1/2)²+451/4. Compiled via workflow (≥10201 pairs per prime).*
+
+---
+
+### BSD_Genesis742_CLOSED.lean — 5 secondary Hasse closures p∈{127,131,137,139,149} (genesis-742)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p127/131/137/139/149` | Point counts: 135, 113, 154, 121, 135 (decide; 16129–22201 pairs; workflow only) |
+| `BSD_ap_p127/131/137/139/149` | Exact traces: −8, +18, −17, +18, +14 (omega from card) |
+| `BSD_DegreeNonneg_p127/131/137/139/149` | Completed-square nonneg: disc −444, −200, −259, −232, −400 (p=137: half-int witness) |
+| `BSD_Hasse_OPEN_p127/131/137/139/149` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p=137 has odd a_p (−17) → half-integer witness (r+17/2)²+259/4. Compiled via workflow (≥16129 pairs per prime).*
 
 ---
 
@@ -418,12 +442,12 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 
 | Category | Count |
 |----------|-------|
-| Fully proved files (0 sorry anywhere) | 37 |
-| Total proved `theorem`/`lemma` declarations | **≈832** |
+| Fully proved files (0 sorry anywhere) | 38 |
+| Total proved `theorem`/`lemma` declarations | **≈852** |
 | Files with sorry only in documentation strings | 4 (B03, BSD_AP_Table, BSD_ClassNumber, BSD_ClassNumberBounds) |
 | Actual proof-body sorry count | **0** |
 | Named OPEN surfaces (main tower) | **4** (down from 7 after genesis-733..737) |
-| HasseBridge primes covered | **23** ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97}) |
+| HasseBridge primes covered | **33** ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149}) |
 
 ## Named OPEN surfaces (def Prop — roadmap markers, not sorry, not axiom)
 
@@ -449,6 +473,9 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 | `BSD_Hasse_OPEN_p17/19/23/29` | `BSD_Genesis736_CLOSED.lean` | decide+omega+completed-square+bridge | **736** |
 | `BSD_Hasse_OPEN_p31..67` (9 primes) | `BSD_Genesis738_CLOSED.lean` | decide+omega+completed-square+bridge | **738** |
 | `BSD_Hasse_OPEN_p71..97` (6 primes) | `BSD_Genesis739_CLOSED.lean` | decide+omega+completed-square+bridge | **739** |
+| `BSD_Hasse_OPEN_p83..97` (3 primes) | `BSD_Genesis740_CLOSED.lean` | decide+omega+completed-square+bridge | **740** |
+| `BSD_Hasse_OPEN_p101..113` (5 primes) | `BSD_Genesis741_CLOSED.lean` | decide+omega+completed-square+bridge | **741** |
+| `BSD_Hasse_OPEN_p127..149` (5 primes) | `BSD_Genesis742_CLOSED.lean` | decide+omega+completed-square+bridge | **742** |
 
 ### Still OPEN (4 primary gaps — main tower — all require absent Mathlib API)
 | Name | Gap | Why not closeable |
