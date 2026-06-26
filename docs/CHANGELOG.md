@@ -6,6 +6,78 @@ this file is the version history.
 
 ---
 
+## [genesis-736] — 2026-06-26
+
+### BSD_Genesis736_CLOSED.lean — HasseBridge extension to p ∈ {17, 19, 23, 29}
+
+**Milestone:** New file `BSD_Genesis736_CLOSED.lean` (0 sorry, classical trio).
+Extends the §V.5 Frobenius-degree bridge to 4 additional good primes for 143a1,
+closing `BSD_Hasse_OPEN_p17/19/23/29` unconditionally via decide + omega + linarith.
+Named OPEN surfaces: **7 (unchanged)** — all 4 closures are secondary Hasse surfaces.
+HasseBridge now covers 8 primes ({2,3,5,7} from genesis-734; {17,19,23,29} added here).
+BSD: OPEN. Classical trio. No Clay claim.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/BSD_Genesis736_CLOSED.lean` | **New file** — §1 decide counts, §2 a_p omega, §3 completed-square DegreeNonneg, §4 Hasse bounds via §V.5 bridge |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-736 ledger entry (`BSD_clay_open_count_736 = 7`) with 4-surface summary |
+| `scripts/verify_bsd_only.sh` | Phase 13: add BSD_Frobenius_Certificate + BSD_HasseBridge_CLOSED + BSD_Genesis736_CLOSED compile steps + axiom audit for p17/19/23/29 |
+| `bsd-core/BSD/BSD_Genesis736_CLOSED.lean` | Synced |
+| `bsd-core/BSD/BSD_SubGateChain.lean` | Synced |
+
+#### New closures (0 sorry, classical trio)
+
+**§1 — Point counts by `decide` over ZMod p × ZMod p**
+
+Code model: `y²+y = x³−x²−x−2` (isomorphic to LMFDB 143.a1 over ℚ, no xy term).
+
+| Prime | Affine card | a_p = p − card |
+|-------|------------|-----------------|
+| p=17  | 21         | −4              |
+| p=19  | 17         | +2              |
+| p=23  | 16         | +7              |
+| p=29  | 31         | −2              |
+
+**§2 — Exact a_p values by `omega`**
+
+`BSD_ap_p17/19/23/29`: `a_p p = p − (E143_Finset p).card` by `unfold a_p; omega`.
+Matches LMFDB 143a1 trace table for all four primes.
+
+**§3 — `BSD_FrobeniusDegreeNonneg_OPEN p` by completed-square + linarith**
+
+For each prime, `BSD_FrobeniusDegreeNonneg_OPEN p = ∀ r:ℝ, r²−(a_p p:ℝ)·r+(p:ℝ) ≥ 0`.
+Proved by exhibiting the completed-square form (discriminant a_p²−4p < 0):
+
+- p=17: r²+4r+17 = (r+2)²+13   (disc = 16−68 = −52 < 0);   `linarith [sq_nonneg (r+2)]`
+- p=19: r²−2r+19 = (r−1)²+18   (disc =  4−76 = −72 < 0);   `linarith [sq_nonneg (r−1)]`
+- p=23: r²−7r+23 = (r−7/2)²+43/4 (disc = 49−92 = −43 < 0); `linarith [sq_nonneg (r−7/2)]`
+- p=29: r²+2r+29 = (r+1)²+28   (disc =  4−116 = −112 < 0); `linarith [sq_nonneg (r+1)]`
+
+**§4 — `BSD_Hasse_OPEN p` via `BSD_hasse_of_degree_nonneg` bridge**
+
+`BSD_Hasse_OPEN_p17/19/23/29 = BSD_hasse_of_degree_nonneg p BSD_DegreeNonneg_pN`
+(genesis-733 §V.5 skeleton; first use of the bridge for primes > 7).
+
+#### Phase 13 script additions
+
+Phase 13 now compiles BSD_Frobenius_Certificate and BSD_HasseBridge_CLOSED
+(both in dependency order, after B01→B02→B03 force-refresh, before BSD_TorsionSha_CLOSED),
+then BSD_Genesis736_CLOSED (after BSD_Genesis735_CLOSED).
+
+Axiom audit confirms all four `BSD_Hasse_OPEN_pN` theorems depend only on
+{propext, Classical.choice, Quot.sound} (classical trio).
+
+#### Notes on regulator closure (deferred to genesis-737)
+
+`BSD_Regulator_OPEN 143` requires changing `BSD_RegulatorVal` from `opaque` to `def` in
+`B01_EllipticCurve.lean`. This cascades stale oleans through `BSD_KodairaReduction_CLOSED`
+(which imports B01) → `BSD_SubGateChain` → Phase 12. Deferred to genesis-737 which will
+add intermediate file recompilation to Phase 12 and run a full `START_PHASE=7` rebuild.
+
+---
+
 ## [genesis-735] — 2026-06-26
 
 ### BSD_Genesis735_CLOSED.lean — 4 secondary surface closures (TorsionBound + ClassNum)
