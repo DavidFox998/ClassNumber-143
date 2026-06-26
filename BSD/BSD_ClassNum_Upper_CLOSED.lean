@@ -58,7 +58,7 @@ def BSD_BQF_ClassNumber_bridge : Prop := BSD_BQF_ClassNumber_bridge_OPEN
 -- ============================================================
 
 /-- The prime p₂ = span{2, ω} as a non-zero-divisor ideal. -/
-private noncomputable def p2_nzd : p2_OK ∈ nonZeroDivisors (Ideal (𝓞 K)) :=
+noncomputable def p2_nzd : p2_OK ∈ nonZeroDivisors (Ideal (𝓞 K)) :=
   mem_nonZeroDivisors_of_ne_zero (by
     intro h
     have := absNorm_p2_eq_2
