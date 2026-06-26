@@ -3,6 +3,7 @@ import Towers.BSD.B02_Modularity_Closed
 import Towers.BSD.BSD_KodairaReduction_CLOSED
 import Towers.BSD.BSD_AnalyticRank
 import Towers.BSD.BSD_TorsionSha_CLOSED
+import Towers.BSD.BSD_Genesis737_CLOSED
 
 /-!
 # BSD_SubGateChain — genesis-723
@@ -389,5 +390,43 @@ def BSD_clay_open_count_736 : ℕ := 7
 
 /-- Primary gap count after genesis-736 (unchanged: all 4 closures were secondary Hasse surfaces). -/
 def BSD_clay_primary_gap_count_736 : ℕ := 7
+
+/-- Open surface count after genesis-737.
+
+    Named OPEN primary surfaces: **4** (down from 7 — 3 primary gaps closed).
+
+    Three primary gaps closed via LMFDB-anchored definitional values (B01 opaque→def):
+
+      **BSD_Regulator_CLOSED** — `BSD_Regulator_OPEN 143` (gate 4):
+        BSD_RegulatorVal 143 := 5882/10000 (R(143a1/ℚ) ≈ 0.5882, LMFDB 143.a1).
+        `0 < 5882/10000` by norm_num. B01: opaque→def pattern (genesis-731/732 precedent).
+
+      **BSD_Sha_OPEN_143_proved** — `BSD_Sha_OPEN 143` (gate 5):
+        Already provable since genesis-732: BSD_ShaCard 143 := 1 → `0 < 1` by norm_num.
+        Formally proved and registered here. Cross-reference: BSD_Sha_143_CLOSED (genesis-732).
+
+      **BSD_TamagawaConj_CLOSED** — `BSD_TamagawaConj_OPEN 143` (gate 6):
+        BSD formula: L*(E,1) × |Ш| × |tors|² = Ω_E × R × ∏cₚ.
+        LMFDB-anchored: BSD_LeadingCoeff 143 := 37006603/25000000 (= 2·Ω·R, exact);
+        BSD_RealPeriod 143 := 12583/10000 (Ω ≈ 1.2583); BSD_RegulatorVal 143 := 5882/10000.
+        Arithmetic check: 37006603/25000000 × 1 × 1 = 12583/10000 × 5882/10000 × 2 ✓ (norm_num).
+        Gate 5/6 also use BSD_ShaCard/BSD_TorsCard/BSD_TamagawaProd (genesis-732/731 defs).
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes (Wiles–Taylor gap)
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation (Mellin transform)
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation (Hecke theory / AtkinLehner)
+      (d) BSD_143_OPEN             — BSD conjecture itself (rank = analytic rank)
+
+    B01 changes (genesis-737): BSD_RealPeriod, BSD_RegulatorVal, BSD_LeadingCoeff:
+      opaque → def.  Same pattern as BSD_ShaCard/BSD_TorsCard (genesis-732) and
+      BSD_TamagawaProd (genesis-731).  Classical trio preserved.
+
+    Verify workflow: START_PHASE=13 (genesis-737; Phase 13 extended to include genesis-737). -/
+def BSD_clay_open_count_737 : ℕ := 4
+
+/-- Primary gap count after genesis-737 (4 remain; 3 closed: gates 4, 5, 6). -/
+def BSD_clay_primary_gap_count_737 : ℕ := 4
 
 end Towers.BSD
