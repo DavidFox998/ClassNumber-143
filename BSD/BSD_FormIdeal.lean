@@ -214,7 +214,7 @@ def idealOfForm_classGroup_bridge_OPEN : Prop :=
 
 /-- When `b² - 4ac = -143`, `b` is odd.
     If `b = 2k` then `4k² - 4ac = -143`, so `4 ∣ -143`, contradiction. -/
-private lemma b_odd_of_disc {a b c : ℤ} (h_disc : b ^ 2 - 4 * a * c = -143) :
+lemma b_odd_of_disc {a b c : ℤ} (h_disc : b ^ 2 - 4 * a * c = -143) :
     ∃ k : ℤ, b = 2 * k + 1 := by
   rcases Int.even_or_odd b with ⟨k, hk⟩ | ⟨k, hk⟩
   · exfalso
@@ -225,7 +225,7 @@ private lemma b_odd_of_disc {a b c : ℤ} (h_disc : b ^ 2 - 4 * a * c = -143) :
 
 /-- Basis decomposition: `s = (r₀ : 𝓞 K) + (r₁ : 𝓞 K) * nω_OK`
     where `rᵢ = BSD_intBasis.repr s i`. -/
-private lemma ok_basis_decomp (s : 𝓞 K) :
+lemma ok_basis_decomp (s : 𝓞 K) :
     s = (BSD_intBasis.repr s 0 : 𝓞 K) + (BSD_intBasis.repr s 1 : 𝓞 K) * nω_OK := by
   have h := BSD_intBasis.sum_repr s
   simp only [Fin.sum_univ_two, BSD_intBasis_zero_eq_one, BSD_intBasis_one_eq_nω_OK,
@@ -234,7 +234,7 @@ private lemma ok_basis_decomp (s : 𝓞 K) :
   exact h.symm
 
 /-- `repr ((c : 𝓞 K) * nω_OK) = Finsupp.single 1 c` for any `c : ℤ`. -/
-private lemma repr_intCast_mul_nω_OK (c : ℤ) :
+lemma repr_intCast_mul_nω_OK (c : ℤ) :
     BSD_intBasis.repr ((c : 𝓞 K) * nω_OK) = Finsupp.single 1 c := by
   rw [show (c : 𝓞 K) * nω_OK = c • nω_OK from (Algebra.smul_def c nω_OK).symm,
       show nω_OK = BSD_intBasis 1 from BSD_intBasis_one_eq_nω_OK.symm,
@@ -244,7 +244,7 @@ private lemma repr_intCast_mul_nω_OK (c : ℤ) :
 
 /-- Helper: `coordMap a b` kills `r * (a : 𝓞 K)` for any `r : 𝓞 K`.
     Proof: `r * a = a • r`, and `a ≡ 0 mod a.natAbs`. -/
-private theorem coordMap_mul_gen1_aux (a b : ℤ) (r : 𝓞 K) :
+theorem coordMap_mul_gen1_aux (a b : ℤ) (r : 𝓞 K) :
     coordMap a b (r * (a : 𝓞 K)) = 0 := by
   have hmul : r * (a : 𝓞 K) = (a : ℤ) • r := by
     rw [mul_comm]; exact (Algebra.smul_def a r).symm
@@ -256,7 +256,7 @@ private theorem coordMap_mul_gen1_aux (a b : ℤ) (r : 𝓞 K) :
 
 /-- Helper: `coordMap a b` kills `s * gen2_of_form b`, given disc = -143.
     Key steps: basis-decompose `s`, use `nω_OK² = nω_OK - 36`, apply disc arithmetic. -/
-private theorem coordMap_mul_gen2_aux (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143)
+theorem coordMap_mul_gen2_aux (a b c : ℤ) (h_disc : b ^ 2 - 4 * a * c = -143)
     (s : 𝓞 K) : coordMap a b (s * gen2_of_form b) = 0 := by
   set r0 := BSD_intBasis.repr s 0 with hr0_def
   set r1 := BSD_intBasis.repr s 1 with hr1_def
