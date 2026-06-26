@@ -45,7 +45,7 @@ open NumberField
 
 /-- If (p : K) + (q : K) · ω = 0 with p q : ℤ, then p = 0 and q = 0.
     (BSD_intBasis is a free ℤ-basis for 𝓞 K, giving injectivity of repr.) -/
-private lemma intBasis_repr_unique (p q : ℤ)
+lemma intBasis_repr_unique (p q : ℤ)
     (h : (p : K) + (q : K) * ω = 0) : p = 0 ∧ q = 0 := by
   have hmem : (p : 𝓞 K) + (q : 𝓞 K) * nω_OK = 0 := by
     apply Subtype.coe_injective
@@ -160,14 +160,14 @@ theorem BSD_p2_pow_10_principal_via_gen
 /-! ## §4.5. Proof that span{gen_OK} = p₂^10 (CLOSED) -/
 
 -- ① Conjugate element: -25 - 3ω (the Galois conjugate of gen_OK = -28 + 3ω)
-private noncomputable def cg_gen : 𝓞 K := -25 - 3 * nω_OK
+noncomputable def cg_gen : 𝓞 K := -25 - 3 * nω_OK
 
-@[simp] private lemma cg_gen_coe : (cg_gen : K) = -25 - 3 * ω := by
+@[simp] lemma cg_gen_coe : (cg_gen : K) = -25 - 3 * ω := by
   unfold cg_gen
   simp only [map_sub, map_mul, map_neg, map_ofNat, map_one, nω_OK_coe]
 
 -- ② gen_OK * cg_gen = 1024 = 2^10  (norm certificate)
-private lemma gen_cg_mul : gen_OK * cg_gen = (1024 : 𝓞 K) := by
+lemma gen_cg_mul : gen_OK * cg_gen = (1024 : 𝓞 K) := by
   apply Subtype.coe_injective
   have hω2 : ω ^ 2 = ω - 36 := by linear_combination ω_sq_eq_BSD
   change (gen_OK : K) * (cg_gen : K) = 1024
@@ -175,7 +175,7 @@ private lemma gen_cg_mul : gen_OK * cg_gen = (1024 : 𝓞 K) := by
   linear_combination (-9 : K) * hω2
 
 -- ③ cg_gen ∈ p₂' = span{2, ω-1}
-private lemma cg_gen_mem_p2_conj : cg_gen ∈ p2_conj_OK := by
+lemma cg_gen_mem_p2_conj : cg_gen ∈ p2_conj_OK := by
   show cg_gen ∈ Ideal.span ({(2 : 𝓞 K), nω_OK - 1} : Set (𝓞 K))
   rw [Ideal.mem_span_pair]
   refine ⟨-14, -3, ?_⟩
@@ -189,7 +189,7 @@ private lemma cg_gen_mem_p2_conj : cg_gen ∈ p2_conj_OK := by
   ring
 
 -- ④ Helper: K-decomposition via BSD_intBasis
-private lemma basis_decomp (x : 𝓞 K) :
+lemma basis_decomp (x : 𝓞 K) :
     (x : K) = (BSD_intBasis.repr x 0 : K) + (BSD_intBasis.repr x 1 : K) * ω := by
   have hb0 : BSD_intBasis 0 = (1 : 𝓞 K) := by
     apply Subtype.coe_injective
@@ -206,7 +206,7 @@ private lemma basis_decomp (x : 𝓞 K) :
 
 -- ⑤ Multiplication formula for repr coordinates
 -- In K: (a + bω)(c + dω) = (ac - 36bd) + (ad + bc + bd)ω   [using ω² = ω - 36]
-private lemma repr_mul_coords (x y : 𝓞 K) :
+lemma repr_mul_coords (x y : 𝓞 K) :
     BSD_intBasis.repr (x * y) 0 =
       BSD_intBasis.repr x 0 * BSD_intBasis.repr y 0 -
       36 * BSD_intBasis.repr x 1 * BSD_intBasis.repr y 1 ∧
@@ -239,7 +239,7 @@ private lemma repr_mul_coords (x y : 𝓞 K) :
   exact ⟨by linarith, by linarith⟩
 
 -- ⑥ Membership characterization: x ∈ p₂' iff (repr x 0 + repr x 1) is even
-private lemma mem_p2_conj_iff (x : 𝓞 K) :
+lemma mem_p2_conj_iff (x : 𝓞 K) :
     x ∈ p2_conj_OK ↔ (BSD_intBasis.repr x 0 + BSD_intBasis.repr x 1) % 2 = 0 := by
   constructor
   · intro hmem
@@ -284,7 +284,7 @@ private lemma mem_p2_conj_iff (x : 𝓞 K) :
     linear_combination -hrepr_OK - hk_OK
 
 -- ⑦ p₂' is prime (via the ZMod 2 ring map)
-private lemma p2_conj_IsPrime : p2_conj_OK.IsPrime := by
+lemma p2_conj_IsPrime : p2_conj_OK.IsPrime := by
   rw [Ideal.isPrime_iff]
   constructor
   · intro h
@@ -328,7 +328,7 @@ private lemma p2_conj_IsPrime : p2_conj_OK.IsPrime := by
       obtain ⟨k, hk⟩ := hb; omega
 
 -- ⑧ p₂ * p₂' = span{2}
-private lemma p2_mul_p2conj : p2_OK * p2_conj_OK = Ideal.span {(2 : 𝓞 K)} := by
+lemma p2_mul_p2conj : p2_OK * p2_conj_OK = Ideal.span {(2 : 𝓞 K)} := by
   apply le_antisymm
   · rw [Ideal.mul_le]
     intro a ha b hb
@@ -354,14 +354,14 @@ private lemma p2_mul_p2conj : p2_OK * p2_conj_OK = Ideal.span {(2 : 𝓞 K)} := 
             nω_OK - 1 ∈ ({(2 : 𝓞 K), nω_OK-1} : Set _))))
 
 -- ⑨ absNorm(span{2}) = 4
-private lemma absNorm_span_two : Ideal.absNorm (Ideal.span {(2 : 𝓞 K)}) = 4 := by
+lemma absNorm_span_two : Ideal.absNorm (Ideal.span {(2 : 𝓞 K)}) = 4 := by
   rw [Ideal.absNorm_span_singleton]
   have h2map : (2 : 𝓞 K) = algebraMap ℤ (𝓞 K) 2 := by simp
   rw [h2map, Algebra.norm_algebraMap_of_basis BSD_intBasis]
   norm_num
 
 -- ⑩ absNorm(p₂') = 2
-private lemma absNorm_p2_conj_eq_2 : Ideal.absNorm p2_conj_OK = 2 := by
+lemma absNorm_p2_conj_eq_2 : Ideal.absNorm p2_conj_OK = 2 := by
   have hmul : Ideal.absNorm (p2_OK * p2_conj_OK) =
               Ideal.absNorm p2_OK * Ideal.absNorm p2_conj_OK :=
     map_mul Ideal.absNorm p2_OK p2_conj_OK
