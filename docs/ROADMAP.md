@@ -445,6 +445,15 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     open surface `E143a1_BSD_OPEN = BSD_Analytic_OPEN` named.
     `#print axioms E143a1_CLOSED.E143a1_coefficients` → classical trio only.
     0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
+  - **6-gate Clay combinator** (`BSD_Clay_6gate_CLOSED.lean`, genesis-722):
+    `BSD_ClayCompliance_6gate` — drops `BSD_classNumber_upper_OPEN` from the
+    Clay 7-gate combinator by supplying `BSD_ClassNum_Unconditional` internally.
+    Also cross-references `BSD_HeegnerPoint_DISCHARGED` (point (2,0) proved).
+    Updated open surface count: **11** (down from 13).
+    Remaining genuine Clay gaps: Hasse full · L-identification ·
+    analytic continuation · functional equation · L(E,1)=0 · analytic rank 1 ·
+    regulator · Sha · Tamagawa conjecture · c₁₁=1 · c₁₃=2.
+    0 sorry, classical trio.  Registered in verify_weil_cluster.sh Phase 12.
   - **BSD conjecture for 143a1**: OPEN (named surface `E143a1_BSD_OPEN`;
     rank = ord_{s=1} L(E,s) requires Wiles–Taylor + Gross–Zagier + Kolyvagin,
     absent from Mathlib v4.12.0).
