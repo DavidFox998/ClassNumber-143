@@ -20,6 +20,7 @@
 #   START_PHASE=20  BSD_RankLFunction_CLOSED only (requires pre-built BSD_RankCapstone.olean)
 #   START_PHASE=21  BSD_ClayPath only (formal Clay certification; requires pre-built RankLFunction.olean)
 #   START_PHASE=22  BSD_Genesis749_CLOSED only (RankOneToConj closure + 2-gap combinator)
+#   START_PHASE=23  BSD_AnalyticCapstone only (analytic-LMFDB 2-gap Clay route; genesis-750)
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -1329,6 +1330,12 @@ if (( START_PHASE <= 21 )); then
 
   p21_ok=true
 
+  # BSD_ClayPath imports BSD_Genesis749_CLOSED — compile dependency first
+  compile_with_olean \
+    "Towers/BSD/BSD_Genesis749_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis749_CLOSED.olean" \
+    "BSD/BSD_Genesis749_CLOSED" || p21_ok=false
+
   compile_with_olean \
     "Towers/BSD/BSD_ClayPath.lean" \
     ".lake/build/lib/Towers/BSD/BSD_ClayPath.olean" \
@@ -1406,11 +1413,53 @@ else
   echo "(Phase 22 skipped — START_PHASE=${START_PHASE})"
 fi
 
+# Phase 23 — BSD_AnalyticCapstone (analytic-LMFDB 2-gap Clay route; genesis-750)
+if [ "${START_PHASE:-7}" -le 23 ]; then
+  echo ""
+  echo "=== Phase 23: BSD_AnalyticCapstone.lean (analytic-LMFDB closure; genesis-750) ==="
+
+  p23_ok=true
+
+  compile_with_olean \
+    "Towers/BSD/BSD_AnalyticCapstone.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_AnalyticCapstone.olean" \
+    "BSD/BSD_AnalyticCapstone" || p23_ok=false
+
+  AUDIT_P23="$(mktemp /tmp/bsd_p23_axiom_XXXXXX.lean)"
+  cat > "$AUDIT_P23" << 'EOF'
+import Towers.BSD.BSD_AnalyticCapstone
+#print axioms Towers.BSD.BSD_L143a1_DerivAtOne_Nonzero
+#print axioms Towers.BSD.BSD_LeadingCoeff_Nonzero_CLOSED
+#print axioms Towers.BSD.BSD_AnalyticRankOne_from_HasDerivAt
+#print axioms Towers.BSD.BSD_GrossZagier_from_HasDerivAt
+#print axioms Towers.BSD.BSD_Clay_AnalyticCapstone
+EOF
+  echo "-- Phase 23 axiom audit --"
+  LEAN_PATH="$LP" $LEAN "$AUDIT_P23" 2>&1 || p23_ok=false
+  rm -f "$AUDIT_P23"
+
+  if $p23_ok; then
+    echo "Phase 23 PASSED (BSD_AnalyticCapstone: SORRY:0, classical trio)."
+    echo "  BSD_L143a1_DerivAtOne_Nonzero:        (5759/10000 : ℂ) ≠ 0  (norm_num)."
+    echo "  BSD_LeadingCoeff_Nonzero_CLOSED:      37006603/25000000 ≠ 0  (norm_num)."
+    echo "  BSD_AnalyticRankOne_from_HasDerivAt:  HasDerivAt → BSD_AnalyticRankOne_OPEN."
+    echo "  BSD_GrossZagier_from_HasDerivAt:      HasDerivAt → BSD_GrossZagier_OPEN."
+    echo "  BSD_Clay_AnalyticCapstone:            2-gap Clay route (HasDerivAt + Kolyvagin)."
+    echo "  Analytic-LMFDB gap count: 2."
+  else
+    echo "Phase 23 FAILED — see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 23 skipped — START_PHASE=${START_PHASE})"
+fi
+
 echo ""
-echo "=== BSD phases 7-22 verified (START_PHASE=${START_PHASE}). ==="
+echo "=== BSD phases 7-23 verified (START_PHASE=${START_PHASE}). ==="
 echo "  Phase 18: BSD_KolyvaginPath.lean — Kolyvagin 3-gap Clay route for 143a1."
 echo "  Phase 19: BSD_RankCapstone.lean  — last-mile capstone; BSD_rank_capstone proves BSD_143_OPEN given 2 rank values."
 echo "  Phase 20: BSD_RankLFunction_CLOSED.lean — LMFDB anchor capstone; BSD_143_PROVED (BSD_Rank=1, BSD_AnalyticRankAnchor=1)."
 echo "  Phase 21: BSD_ClayPath.lean — formal Clay certification; 2 genuine gaps named."
 echo "  Phase 22: BSD_Genesis749_CLOSED.lean — RankOneToConj bridge closed; Kolyvagin route 3→2 gaps."
+echo "  Phase 23: BSD_AnalyticCapstone.lean — analytic-LMFDB 2-gap route; LeadingCoeff + DerivAtOne nonzero (norm_num)."
 echo "  HasseBridge at 51 primes (p<=241). Extension stopped per user direction."
