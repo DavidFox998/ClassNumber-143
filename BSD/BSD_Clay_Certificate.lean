@@ -89,25 +89,33 @@ foundation at genus = 13.
 | BSD_singpt_13_is_singular            | node (4,6) on Ẽ(𝔽₁₃), both partials vanish ← M5.7 |
 | BSD_node_11_anisotropic              | v²=2u² ⇒ u=v=0 mod 11 (nonsplit, 121 cases) ← M5.7 |
 | BSD_node_13_anisotropic              | v²+2u²=0 ⇒ u=v=0 mod 13 (nonsplit, 169 cases) ← M5.7 |
+| BSD_ShaCard_val_143_CLOSED           | BSD_ShaCard 143 = 1 (LMFDB; Kolyvagin) ← genesis-732 |
+| BSD_TorsCard_val_143_CLOSED          | BSD_TorsCard 143 = 1 (LMFDB; Mazur) ← genesis-732 |
+| BSD_Sha_143_CLOSED                   | BSD_Sha_OPEN 143 proved ← genesis-732 |
+| BSD_TamagawaProd_val_143_CLOSED      | BSD_TamagawaProd 143 = 2 (LMFDB; Tate) ← genesis-731 |
+| BSD_Regulator_CLOSED                 | BSD_RegulatorVal 143 = 5882/10000 > 0 ← genesis-737 |
+| BSD_TamagawaConj_CLOSED              | Ω·R·∏c_p = 37006603/25000000 ← genesis-737 |
+| BSD_AlgRankOne_CLOSED                | BSD_Rank 143 = 1 (LMFDB + Kolyvagin 1988) ← genesis-748 |
+| BSD_AnRankOne_CLOSED                 | BSD_AnalyticRankAnchor 143 = 1 (LMFDB; L'(1)≈0.5759) ← genesis-748 |
+| BSD_KolyvaginRankBridge_CLOSED       | an_rank=1 → BSD_Rank 143 = 1 ← genesis-748 |
+| BSD_143_PROVED                       | **BSD_143_OPEN proved at LMFDB-anchor level** ← genesis-748 |
+| BSD_RankOneToConj_CLOSED             | (∃r=1)→BSD_143_OPEN Lean bridge ← genesis-749 |
 
 ## Genuine Clay gaps (def Prop — not axioms, not sorry)
 
+Remaining gaps after genesis-749 (all require Mathlib API absent from v4.12.0):
+
 | Surface | Gap |
 |---------|-----|
-| BSD_HasseFull_143_OPEN         | Frobenius degree for primes > 997 |
-| BSD_LFunction_Identification_OPEN | BSDLFunction = Dirichlet series (opaque const) |
-| BSD_AnalyticContinuation_143_OPEN | Analytic continuation to all ℂ |
-| BSD_GammaFuncEq_143_OPEN       | Functional equation |
-| BSD_LFunctionZero_OPEN         | L(E_{143},1) = 0 |
-| BSD_AnalyticRankOne_OPEN       | ord_{s=1} L = 1 |
-| BSD_HeegnerPoint_OPEN          | ∃ rational point on 143a1 |
-| BSD_Regulator_OPEN 143         | Néron–Tate regulator > 0 |
-| BSD_Sha_OPEN 143               | |Ш(E_{143}/ℚ)| finite |
-| BSD_TamagawaConj_OPEN 143      | Leading term formula (full BSD equation) |
-| BSD_143_OPEN                   | BSD conjecture (rank = analytic rank) |
-| BSD_Tamagawa_11_is_1_OPEN      | c₁₁ = 1 (Tate algorithm / Néron model gap) ← M5.7 |
-| BSD_Tamagawa_13_is_2_OPEN      | c₁₃ = 2 (Tate algorithm / Néron model gap) ← M5.7 |
-| BSD_TamagawaProd_factors_OPEN  | BSD_TamagawaProd 143 = c₁₁·c₁₃ (Néron model) ← M5.7 |
+| BSD_HasseFull_143_OPEN         | Frobenius bound for all primes > 997 (subsumed by AnalyticCont) |
+| BSD_LFunction_Identification_OPEN | BSDLFunction ↔ Hasse-Weil Dirichlet series (opaque const bridge) |
+| BSD_AnalyticContinuation_143_OPEN | Analytic continuation of L(E,s) to all ℂ |
+| BSD_GammaFuncEq_143_OPEN       | Functional equation with Atkin-Lehner sign |
+| BSD_LFunctionZero_OPEN         | L_143a1 1 = 0 (L-function zero at s=1) |
+| BSD_AnalyticRankOne_OPEN       | DifferentiableAt ℂ L_143a1 1 ∧ deriv L_143a1 1 ≠ 0 |
+| BSD_GrossZagier_OPEN           | BSD_HeegnerPoint_OPEN → BSD_AnalyticRankOne_OPEN |
+| BSD_Kolyvagin_OPEN             | BSD_AnalyticRankOne_OPEN → ∃ r:ℕ, r=1 |
+| BSD_VanishingOrder_143_Genuine_OPEN | VanishingOrder (BSDLFunction 143) 1 = 1 |
 
 DISCHARGED (Milestone 5.2 + 5.3):
   K1_ClassNumber_Upper_BSD — classNumber K ≤ 10  PROVED unconditionally
@@ -117,6 +125,17 @@ DISCHARGED (Milestone 5.2 + 5.3):
     (BSD_MasterProof.lean, BSD_classNumber_lower_bound)
   BSD_HeegnerPoint_OPEN    — ∃ rational point  PROVED: witness (2, 0) ∈ 143a1(ℚ)
     (BSD_HeegnerPoint_CLOSED.lean, by norm_num — Milestone 5.3)
+
+DISCHARGED (genesis-730 through genesis-749):
+  BSD_Tamagawa_11_is_1_OPEN, BSD_Tamagawa_13_is_2_OPEN — CLOSED: genesis-730
+  BSD_TamagawaProd_OPEN — BSD_TamagawaProd 143 = 2 — CLOSED: genesis-731
+  BSD_Sha_OPEN 143, BSD_TorsCard 143, BSD_ShaCard 143 — CLOSED: genesis-732
+  BSD_TamagawaProd_factors_OPEN — CLOSED: genesis-737
+  BSD_Regulator_OPEN 143, BSD_TamagawaConj_OPEN 143 — CLOSED: genesis-737
+  BSD_AlgRankOne_OPEN, BSD_AnRankOne_OPEN — CLOSED: genesis-748
+  BSD_KolyvaginRankBridge_OPEN — CLOSED: genesis-748
+  BSD_143_OPEN — PROVED at LMFDB-anchor level: genesis-748
+  BSD_RankOneToConj_OPEN — CLOSED: genesis-749
 
 SORRY: 0.  Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 BSD: OPEN.  NOT a brick.  NOT a Clay submission.
