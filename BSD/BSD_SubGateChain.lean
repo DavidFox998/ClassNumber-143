@@ -629,4 +629,85 @@ def BSD_clay_open_count_742 : ℕ := 4
     new closures are secondary Hasse surfaces). -/
 def BSD_clay_primary_gap_count_742 : ℕ := 4
 
+
+/-- Open surface count after genesis-743.
+
+    Named OPEN primary surfaces: **4** (unchanged — all 8 new closures are secondary
+    Hasse surfaces, not primary gaps).
+
+    **genesis-743** (`BSD_Genesis743_CLOSED.lean`, 2026-06-26):
+    HasseBridge extended to 8 more primes via the §V.5 Frobenius-degree route.
+    New primes covered: p ∈ {151, 157, 163, 167, 173, 179, 181, 191}.
+    Each proved by: `decide` (affine point count over ZMod p × ZMod p) →
+    `omega` (exact a_p) → completed-square discriminant check (all negative) →
+    `BSD_hasse_of_degree_nonneg` bridge.
+
+    a_p values: +4 (p=151), +5 (p=157), −4 (p=163), +4 (p=167),
+                −8 (p=173), −15 (p=179), +7 (p=181), −15 (p=191).
+    Half-integer witnesses: p=157 (a=+5), p=179 (a=−15), p=181 (a=+7), p=191 (a=−15).
+
+    **S4 completion**: p=191 is the fourth S4 exceptional prime (S4={2,3,19,191}).
+    All four S4 primes now carry BSD_Hasse_OPEN certificates via the §V.5 bridge.
+
+    HasseBridge after genesis-743 covers **41 good primes**:
+      {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪
+      {71,73,79} ∪ {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪
+      {151,157,163,167,173,179,181,191}.
+
+    Remaining **4 genuine primary gaps** (all require API absent from Mathlib v4.12.0):
+      (a) BSD_HasseFull_143_OPEN   — Frobenius/Hasse for all primes
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation (opaque BSDLFunction)
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation (opaque BSDLFunction)
+      (d) BSD_143_OPEN             — BSD conjecture (rank = analytic rank)
+
+    Verify workflow: START_PHASE=15 (Phase 15: genesis-743). -/
+def BSD_clay_open_count_743 : ℕ := 4
+
+/-- Primary gap count after genesis-743 (4 remain; 0 primary gaps closed — all 8
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_743 : ℕ := 4
+
+/-- Open surface count after genesis-744 (HasseBridge extended to p∈{193,197,199,211,223}).
+    5 secondary Hasse surfaces closed via the §V.5 Frobenius-degree route.
+    a_p values: −24 (p=193), −10 (p=197), −4 (p=199), −24 (p=211), +5 (p=223).
+    p=223 has odd a_p → half-integer witness (r−5/2)²+867/4.
+    HasseBridge now covers **46 primes**:
+      {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪
+      {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪
+      {151,157,163,167,173,179,181,191} ∪ {193,197,199,211,223}.
+    Named OPEN primary surfaces: 4 (unchanged):
+      (a) BSD_HasseFull_143_OPEN  — Hasse bound for all primes (Frobenius API absent)
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation (opaque BSDLFunction)
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation (opaque BSDLFunction)
+      (d) BSD_143_OPEN             — BSD conjecture (rank = analytic rank)
+
+    Verify workflow: START_PHASE=16 (Phase 16: genesis-744). -/
+def BSD_clay_open_count_744 : ℕ := 4
+
+/-- Primary gap count after genesis-744 (4 remain; 0 primary gaps closed — all 5
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_744 : ℕ := 4
+
+/-- Open surface count after genesis-745 (HasseBridge extended to p∈{227,229,233,239,241}).
+    5 secondary Hasse surfaces closed via the §V.5 Frobenius-degree route.
+    a_p values: 0 (p=227), +9 (p=229), −16 (p=233), −30 (p=239), −10 (p=241).
+    p=229 has odd a_p → half-integer witness (r−9/2)²+835/4.
+    HasseBridge now covers **51 primes**:
+      {2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79} ∪
+      {83,89,97} ∪ {101,103,107,109,113} ∪ {127,131,137,139,149} ∪
+      {151,157,163,167,173,179,181,191} ∪ {193,197,199,211,223} ∪
+      {227,229,233,239,241}.
+    Named OPEN primary surfaces: 4 (unchanged):
+      (a) BSD_HasseFull_143_OPEN  — Hasse bound for all primes (Frobenius API absent)
+      (b) BSD_AnalyticContinuation_143_OPEN — analytic continuation (opaque BSDLFunction)
+      (c) BSD_GammaFuncEq_143_OPEN — functional equation (opaque BSDLFunction)
+      (d) BSD_143_OPEN             — BSD conjecture (rank = analytic rank)
+
+    Verify workflow: START_PHASE=17 (Phase 17: genesis-745). -/
+def BSD_clay_open_count_745 : ℕ := 4
+
+/-- Primary gap count after genesis-745 (4 remain; 0 primary gaps closed — all 5
+    new closures are secondary Hasse surfaces). -/
+def BSD_clay_primary_gap_count_745 : ℕ := 4
+
 end Towers.BSD
