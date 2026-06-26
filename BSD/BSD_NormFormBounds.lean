@@ -59,7 +59,7 @@ lemma normForm_four_eq (a b : ℤ) :
 
 /-! ### Lower bound -/
 
-private lemma one_le_sq_of_ne_zero {n : ℤ} (hn : n ≠ 0) : 1 ≤ n ^ 2 := by
+lemma one_le_sq_of_ne_zero {n : ℤ} (hn : n ≠ 0) : 1 ≤ n ^ 2 := by
   rcases lt_or_gt_of_ne hn with h | h
   · nlinarith [sq_nonneg (n + 1)]
   · nlinarith [sq_nonneg (n - 1)]
