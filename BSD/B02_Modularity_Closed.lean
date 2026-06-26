@@ -97,7 +97,7 @@ are propositionally equal via `Finset.filter_congr`.
     `E143_point p x y` is defined as `y*y+y = x*x*x-x*x-x-2`, which is
     exactly the inline predicate in `E143a1_count`; both filter the same
     `Finset.univ`, so the two expressions are definitionally equal. -/
-private lemma E143_Finset_card_eq_count (p : ℕ) [hp : Fact p.Prime] :
+lemma E143_Finset_card_eq_count (p : ℕ) [hp : Fact p.Prime] :
     (E143_Finset p).card = E143a1_count p := by
   haveI : NeZero p := ⟨hp.out.ne_zero⟩
   unfold E143_Finset E143_point E143a1_count
