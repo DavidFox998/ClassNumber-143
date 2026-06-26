@@ -57,6 +57,8 @@ Axiom footprint: classical trio {propext, Classical.choice, Quot.sound}.
 
 import Towers.BSD.BSD_Genesis736_CLOSED
 
+set_option maxRecDepth 10000
+
 namespace Towers.BSD
 
 /-! ## Fact instances for the nine new primes -/
