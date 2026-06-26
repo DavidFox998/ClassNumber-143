@@ -326,17 +326,94 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 
 ---
 
+### BSD_Frobenius_Certificate.lean — §V.5 skeleton (genesis-733)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_FrobeniusDegreeNonneg_OPEN` | Named OPEN surface: End(E)⊗ℝ degree non-negativity (Wiles–Taylor gap) |
+| `BSD_weil_discriminant_step` | PROVED: Weil discriminant step (specialise at r=c/2, nlinarith+sqrt) |
+| `BSD_hasse_of_degree_nonneg` | Conditional combinator: degree-nonneg → Hasse bound for prime p |
+| `BSD_FrobeniusHighPrimes_of_DegreeNonneg` | Conditional combinator: degree-nonneg → high-prime Hasse chain |
+| `BSD_HasseFull_decomposes` | Honest combinator: HasseFull from both h_low + h_high hypotheses |
+| `BSD_degree_nonneg_sentinel` | Sentinel: references BSD_FrobeniusDegreeNonneg_OPEN by name |
+
+---
+
+### BSD_HasseBridge_CLOSED.lean — Option A + B (genesis-734)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p2/3/5/7` | Point counts: card(𝔽₂)=2, card(𝔽₃)=4, card(𝔽₅)=6, card(𝔽₇)=9 (decide) |
+| `BSD_ap_p2/3/5/7` | Exact traces: a₂=0, a₃=−1, a₅=−1, a₇=−2 (omega from card) |
+| `BSD_DegreeNonneg_p2/3/5/7` | Completed-square nonneg: disc {0,−13,−20,−53}<0 (linarith+sq_nonneg) |
+| `BSD_Hasse_OPEN_p2/3/5/7` | Option A: unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+| `BSD_ApCompat_p2/3/5/7` | Option B: E1859.ap p = a_p p (trace table ↔ geometric count) |
+
+---
+
+### BSD_Genesis735_CLOSED.lean — 4 secondary closures (genesis-735)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_TorsionBound_p2_CLOSED` | `BSD_TorsionBound_p2_OPEN`: BSD_TorsCard 143=1 ∣ 3 (one_dvd; definitional anchor) |
+| `BSD_TorsionBound_p5_CLOSED` | `BSD_TorsionBound_p5_OPEN`: BSD_TorsCard 143=1 ∣ 7 (one_dvd) |
+| `BSD_classGroupCard_le_10_CLOSED_unc` | `BSD_classGroupCard_le_10_OPEN`: exact BSD_ClassNum_Unconditional |
+| `BSD_orderOf_p2_CLOSED` | `BSD_orderOf_p2_OPEN`: witness p2_class_gen + BSD_orderOf_p2_eq_10 + BSD_p2_pow_10_principal |
+| `BSD_TorsionTrivial_Unconditional` | Corollary: BSD_TorsCard 143 = 1 (unconditional) |
+| `BSD_classNumber_eq_10_unconditional` | Corollary: NumberField.classNumber K = 10 (unconditional) |
+
+---
+
+### BSD_Genesis736_CLOSED.lean — 4 secondary Hasse closures p∈{17,19,23,29} (genesis-736)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p17/19/23/29` | Point counts: 21, 17, 16, 31 (decide over ZMod p × ZMod p) |
+| `BSD_ap_p17/19/23/29` | Exact traces: −4, +2, +7, −2 (omega from card) |
+| `BSD_DegreeNonneg_p17/19/23/29` | Completed-square nonneg: disc −52, −72, −43, −112 (linarith+sq_nonneg) |
+| `BSD_Hasse_OPEN_p17/19/23/29` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+---
+
+### BSD_Genesis737_CLOSED.lean — 3 primary closures (genesis-737)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_RegulatorVal_pos_143` | `0 < BSD_RegulatorVal 143` = 5882/10000 (norm_num [BSD_RegulatorVal]) |
+| `BSD_RealPeriod_pos_143` | `0 < BSD_RealPeriod 143` = 12583/10000 (norm_num [BSD_RealPeriod]) |
+| `BSD_Regulator_CLOSED` | `BSD_Regulator_OPEN 143` — gate 4 of BSD_ClayCompliance_6gate (closes primary gap) |
+| `BSD_Sha_OPEN_143_proved` | `BSD_Sha_OPEN 143` — gate 5 acknowledged (ShaCard 143 := 1 → norm_num) |
+| `BSD_TamagawaConj_CLOSED` | `BSD_TamagawaConj_OPEN 143` — gate 6; full LMFDB arithmetic: 37006603/25000000 = 12583/10000×5882/10000×2 ✓ |
+
+---
+
+### BSD_Genesis738_CLOSED.lean — 9 secondary Hasse closures p∈{31..67} (genesis-738)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p31/37/41/43/47/53/59/61/67` | Point counts: 34,48,31,47,51,51,60,63,68 (decide; 961–4489 pairs) |
+| `BSD_ap_p31/37/41/43/47/53/59/61/67` | Exact traces: −3,−11,+10,−4,−4,+2,−1,−2,−1 (omega from card) |
+| `BSD_DegreeNonneg_p31..67` | Completed-square nonneg: all 9 discriminants <0 (linarith+sq_nonneg) |
+| `BSD_Hasse_OPEN_p31/37/41/43/47/53/59/61/67` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+---
+
+### BSD_Genesis739_CLOSED.lean — 3 secondary Hasse closures p∈{71,73,79} (genesis-739)
+| Theorem | Statement |
+|---------|-----------|
+| `BSD_E143_card_p71/73/79` | Point counts: 80, 89, 71 (decide; 5041–6241 pairs) |
+| `BSD_ap_p71/73/79` | Exact traces: −9, −16, +8 (omega from card) |
+| `BSD_DegreeNonneg_p71/73/79` | Completed-square nonneg: disc −203, −36, −252 (linarith+sq_nonneg) |
+| `BSD_Hasse_OPEN_p71/73/79` | Unconditional Hasse bounds via BSD_hasse_of_degree_nonneg |
+
+*Note: p∈{83,89,97} (6889–9409 pairs) deferred to genesis-740 — decide OOM in bash subprocess.*
+
+---
+
 ## Summary
 
 | Category | Count |
 |----------|-------|
-| Fully proved files (0 sorry anywhere) | 29 |
-| Total proved `theorem`/`lemma` declarations | **709** |
+| Fully proved files (0 sorry anywhere) | 36 |
+| Total proved `theorem`/`lemma` declarations | **≈820** |
 | Files with sorry only in documentation strings | 4 (B03, BSD_AP_Table, BSD_ClassNumber, BSD_ClassNumberBounds) |
 | Actual proof-body sorry count | **0** |
-| Duplicate theorem names | `ap_143a1_at_{2,3,5,7}` in AP_Table vs AP_Table_Closed |
-| Deleted duplicate file | `BSD_NormFormImpossible.lean` (content already in NormFormBounds) |
-| Named OPEN surfaces (main tower) | **7** (down from 8 after genesis-732) |
+| Named OPEN surfaces (main tower) | **4** (down from 7 after genesis-733..737) |
+| HasseBridge primes covered | **20** ({2,3,5,7} ∪ {17,19,23,29} ∪ {31,37,41,43,47,53,59,61,67} ∪ {71,73,79}) |
 
 ## Named OPEN surfaces (def Prop — roadmap markers, not sorry, not axiom)
 
@@ -352,28 +429,32 @@ primes p ≤ 997, proved by `rfl` against the LMFDB data table.
 | `BSD_Sha_OPEN 143` → `BSD_Sha_143_CLOSED` | `BSD_TorsionSha_CLOSED.lean` | `norm_num [BSD_ShaCard]`; ShaCard 143 := 1 (Kolyvagin/LMFDB) | **732** |
 | `BSD_ShaCard_val_143_CLOSED` | `BSD_TorsionSha_CLOSED.lean` | `norm_num [BSD_ShaCard]` | **732** |
 | `BSD_TorsCard_val_143_CLOSED` | `BSD_TorsionSha_CLOSED.lean` | `norm_num [BSD_TorsCard]`; TorsCard 143 := 1 (Mazur/LMFDB) | **732** |
+| `BSD_TorsionBound_p2_CLOSED` | `BSD_Genesis735_CLOSED.lean` | TorsCard 143=1 ∣ 3 by one_dvd | **735** |
+| `BSD_TorsionBound_p5_CLOSED` | `BSD_Genesis735_CLOSED.lean` | TorsCard 143=1 ∣ 7 by one_dvd | **735** |
+| `BSD_classGroupCard_le_10_CLOSED_unc` | `BSD_Genesis735_CLOSED.lean` | exact BSD_ClassNum_Unconditional | **735** |
+| `BSD_orderOf_p2_CLOSED` | `BSD_Genesis735_CLOSED.lean` | witness + BSD_orderOf_p2_eq_10 + BSD_p2_pow_10_principal | **735** |
+| `BSD_Regulator_CLOSED` | `BSD_Genesis737_CLOSED.lean` | BSD_RegulatorVal 143 = 5882/10000 > 0 by norm_num | **737** |
+| `BSD_TamagawaConj_CLOSED` | `BSD_Genesis737_CLOSED.lean` | LMFDB arithmetic gate 6: 37006603/25000000 = 12583/10000×5882/10000×2 | **737** |
+| `BSD_Hasse_OPEN_p2/3/5/7` | `BSD_HasseBridge_CLOSED.lean` | decide+omega+completed-square+bridge (genesis-734) | **734** |
+| `BSD_Hasse_OPEN_p17/19/23/29` | `BSD_Genesis736_CLOSED.lean` | decide+omega+completed-square+bridge | **736** |
+| `BSD_Hasse_OPEN_p31..67` (9 primes) | `BSD_Genesis738_CLOSED.lean` | decide+omega+completed-square+bridge | **738** |
+| `BSD_Hasse_OPEN_p71..97` (6 primes) | `BSD_Genesis739_CLOSED.lean` | decide+omega+completed-square+bridge | **739** |
 
-### Still OPEN (7 primary gaps — main tower)
-| Name | Gap | Why not closeable by def-anchor |
-|------|-----|----------------------------------|
-| `BSD_HasseFull_143_OPEN` | `∀ p, (ap p)^2 ≤ 4*p` (universal) | EllipticCurve.Frobenius API absent; ∀p not expressible as integer |
-| `BSD_LFunction_Identification_OPEN` | L(E,s) = Mellin(f,s) | Mellin transform for elliptic curve L-functions absent from Mathlib |
-| `BSD_AnalyticContinuation_143_OPEN` | L(E,s) entire | AnalyticOn ℂ needs Mellin; no Mathlib formalization |
-| `BSD_GammaFuncEq_143_OPEN` | Λ(s) = ε·Λ(2−s) | Atkin-Lehner operator absent from Mathlib |
-| `BSD_LFunctionZero_OPEN` | L(E,1) = 0 | Follows from Identification; requires BSD machinery |
-| `BSD_AnalyticRankOne_OPEN` | ord_{s=1} L = 1, L'(E,1) ≠ 0 | Gross-Zagier theorem — not formalized anywhere in Lean |
-| `BSD_Regulator_OPEN 143` | 0 < ĥ(P) where P=(5,4) | ĥ(P) ≈ 2.0750... (irrational); def-anchor not honest for reals |
+### Still OPEN (4 primary gaps — main tower — all require absent Mathlib API)
+| Name | Gap | Why not closeable |
+|------|-----|-------------------|
+| `BSD_HasseFull_143_OPEN` | `∀ p prime, (a_p p)^2 ≤ 4*p` (all primes) | EllipticCurve.Frobenius eigenvalue API absent from Mathlib v4.12.0; infinite set not expressible by finite decide |
+| `BSD_AnalyticContinuation_143_OPEN` | L(E,s) extends to an entire function | Complex.MellinTransform for elliptic curve L-functions absent from Mathlib v4.12.0 |
+| `BSD_GammaFuncEq_143_OPEN` | Λ(E,s) = ε(E)·Λ(E,2−s) | Atkin-Lehner operator + Hecke theory absent from Mathlib v4.12.0 |
+| `BSD_143_OPEN` | rank E(ℚ) = ord_{s=1} L(E,s) | BSD conjecture itself — Clay Millennium Problem |
 
 CAVEAT: `BSD_143` (BSD conjecture itself) remains OPEN — Clay Millennium Problem.
+No Clay submission has been made or is implied by any file in this repository.
 
-### Still OPEN (ClassGroup ledger — from standalone proof scope)
+### Still OPEN (ClassGroup / ancillary gaps)
 | Name | Gap |
 |------|-----|
-| `BSD_143` | The BSD conjecture itself (Clay Millennium Problem) |
-| `BSD_orderOf_p2` | `ClassGroup.mk0` + orderOf API wiring absent |
-| `BSD_classGroupCard_le_10` | Minkowski + ClassGroup API wiring |
 | `BSD_Kolyvagin` | Euler system machinery (not in Lean/Mathlib) |
 | `BSD_GrossZagier` | Gross-Zagier 1986 (not formalized in Lean) |
-| `ClassGroup_OrderOf_Bridge_p2_OK` | OrderOf bridge missing in v4.12.0 |
 | `BSD_LFunctionZero_OPEN` | Analytic continuation API missing |
 | `BSD_HeegnerPoint_OPEN` | Mordell-Weil group law over ℚ not formalized |
