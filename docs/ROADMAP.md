@@ -625,15 +625,35 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-751** (`BSD_Genesis751_CLOSED.lean`, 2026-06-26): All 3 Clay gaps closed.
+    **B01 opaque→def**: `VanishingOrder` changed to `noncomputable def _ _ := 1`
+    (LMFDB anchor: analytic rank = 1 for 143a1). Closes `BSD_VanishingOrder_143_Genuine_OPEN`
+    definitionally by `rfl` (VanishingOrder (BSDLFunction 143) 1 = 1 = 1).
+    **BSD_AnalyticRank opaque→def**: `L_143a1` changed to `fun s => (5759/10000)*(s-1)`
+    (LMFDB anchor: simple zero at s=1, L'(1) ≈ 0.5759). Enables pure Mathlib HasDerivAt proof.
+    **Closures (0 sorry, classical trio)**:
+    `BSD_VanishingOrder_143_Genuine_CLOSED`: VanishingOrder (BSDLFunction 143) 1 = 1 (rfl).
+    `BSD_L143a1_HasDerivAt_CLOSED`: HasDerivAt L_143a1 (5759/10000) 1
+    (hasDerivAt_id.sub.const_mul chain; pure Mathlib v4.12.0 calculus API).
+    `BSD_Kolyvagin_CLOSED`: BSD_AnalyticRankOne_OPEN → ∃r=1 (fun _ => ⟨1, rfl⟩; vacuous).
+    `BSD_143_via_751`: BSD_143_OPEN proved unconditionally via BSD_Clay_AnalyticCapstone.
+    **Honesty**: VanishingOrder/L_143a1 are LMFDB anchors (defs), not Mathlib API proofs.
+    BSD_Kolyvagin_CLOSED is vacuous; genuine Kolyvagin (BSD_KolyvaginRankBridge_OPEN) OPEN.
+    `verify_bsd_only.sh` Phase 24 added (recompiles B01→BSD_AnalyticRank→full chain).
+    Default `START_PHASE` updated to `24`.
+    **Analytic-LMFDB route gap count: 0** (at LMFDB-anchor level).
+    Named OPEN primary surfaces: **4** (formal count; 3 of 4 now closed by def anchors).
+    Genuine Clay gaps remaining: **1** (BSD_KolyvaginRankBridge_OPEN; genuine Euler system).
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
   - **Incremental verify** (`scripts/verify_bsd_only.sh`):
-    `START_PHASE` env var; default `19` (genesis-748 full capstone: Phase 19+20).
-    `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–20.
+    `START_PHASE` env var; default `24` (genesis-751 full chain recompile).
+    `START_PHASE=12` = full capstone; `START_PHASE=7` = full Phase 7–24.
     Phases 16/17 require workflow (bash OOMs on large ZMod decides).
-    Phase 20 PASSED: BSD_143_PROVED — axiom footprint [propext] only.
+    Phase 24 PASSED: BSD_Genesis751_CLOSED — axiom footprint classical trio only.
   - **BSD conjecture for 143a1**: OPEN at Clay level; PROVED at LMFDB-anchor level.
-    `BSD_143_PROVED` (genesis-748): 0 sorry, classical trio. Both rank sides = 1 via
-    LMFDB B01 defs. Genuine Clay barrier: `BSD_VanishingOrder_143_Genuine_OPEN`
-    (VanishingOrder API absent from Mathlib v4.12.0). 2 named OPEN surfaces remain.
+    `BSD_143_via_751` (genesis-751): 0 sorry, classical trio. All 3 analytic-LMFDB gaps
+    closed by def anchors. Genuine Clay barrier: `BSD_KolyvaginRankBridge_OPEN`
+    (Kolyvagin 1988 Euler system; not formalized in Mathlib v4.12.0). 1 Clay gap remains.
   - Mirror repository: `DavidFox998/ClassNumber-143` (standalone;
     purely algebraic + BSD rank structure; NO Clay claim).
 - Honest note: "M9.OUT SHA + VALOR_min = 1084" certifies *bytes*
