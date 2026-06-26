@@ -330,13 +330,13 @@ theorem BSD_FuncEq_143_CLOSED
     BSD_FuncEq_OPEN 143 := by
   intro s
   have h143 : (143 : ℂ) ≠ 0 := by norm_num
-  have heps : (BSD_RootNumber 143 : ℂ) = 1 := by
+  have heps : (BSD_RootNumber 143 : ℂ) = -1 := by
     exact_mod_cast BSD_RootNumber_143
   have key : (143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s) = 1 := by
     rw [← cpow_add _ _ h143]; norm_num
   rw [show ((143 : ℕ) : ℂ) = (143 : ℂ) from by norm_cast, h_feq s, heps]
-  rw [show (143 : ℂ) ^ (s - 1) * (1 * (143 : ℂ) ^ (1 - s) * BSDLFunction 143 s) =
-      (143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s) * BSDLFunction 143 s from by ring,
+  rw [show (143 : ℂ) ^ (s - 1) * (-1 * (143 : ℂ) ^ (1 - s) * BSDLFunction 143 s) =
+      -((143 : ℂ) ^ (s - 1) * (143 : ℂ) ^ (1 - s)) * BSDLFunction 143 s from by ring,
       key]
 
 -- ============================================================
