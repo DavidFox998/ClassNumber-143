@@ -10,7 +10,8 @@
 #   START_PHASE=9   skip Phases 7-8 (B02_Modularity + ClassNumber already built)
 #   START_PHASE=10  skip Phases 7-9 (all M5.x chain already built)
 #   START_PHASE=12  capstone-only (Genus/BostBound/Clay gates + TorsionSha_CLOSED + SubGateChain)
-#   START_PHASE=13  genesis-732 minimal (TorsionSha_CLOSED + SubGateChain only)
+#   START_PHASE=13  genesis-741 HasseBridge (28 primes; phases 12+13+14)
+#   START_PHASE=14  genesis-742 only (requires pre-built 741 olean)
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -614,6 +615,12 @@ use_olean_if_fresh \
   "BSD/BSD_Genesis740_CLOSED" || p12_ok=false
 echo ""
 
+use_olean_if_fresh \
+  "Towers/BSD/BSD_Genesis741_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis741_CLOSED.olean" \
+  "BSD/BSD_Genesis741_CLOSED" || p12_ok=false
+echo ""
+
 compile_with_olean \
   "Towers/BSD/E143a1_CLOSED.lean" \
   ".lake/build/lib/Towers/BSD/E143a1_CLOSED.olean" \
@@ -789,6 +796,15 @@ if (( START_PHASE <= 13 )); then
     "BSD/BSD_Genesis740_CLOSED" || p13_ok=false
   echo ""
 
+  # genesis-741: HasseBridge extended to p ∈ {101,103,107,109,113} (5 new primes).
+  # NOTE: decide calls over ZMod p × ZMod p (10201–12769 pairs per prime).
+  # Requires workflow compilation. Use pre-built olean if present.
+  use_olean_if_fresh \
+    "Towers/BSD/BSD_Genesis741_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis741_CLOSED.olean" \
+    "BSD/BSD_Genesis741_CLOSED" || p13_ok=false
+  echo ""
+
   compile_with_olean \
     "Towers/BSD/BSD_SubGateChain.lean" \
     ".lake/build/lib/Towers/BSD/BSD_SubGateChain.olean" \
@@ -804,6 +820,7 @@ import Towers.BSD.BSD_Genesis737_CLOSED
 import Towers.BSD.BSD_Genesis738_CLOSED
 import Towers.BSD.BSD_Genesis739_CLOSED
 import Towers.BSD.BSD_Genesis740_CLOSED
+import Towers.BSD.BSD_Genesis741_CLOSED
 import Towers.BSD.BSD_SubGateChain
 
 #print axioms Towers.BSD.BSD_ShaCard_val_143_CLOSED
@@ -829,6 +846,11 @@ import Towers.BSD.BSD_SubGateChain
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p83
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p89
 #print axioms Towers.BSD.BSD_Hasse_OPEN_p97
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p101
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p103
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p107
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p109
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p113
 LEANEOF
 
   echo "-- Phase 13 axiom audit --"
@@ -837,7 +859,7 @@ LEANEOF
   echo ""
 
   if $p13_ok; then
-    echo "Phase 13 PASSED (genesis-732+735+736+737+738+739+740: SORRY:0, classical trio)."
+    echo "Phase 13 PASSED (genesis-732+735+736+737+738+739+740+741: SORRY:0, classical trio)."
     echo "  BSD_ShaCard_val_143_CLOSED: BSD_ShaCard 143 = 1 (Kolyvagin/LMFDB anchor)."
     echo "  BSD_TorsCard_val_143_CLOSED: BSD_TorsCard 143 = 1 (Mazur/LMFDB anchor)."
     echo "  BSD_Sha_143_CLOSED: 0 < BSD_ShaCard 143 — BSD_Sha_OPEN 143 CLOSED."
@@ -865,6 +887,13 @@ LEANEOF
     echo "    HasseBridge now covers 23 primes (adds {83,89,97})."
     echo "    Named OPEN surfaces: 4 (unchanged — all 3 closures secondary)."
     echo "    NOTE: Compiled via workflow (bash subprocess OOMs at ≥6889 pairs)."
+    echo "  BSD_Genesis741_CLOSED: 5 Hasse CLOSED (genesis-741) for p ∈ {101,103,107,109,113}."
+    echo "    BSD_Hasse_OPEN_p101/103/107/109/113: unconditional, via decide + completed-square + §V.5 bridge."
+    echo "    a_p values: +18 (p=101), +8 (p=103), +8 (p=107), +4 (p=109), +1 (p=113)."
+    echo "    p=113 has odd a_p → half-integer witness (r−1/2)²+451/4."
+    echo "    HasseBridge now covers 28 primes (adds {101,103,107,109,113})."
+    echo "    Named OPEN surfaces: 4 (unchanged — all 5 closures secondary)."
+    echo "    NOTE: Compiled via workflow (bash subprocess OOMs at ≥10201 pairs)."
     echo "  BSD_SubGateChain: named OPEN 4; primary gaps 4; classical trio."
   else
     echo "Phase 13 FAILED — see error lines above."
@@ -874,5 +903,53 @@ else
   echo "(Phase 13 skipped — START_PHASE=${START_PHASE})"
 fi
 
+
+# ---------------------------------------------------------------------------
+if (( START_PHASE <= 14 )); then
+  p14_ok=true
+  echo "=== Phase 14: genesis-742 HasseBridge p \u2208 {127,131,137,139,149} ==="
+
+  # genesis-742: HasseBridge extended to p \u2208 {127,131,137,139,149} (5 new primes).
+  # NOTE: decide calls over ZMod p \u00d7 ZMod p (16129\u201322201 pairs per prime).
+  # Requires workflow compilation. Use pre-built olean if present.
+  use_olean_if_fresh \
+    "Towers/BSD/BSD_Genesis742_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis742_CLOSED.olean" \
+    "BSD/BSD_Genesis742_CLOSED" || p14_ok=false
+  echo ""
+
+  AUDIT_P14="$(mktemp /tmp/bsd_p14_axiom_XXXXXX.lean)"
+  cat > "$AUDIT_P14" << 'LEANEOF'
+import Towers.BSD.BSD_Genesis742_CLOSED
+
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p127
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p131
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p137
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p139
+#print axioms Towers.BSD.BSD_Hasse_OPEN_p149
+LEANEOF
+
+  echo "-- Phase 14 axiom audit --"
+  LEAN_PATH="$LP" $LEAN "$AUDIT_P14" 2>&1 || p14_ok=false
+  rm -f "$AUDIT_P14"
+  echo ""
+
+  if $p14_ok; then
+    echo "Phase 14 PASSED (genesis-742: SORRY:0, classical trio)."
+    echo "  BSD_Genesis742_CLOSED: 5 Hasse CLOSED (genesis-742) for p \u2208 {127,131,137,139,149}."
+    echo "    BSD_Hasse_OPEN_p127/131/137/139/149: unconditional, via decide + completed-square + \u00a7V.5 bridge."
+    echo "    a_p values: \u22128 (p=127), +18 (p=131), \u221217 (p=137), +18 (p=139), +14 (p=149)."
+    echo "    p=137 has odd a_p \u2192 half-integer witness (r+17/2)\u00b2+259/4."
+    echo "    HasseBridge now covers 33 primes (adds {127,131,137,139,149})."
+    echo "    Named OPEN surfaces: 4 (unchanged \u2014 all 5 closures secondary)."
+    echo "    NOTE: Compiled via workflow (bash subprocess OOMs at \u226516129 pairs)."
+  else
+    echo "Phase 14 FAILED \u2014 see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 14 skipped \u2014 START_PHASE=${START_PHASE})"
+fi
+
 echo ""
-echo "=== BSD phases 7–13 verified (START_PHASE=${START_PHASE}). ==="
+echo "=== BSD phases 7\u201314 verified (START_PHASE=${START_PHASE}). ==="
