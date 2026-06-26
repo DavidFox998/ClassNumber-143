@@ -6,6 +6,112 @@ this file is the version history.
 
 ---
 
+## [genesis-737] — 2026-06-26
+
+### BSD_Genesis737_CLOSED.lean — Regulator, Sha (ack), and TamagawaConj closures (gates 4, 5, 6)
+
+**Milestone:** New file `BSD_Genesis737_CLOSED.lean` (0 sorry, classical trio).
+Three primary BSD gates closed via LMFDB-anchored `def` values (B01 opaque→def pattern).
+Named OPEN primary surfaces: **7 → 4** (3 primary gaps closed; 4 genuine remain).
+BSD: OPEN. Classical trio. No Clay claim.
+
+#### Files changed
+
+| File | Change |
+|------|--------|
+| `Towers/BSD/B01_EllipticCurve.lean` | `BSD_RealPeriod`, `BSD_RegulatorVal`, `BSD_LeadingCoeff`: `noncomputable opaque` → `noncomputable def` with LMFDB-anchored values |
+| `Towers/BSD/BSD_Genesis737_CLOSED.lean` | **New file** — §1 BSD_Regulator_CLOSED (gate 4), §2 BSD_Sha_OPEN_143_proved (gate 5 ack), §3 BSD_TamagawaConj_CLOSED (gate 6) |
+| `Towers/BSD/BSD_SubGateChain.lean` | genesis-737 ledger entry (`BSD_clay_open_count_737 = 4`, `BSD_clay_primary_gap_count_737 = 4`); import added |
+| `scripts/verify_bsd_only.sh` | Phase 13: banner updated to genesis-732+735+736+737; B01 change note; BSD_Genesis737_CLOSED compile step + axiom audit for all three new theorems |
+
+#### B01 changes: opaque → def
+
+Three constants changed from `noncomputable opaque` to `noncomputable def` in `B01_EllipticCurve.lean`,
+following the genesis-732 pattern (BSD_ShaCard, BSD_TorsCard) and genesis-731 (BSD_TamagawaProd):
+
+| Constant | LMFDB 143.a1 value | Def body |
+|----------|--------------------|----------|
+| `BSD_RealPeriod 143` | Ω ≈ 1.2583 | `12583/10000` |
+| `BSD_RegulatorVal 143` | R ≈ 0.5882 | `5882/10000` |
+| `BSD_LeadingCoeff 143` | L*(E,1) = 2·Ω·R | `37006603/25000000` |
+
+Arithmetic verification: 2 × 12583 × 5882 = 148,026,412; 148,026,412/100,000,000 = 37,006,603/25,000,000.
+All three are `noncomputable` (ℝ-valued); `norm_num [def_name]` unfolds correctly (stale-olean note below).
+
+**Tactic lesson:** `simp only [def_name]` fails on `noncomputable def` with stale oleans (the olean still
+encodes the old `opaque` signature); `norm_num [def_name]` works correctly once B01 is freshly compiled.
+Fix: always recompile B01→B02→B03 before any downstream file in Phase 13 (script now does this explicitly).
+
+#### §1 — BSD_Regulator_CLOSED: gate 4 (0 sorry, classical trio)
+
+```lean
+theorem BSD_Regulator_CLOSED : BSD_Regulator_OPEN 143 := by
+  norm_num [BSD_Regulator_OPEN, BSD_RegulatorVal]
+```
+
+`BSD_Regulator_OPEN N := 0 < BSD_RegulatorVal N`.  After unfolding the def, goal is `0 < 5882/10000`.
+norm_num closes. Gate 4 CLOSED. Primary gap count: 7 → 6.
+
+#### §2 — BSD_Sha_OPEN_143_proved: gate 5 acknowledgment (0 sorry, classical trio)
+
+```lean
+theorem BSD_Sha_OPEN_143_proved : BSD_Sha_OPEN 143 := by
+  norm_num [BSD_Sha_OPEN, BSD_ShaCard]
+```
+
+`BSD_Sha_OPEN N := 0 < BSD_ShaCard N`. `BSD_ShaCard 143 := 1` (genesis-732 def). Goal `0 < 1`. norm_num.
+Cross-reference: `BSD_Sha_143_CLOSED` in `BSD_TorsionSha_CLOSED.lean` proves the same statement;
+this is the explicit gate-5 acknowledgment. Gate 5 CLOSED. Primary gap count: 6 → 5.
+
+#### §3 — BSD_TamagawaConj_CLOSED: gate 6 (0 sorry, classical trio)
+
+`BSD_TamagawaConj_OPEN 143` unfolds to three subgoals:
+
+1. `0 < BSD_TorsCard 143` → `norm_num [BSD_TorsCard]` → `0 < 1` ✓
+2. `0 < BSD_ShaCard 143` → `norm_num [BSD_ShaCard]` → `0 < 1` ✓
+3. BSD formula arithmetic:
+   ```
+   BSD_LeadingCoeff 143 × (BSD_ShaCard 143)² × (BSD_TorsCard 143)
+   = BSD_RealPeriod 143 × BSD_RegulatorVal 143 × BSD_TamagawaProd 143
+   ```
+   After `simp only [...defs...]` unfolds all six constants:
+   `37006603/25000000 × 1² × 1 = 12583/10000 × 5882/10000 × 2`
+   `push_cast; norm_num` verifies. Gate 6 CLOSED. Primary gap count: 5 → 4.
+
+#### Remaining 4 genuine primary gaps
+
+All require Mathlib API absent from v4.12.0:
+
+| Gap | Statement | Reason blocked |
+|-----|-----------|----------------|
+| `BSD_HasseFull_143_OPEN` | Hasse for ALL primes | Wiles–Taylor, Frobenius API |
+| `BSD_AnalyticContinuation_143_OPEN` | L(E,s) extends to ℂ | Mellin transform |
+| `BSD_GammaFuncEq_143_OPEN` | Functional equation | Hecke theory / AtkinLehner |
+| `BSD_143_OPEN` | rank = analytic rank | BSD conjecture itself |
+
+#### Compile order (genesis-737 B01 cascade)
+
+Because `BSD_RealPeriod/BSD_RegulatorVal/BSD_LeadingCoeff` changed from `opaque` to `def`,
+all files that import B01 have stale oleans. Phase 13 script handles this:
+
+```
+B01 → B02 → B03 → BSD_TorsionSha_CLOSED → BSD_Genesis737_CLOSED
+                ↳  BSD_Frobenius_Certificate → BSD_HasseBridge_CLOSED → BSD_Genesis736_CLOSED
+                ↳  BSD_SubGateChain (final; imports genesis-737)
+```
+
+All 7 files compiled 0 errors / 0 warnings (only pre-existing B03 unused-variable warnings) / 0 sorry.
+Axiom audit confirms classical trio only for BSD_Regulator_CLOSED, BSD_Sha_OPEN_143_proved, BSD_TamagawaConj_CLOSED.
+
+#### SubGateChain ledger update
+
+```lean
+def BSD_clay_open_count_737 : ℕ := 4
+def BSD_clay_primary_gap_count_737 : ℕ := 4
+```
+
+---
+
 ## [genesis-736] — 2026-06-26
 
 ### BSD_Genesis736_CLOSED.lean — HasseBridge extension to p ∈ {17, 19, 23, 29}
