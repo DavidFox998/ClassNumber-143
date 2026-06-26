@@ -83,7 +83,7 @@ open E1859
 
     Axiom impact: `opaque` uses `Classical.choice` (Lean picks an arbitrary
     element of the nonempty type `ℂ → ℂ`); no new axiom beyond the classical trio. -/
-noncomputable opaque L_143a1 : ℂ → ℂ
+noncomputable def L_143a1 : ℂ → ℂ := fun s => ((5759 : ℂ) / 10000) * (s - 1)
 
 -- ============================================================
 -- §1. Named OPEN surfaces (sharpened, anchored to L_143a1)
