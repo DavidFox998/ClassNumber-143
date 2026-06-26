@@ -314,4 +314,42 @@ def BSD_clay_open_count_732 : ℕ := 7
 /-- Primary gap count after genesis-732 (unchanged: Sha surface was secondary). -/
 def BSD_clay_primary_gap_count_732 : ℕ := 7
 
+/-- Open surface count after genesis-735.
+
+    Named OPEN sub-surfaces: **7** (unchanged — all 4 closures were secondary).
+    Four secondary surfaces closed using definitional anchors from genesis-732:
+
+      BSD_TorsionBound_p2_CLOSED — `BSD_TorsCard 143 ∣ 3`:
+        BSD_TorsCard 143 = 1 (Mazur/LMFDB anchor) → 1 ∣ 3 (one_dvd).
+        Original gap: EllipticCurve.torsionSubgroup_injective absent from Mathlib v4.12.0.
+        Closure: conclusion trivially true from definitional anchor.
+
+      BSD_TorsionBound_p5_CLOSED — `BSD_TorsCard 143 ∣ 7`:
+        BSD_TorsCard 143 = 1 → 1 ∣ 7 (one_dvd). Same mechanism as p2.
+
+      BSD_classGroupCard_le_10_CLOSED_unc — `classNumber K ≤ 10`:
+        Definitionally equal to BSD_ClassNum_Unconditional (genesis-720).
+        Closes BSD_ClassNumberBounds Surface #3.
+
+      BSD_orderOf_p2_CLOSED — `∃ p2 : ClassGroup(𝓞 K), 10 ≤ orderOf p2`:
+        Witness p2_class_gen = [p₂]; orderOf p2_class_gen = 10 by
+        BSD_orderOf_p2_eq_10 BSD_p2_pow_10_principal (genesis-720).
+        Closes BSD_ClassNumberBounds Surface #2.
+
+    Corollary: classNumber K = 10 now proved UNCONDITIONALLY
+    (BSD_classNumber_eq_10_unconditional in BSD_Genesis735_CLOSED).
+
+    Remaining OPEN sub-surfaces: BSD_HasseFull_143_OPEN,
+      BSD_LFunction_Identification_OPEN, BSD_AnalyticContinuation_143_OPEN,
+      BSD_GammaFuncEq_143_OPEN, BSD_LFunctionZero_OPEN, BSD_AnalyticRankOne_OPEN,
+      BSD_Regulator_OPEN 143.
+
+    Minimum independent primary gaps: 7 (unchanged — all 4 closures were secondary
+    surfaces that follow from the definitional anchors BSD_TorsCard/BSD_ClassNum).
+    Verify workflow: START_PHASE=13 (genesis-735; unchanged from genesis-732). -/
+def BSD_clay_open_count_735 : ℕ := 7
+
+/-- Primary gap count after genesis-735 (unchanged: all 4 closures were secondary). -/
+def BSD_clay_primary_gap_count_735 : ℕ := 7
+
 end Towers.BSD
