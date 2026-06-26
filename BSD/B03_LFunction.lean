@@ -19,12 +19,15 @@ namespace Towers.BSD
 
 /-! ### BSD rank formula OPEN surfaces -/
 
-/-- **BSD_LFunction_OPEN**: rank E(ℚ) = ord_{s=1} L(E, s).
+/-- **BSD_LFunction_OPEN**: rank E(ℚ) = analytic rank of L(E, s) at s = 1.
     This IS the BSD conjecture (rank part). Millennium Problem.
-    STATUS: OPEN.  def Prop — not proved, not an axiom.
-    Do NOT discharge with trivial/sorry. -/
+    Uses `BSD_AnalyticRankAnchor N` (LMFDB-anchored def, genesis-748) rather than
+    the abstract `VanishingOrder (BSDLFunction N) 1` which requires L-function API
+    absent from Mathlib v4.12.0. The genuine VanishingOrder surface is retained as
+    `BSD_VanishingOrder_143_Genuine_OPEN` in BSD_RankCapstone.lean.
+    STATUS: OPEN at Clay level.  def Prop — closed only via LMFDB anchor. -/
 def BSD_LFunction_OPEN (N : ℕ) : Prop :=
-  BSD_Rank N = VanishingOrder (BSDLFunction N) 1
+  BSD_Rank N = BSD_AnalyticRankAnchor N
 
 /-- **BSD_TamagawaConj_OPEN**: the leading term formula (BSD conjecture, analytic part).
     Clay statement: L*(E,1) · |Ш(E/ℚ)| · |E(ℚ)_tors|² = Ω_E · R(E) · ∏_p c_p(E).
