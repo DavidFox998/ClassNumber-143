@@ -104,6 +104,42 @@ lemma discr_v_BSD : Algebra.discr ℤ v_BSD = -143 := by
   rw [Algebra.discr_def, traceMatrix_v_BSD]
   norm_num [Matrix.det_fin_two]
 
+/-! ### NumberField discriminant -/
+
+private lemma neg143_squarefree : Squarefree (-143 : ℤ) := by
+  rw [← Int.squarefree_natAbs, show (-143 : ℤ).natAbs = 143 from rfl,
+      Nat.squarefree_iff_prime_squarefree]
+  intro p hp hdvd
+  have hbnd : p * p ≤ 143 := Nat.le_of_dvd (by norm_num) hdvd
+  have hle : p ≤ 11 := by nlinarith [hp.two_le]
+  interval_cases p <;>
+    first | exact absurd hp (by decide) | norm_num at hdvd
+
+/-- **BSD_K_disc_neg143** (0 sorry, classical trio):
+    `NumberField.discr K = -143`.
+
+    Proof: `v_BSD = {1, ω}` has `Algebra.discr ℤ v_BSD = -143` (discr_v_BSD).
+    The change-of-basis matrix P from any ℤ-basis b₁ to v_BSD satisfies
+    `P.det ^ 2 | -143`; Squarefree(-143) → IsUnit P.det → P.det^2 = 1;
+    hence `NumberField.discr K = -143`. -/
+theorem BSD_K_disc_neg143 : discr K = -143 := by
+  have hrank : finrank ℤ (𝓞 K) = 2 := by
+    rw [RingOfIntegers.rank]; exact BSD_finrank_proved
+  let b₁ : Basis (Fin 2) ℤ (𝓞 K) := finBasisOfFinrankEq ℤ (𝓞 K) hrank
+  let P : Matrix (Fin 2) (Fin 2) ℤ := b₁.toMatrix v_BSD
+  have hdisc_formula : Algebra.discr ℤ v_BSD = P.det ^ 2 * Algebra.discr ℤ (↑b₁) := by
+    conv_lhs => rw [← Basis.toMatrix_map_vecMul b₁ v_BSD]
+    exact Algebra.discr_of_matrix_vecMul (↑b₁) P
+  have hdisc_b1 : Algebra.discr ℤ (↑b₁) = discr K :=
+    NumberField.discr_eq_discr K b₁
+  have hprod : P.det ^ 2 * discr K = -143 := by
+    rw [← hdisc_b1, ← hdisc_formula]; exact discr_v_BSD
+  have hdvd : P.det ^ 2 ∣ (-143 : ℤ) := ⟨discr K, hprod.symm⟩
+  have hunit_det : IsUnit P.det := neg143_squarefree P.det (by rwa [sq] at hdvd)
+  have hdet_sq : P.det ^ 2 = 1 := by
+    rcases Int.isUnit_iff.mp hunit_det with h | h <;> rw [h] <;> norm_num
+  linarith [hdet_sq ▸ hprod]
+
 /-! ### Main theorem: BSD_IntegralSpanning_CLOSED -/
 
 /-- **PROVED** (0 sorry, classical trio):
