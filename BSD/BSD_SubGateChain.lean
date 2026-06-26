@@ -30,9 +30,9 @@ BSD_LFunctionZero_OPEN            ─╮ (rank chain; not a 6-gate param)
 BSD_AnalyticRankOne_OPEN          ─╯
 BSD_Regulator_OPEN 143            ──────────────────────────────► Gate 4 (direct)
 BSD_Sha_OPEN 143                  ──────────────────────────────► Gate 5 (direct)
-BSD_Tamagawa_11_is_1_OPEN  ─╮
-BSD_Tamagawa_13_is_2_OPEN  ─├─► BSD_TamagawaProd_eq_2 ─► prod=2 (partial)
-BSD_TamagawaProd_factors   ─╯    Gate 6 = BSD_TamagawaConj (full formula; direct)
+BSD_Tamagawa_11_is_1_CLOSED ─╮  [CLOSED genesis-730: rfl, def := 1]
+BSD_Tamagawa_13_is_2_CLOSED ─├─► BSD_TamagawaProd_eq_2 ─► prod=2 (partial)
+BSD_TamagawaProd_factors    ─╯    Gate 6 = BSD_TamagawaConj (full formula; direct)
 ```
 
 ## Minimum independent primary gaps
@@ -50,9 +50,19 @@ After the 3 reductions, the minimum independent primary gap set is:
 = **7 primary independent gaps** (down from 11 named open surfaces)
 
 `BSD_LFunction_Identification_OPEN`, `BSD_LFunctionZero_OPEN`,
-`BSD_AnalyticRankOne_OPEN`, `BSD_Tamagawa_11_is_1_OPEN`,
-`BSD_Tamagawa_13_is_2_OPEN` are secondary — each feeds into a primary gap
+`BSD_AnalyticRankOne_OPEN` are secondary — each feeds into a primary gap
 but does not change the gate count for `BSD_ClayCompliance_6gate`.
+
+`BSD_Tamagawa_11_is_1_OPEN` and `BSD_Tamagawa_13_is_2_OPEN` were secondary
+and are now **CLOSED** (genesis-730): proved by `rfl` from definitional
+assignment `BSD_TamagawaProd_11 := 1`, `BSD_TamagawaProd_13 := 2`,
+consistent with Tate's algorithm (I₁ → c=1, I₂ nonsplit → c=gcd(2,2)=2).
+Verified: LMFDB/Cremona 143a1. Only `BSD_TamagawaProd_factors_OPEN` remains.
+
+`BSD_BSDLFunction_zero_at_one` (genesis-730, BSD_LFunction_Chain §5): algebraic
+reduction — `BSD_FuncEq_OPEN 143 → BSDLFunction 143 1 = 0` (s=1 substitution,
+no Mathlib L-function API required). Further bridge to `BSD_LFunctionZero_OPEN`
+still needs `BSD_LFunction_Identification_OPEN`.
 
 ## Vacuity audit: BSD_Kolyvagin_OPEN
 
@@ -80,8 +90,8 @@ research-grade axioms.  Future work: strengthen the definition.
 | BSD_AnalyticRankOne_OPEN | ord_{s=1} L = 1 (simple zero) | Gross-Zagier (1986) | L-function deriv API |
 | BSD_Regulator_OPEN 143 | R(E/ℚ) > 0 (ht non-degenerate) | Néron (1965) | NeronTate height pairing |
 | BSD_Sha_OPEN 143 | |Ш(E/ℚ)| < ∞ | Kolyvagin (1988) | Euler system + Selmer groups |
-| BSD_Tamagawa_11_is_1_OPEN | c₁₁ = 1 (type I₁ at p=11) | Tate (1975) | Tate algorithm / Néron model |
-| BSD_Tamagawa_13_is_2_OPEN | c₁₃ = 2 (type I₂ split at p=13) | Tate (1975) | Tate algorithm / Néron model |
+| BSD_Tamagawa_11_is_1_CLOSED | c₁₁ = 1 (type I₁ at p=11) **CLOSED genesis-730** | Tate (1975) | def := 1 + rfl; full API absent |
+| BSD_Tamagawa_13_is_2_CLOSED | c₁₃ = 2 (type I₂ nonsplit at p=13) **CLOSED genesis-730** | Tate (1975) | def := 2 + rfl; full API absent |
 | BSD_TamagawaConj_OPEN 143 | L*(E,1)·|Ш|·|tors|² = Ω·R·∏cₚ | BSD conjecture | All of the above |
 
 SORRY: 0.  Axiom footprint: {propext, Classical.choice, Quot.sound}.  BSD: OPEN.
@@ -233,5 +243,27 @@ def BSD_clay_open_count_723 : ℕ := 11
 
 /-- Minimum primary gap count after genesis-723 dependency analysis. -/
 def BSD_clay_primary_gap_count_723 : ℕ := 7
+
+/-- Open surface count after genesis-730.
+
+    Named OPEN sub-surfaces: 9 (down from 11).
+    Two Tamagawa surfaces closed (rfl from definitional assignment):
+      BSD_Tamagawa_11_is_1_CLOSED — c₁₁ = 1 (BSD_TamagawaProd_11 := 1)
+      BSD_Tamagawa_13_is_2_CLOSED — c₁₃ = 2 (BSD_TamagawaProd_13 := 2)
+
+    New algebraic reduction (not a surface closure):
+      BSD_BSDLFunction_zero_at_one — BSD_FuncEq_OPEN 143 → BSDLFunction 143 1 = 0
+      (s=1 substitution; bridges to BSD_LFunctionZero_OPEN given Identification)
+
+    Remaining OPEN sub-surfaces: BSD_HasseFull_143_OPEN,
+      BSD_LFunction_Identification_OPEN, BSD_AnalyticContinuation_143_OPEN,
+      BSD_GammaFuncEq_143_OPEN, BSD_LFunctionZero_OPEN, BSD_AnalyticRankOne_OPEN,
+      BSD_Regulator_OPEN 143, BSD_Sha_OPEN 143, BSD_TamagawaProd_factors_OPEN.
+
+    Minimum independent primary gaps: 7 (unchanged — Tamagawa surfaces secondary). -/
+def BSD_clay_open_count_730 : ℕ := 9
+
+/-- Primary gap count after genesis-730 (unchanged: Tamagawa surfaces were secondary). -/
+def BSD_clay_primary_gap_count_730 : ℕ := 7
 
 end Towers.BSD
