@@ -655,6 +655,25 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **C24** (`C24_BC6ArithmeticBridge.lean`, 2026-06-27): **BC6 Arithmetic Foundations + Decomposition.**
+    Source: `arakelov-positivity-rh-core` (`Gate1_BC6Arithmetic.lean` + `SelbergWeilClosure.lean`).
+    Local tower only. NOT pushed to ClassNumber-143.
+    **Proved arithmetic — BC6_Gamma0_143_Arithmetic_CLOSED (0 sorry, classical trio):**
+      `index_gamma0_143`: [SL₂(ℤ):Γ₀(143)] = 143·(1+1/11)·(1+1/13) = 168 (norm_num).
+      `area_gamma0_143`: 168/3 = 56 in units π/3 (norm_num).
+      `weyl_coeff_143`: 56/4 = 14 — N(T) ~ 14T (norm_num).
+      `genus_formula_143`: 1 + 168/12 − 4/2 = 13 (norm_num).
+      `num_cusps_143`: Nat.divisors 143 = {1,11,13,143} (decide).
+    **Sub-surface decomposition (0 sorry, classical trio):**
+      `BC6_SelbergTrace_143_OPEN` (~25pp): Selberg trace formula spectral bound.
+        `∀ T>1, ∃ spectral_sum ≤ 14·T` (Weyl law; Laplacian absent from v4.12.0).
+      `BC6_WeilExplicit_143_OPEN` (~20pp): Weil explicit formula bridge.
+        SelbergTrace → λ₁>0 → Arakelov>0 → Weil bound (Mellin/L-function absent from v4.12.0).
+      `BC6_SelbergTrace_from_two`: Trace + Weil → BC6SelbergTrace_OPEN.
+      `BC6_decomposition_iff`: BC6SelbergTrace_OPEN ↔ BC6_WeilExplicit_143_OPEN.
+    `verify_weil_cluster.sh` Phase 14 added (default START_PHASE=14).
+    BC6SelbergTrace_OPEN: OPEN. Arithmetic: COMPLETE. Analytic: 2 sub-surfaces (~45pp total).
+    RH: OPEN. No Clay claim. Classical trio. SORRY: 0.
   - **genesis-760** (`BSD_Genesis760_CLOSED.lean`, 2026-06-27): **Discriminant Equivalence + L-function Consequence.**
     `BSD_Genesis760_Combinator`: same 2-gate structure as genesis-759 but Gate 1 is now expressed
     as `BSD_HasseBound_Discriminant_OPEN` = `∀ p good, (a_p p:ℝ)^2 ≤ 4*(p:ℝ)` (discriminant form).
