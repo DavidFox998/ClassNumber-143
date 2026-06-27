@@ -3,6 +3,7 @@ import Towers.BSD.BSD_Discriminant
 import Towers.BSD.MordellWeil
 import Towers.BSD.BSD_Genesis754_CLOSED
 import Towers.BSD.BSD_Genesis755_CLOSED
+import Towers.BSD.BSD_Genesis756_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
@@ -280,9 +281,26 @@ theorem BSD_BrickLedger :
     Note: these prove analytic properties of the LMFDB-anchored polynomial L_143a1.
     The main OPEN surfaces (BSD_AnalyticContinuation_143_OPEN etc.) concern the
     opaque BSDLFunction 143 — a separate anchor for the genuine Hecke L-function.
-    Genuine Clay gaps remaining: 2 (VanishingOrder APIBridge + BSD_143_OPEN Clay problem).
 
-    All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
-def BSD_open_surface_count : ℕ := 9
+    NEWLY PROVED (genesis-756, 2026-06-27 — Clay-minimal combinator):
+      BSD_FourGateCombinator — takes ONLY 4 open hypotheses and derives the full BSD
+                               arithmetic scaffold + BSD_143_OPEN. Internally supplies:
+                                 h_sha    ← BSD_Sha_143_CLOSED (TorsionSha_CLOSED)
+                                 h_lower  ← BSD_LowerGate_Discharged (ClassNumber_10_CLOSED)
+                                 h_upper  ← BSD_ClassNum_Unconditional (ClassNum_Unconditional_CLOSED)
+                                 h_bsd    ← BSD_143_analytic_route (Genesis752_CLOSED; LMFDB)
+                                 h_finrank← BSD_finrank_proved (BSD_Discriminant)
+                               Net reduction: 9 open gates → 4.
+      BSD_open_surface_count_756 : ℕ := 4  (documentation constant in BSD_Genesis756_CLOSED.lean)
+
+    Remaining 4 genuine Clay gaps (after genesis-756):
+      Modularity_143_OPEN      — E_{143} modular (Wiles-Taylor; Mathlib API absent)
+      BSD_L_Analytic_143_OPEN  — analytic continuation (modular-forms API absent)
+      BSD_TamagawaConj_OPEN 143 — full leading-term formula (Clay core; Tamagawa + Sha)
+      BSD_Regulator_OPEN 143   — Néron-Tate regulator R(E/ℚ) > 0 (height theory absent)
+
+    All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs.
+    BSD: OPEN.  No Clay claim. -/
+def BSD_open_surface_count : ℕ := 4
 
 end Towers.BSD
