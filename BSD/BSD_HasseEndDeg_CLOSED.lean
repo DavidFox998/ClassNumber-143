@@ -56,7 +56,7 @@ SORRY: 0.  Axiom footprint: classical trio.  NOT a brick.  BSD: OPEN.
 
 import Towers.BSD.BSD_HasseBridge_CLOSED
 
-open NumberField NumberField.InfinitePlace Real
+open NumberField Real
 open Towers.BSD
 
 -- ============================================================
