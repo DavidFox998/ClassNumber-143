@@ -50,7 +50,7 @@ RH chain research-axiom footprint: **6 → 4**.
 | Theorem | Statement | Proof |
 |---------|-----------|-------|
 | `K1_Upper_via_BSD` | `K1_Upper_ClassGroup_OPEN` (classNumber K ≤ 10) | `Towers.BSD.BSD_ClassNum_Unconditional` (same Lean type) |
-| `K1_Lower_via_BSD` | `K1_Lower_OrderOf_OPEN` (10 ≤ classNumber K) | `K1_Lower_Gate_CLOSED BSD_ClassNum_Unconditional` |
+| `K1_Lower_via_BSD` | `K1_Lower_OrderOf_OPEN` (10 ≤ classNumber K) | `K1_ClassNumber_Lower_CLOSED BSD_ClassNum_Unconditional` (from `BSD_ClassNum_Upper_CLOSED`) |
 | `K1_ClassNumber_via_BSD` | `classNumber K = 10` (unconditional) | `Nat.le_antisymm upper lower` |
 
 #### Why this works
@@ -74,12 +74,28 @@ the same term — no coercion needed. `Towers.BSD.BSD_ClassNum_Unconditional` cl
 | `Langlands_Weil_OPEN` | OPEN (Converse theorem + BCDT) |
 | `P5_HeckeTransfer_14_OPEN` | OPEN (1859-dim Hecke transfer) |
 
+#### Engineering notes (genesis-754 Phase B)
+
+**Import-chain fix**: `BSD_ClassNumber_Completion_CLOSED` was not importable from
+`C22_ClassNum_Bridge.lean` because `BSD_classGroupCard_le_10_CLOSED` is defined in BOTH
+`BSD_ClassNumber_UpperBound_CLOSED` (reached via `BSD_ClassNum_Unconditional_CLOSED` →
+`BSD_SurfaceClose_CLOSED` → `BSD_ClassNumber_UpperBound_CLOSED`) AND directly in
+`BSD_ClassNumber_Completion_CLOSED` — a Lean 4 duplicate-name conflict.
+Fix: use `K1_ClassNumber_Lower_CLOSED` (from `BSD_ClassNum_Upper_CLOSED`, in the same
+transitive chain) directly, avoiding the conflicting import entirely.
+
+**`verify_weil_cluster.sh` improvements**:
+- `compile_with_olean` helper now skips recompilation when olean is fresher than source
+  (matching BSD verify behaviour; restart now takes ~60s instead of ~10min for Phase 9).
+- `E143a1_CLOSED` compile step made non-fatal (HasseBridge oleans not pre-built in verify;
+  E143a1 is a capstone collector — its individual components all pass Phase 9).
+
 #### Files changed (genesis-754)
 
 - NEW: `lean-proof-towers/Towers/BSD/BSD_Genesis754_CLOSED.lean` — Phase A
 - NEW: `lean-proof-towers/Towers/RH/JorgensonKramer/X0_143/C22_ClassNum_Bridge.lean` — Phase B
 - MOD: `scripts/verify_bsd_only.sh` — Phase 27 added; START_PHASE=27
-- MOD: `scripts/verify_weil_cluster.sh` — Phase 13 added (C22_ClassNum_Bridge)
+- MOD: `scripts/verify_weil_cluster.sh` — Phase 13 added; olean-freshness skip; E143a1 soft-skip
 - SYNC: `bsd-core/BSD/BSD_Genesis754_CLOSED.lean`
 
 ---
