@@ -625,6 +625,28 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-759** (`BSD_Genesis759_CLOSED.lean`, `BSD_HasseEndDeg_CLOSED.lean`,
+    `BSD_LAnalytic_Anchor_CLOSED.lean`, 2026-06-27): **Endomorphism-Degree Combinator —
+    both gates fully atomized.**
+    `BSD_Genesis759_Combinator`: same structure as genesis-758 but both gates are now at the
+    most precise Mathlib-API boundary possible.
+    **Wiring fix:** `BSD_HasseBridge_CLOSED.lean` (genesis-734) was orphaned — reachable only
+    via the dead-end genesis-736→738→...→745 branch. `BSD_HasseEndDeg_CLOSED` now imports it,
+    wiring `BSD_DegreeNonneg_p{2,3,5,7}`, `BSD_Hasse_OPEN_p{2,3,5,7}`, `BSD_ApCompat_p{2,3,5,7}`
+    (all 0 sorry, classical trio) into the main chain for the first time.
+    **Gate 1 atomized:** `BSD_HasseFull_143_OPEN` → `BSD_EndomorphismDegree_OPEN`
+      = `∀ p prime good, ∀ r:ℝ, r²−a_p(p)·r+p ≥ 0` (Silverman AEC §III.6+§V.5 degree form).
+    `BSD_HasseViaEndDeg : BSD_EndomorphismDegree_OPEN → BSD_HasseFull_143_OPEN` proved.
+    **Gate 2 atomized:** `BSD_L_Analytic_143_OPEN` → `BSD_LFunctionIsLinFunc_OPEN`
+      = `BSDLFunction 143 = L_143a1` (Hecke 1936 + Wiles-Taylor 1995 + Mellin API).
+    `BSD_L_Analytic_via_LinFunc : BSD_LFunctionIsLinFunc_OPEN → BSD_L_Analytic_143_OPEN` proved.
+    `verify_bsd_only.sh` Phase 32 added. Both verify scripts PASSED.
+    `BSD_MasterCertification.lean` updated: genesis-759 import + ledger entry.
+    Genuine Clay gaps: **2** (most atomic names):
+      (1) `BSD_EndomorphismDegree_OPEN` — `EllipticCurve.Frobenius`/`Isogeny.degree`/Rosati
+          absent from Mathlib v4.12.0. Proved for p∈{2,3,5,7}; open for all good primes.
+      (2) `BSD_LFunctionIsLinFunc_OPEN` — Mellin/Hecke L-function identification absent.
+    BSD: OPEN (Clay). Classical trio. No Clay claim. Pushed to `DavidFox998/ClassNumber-143`.
   - **genesis-758** (`BSD_Genesis758_CLOSED.lean`, 2026-06-27): **Frobenius-Analytic Combinator.**
     `BSD_FrobeniusAnalytic_Combinator`: same 2 gates as genesis-757 but Gate 1 is now
     **atomic** — `BSD_HasseFull_143_OPEN` (Frobenius sub-gap) replaces `Modularity_143_OPEN`.
