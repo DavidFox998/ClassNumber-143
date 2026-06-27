@@ -3,7 +3,6 @@ import Towers.BSD.BSD_Discriminant
 import Towers.BSD.MordellWeil
 import Towers.BSD.BSD_Genesis754_CLOSED
 import Towers.BSD.BSD_Genesis755_CLOSED
-import Towers.BSD.BSD_Genesis756_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
