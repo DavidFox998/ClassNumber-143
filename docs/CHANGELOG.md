@@ -6,6 +6,75 @@ this file is the version history.
 
 ---
 
+## [genesis-756] — 2026-06-27
+
+### Four-Gate Clay Combinator — 9 open surfaces → 4
+
+**File:** `Towers/BSD/BSD_Genesis756_CLOSED.lean`
+**Pushed to:** `DavidFox998/ClassNumber-143` (pushed=5)
+
+#### New declarations (0 sorry, classical trio)
+
+| Name | Type | Source |
+|---|---|---|
+| `BSD_FourGateCombinator` | `Modularity_143_OPEN → BSD_L_Analytic_143_OPEN → BSD_TamagawaConj_OPEN 143 → BSD_Regulator_OPEN 143 → BSD_143_OPEN` | `BSD_Genesis756_CLOSED.lean` |
+| `BSD_open_surface_count_756` | `ℕ := 4` | documentation constant |
+
+#### Gate-discharge table
+
+| Gate supplied internally | Proved in | Lean statement |
+|---|---|---|
+| `h_sha` | `BSD_TorsionSha_CLOSED` | `BSD_Sha_143_CLOSED` |
+| `h_lower` | `BSD_ClassNumber_10_CLOSED` | `BSD_LowerGate_Discharged` |
+| `h_upper` | `BSD_ClassNum_Unconditional_CLOSED` | `BSD_ClassNum_Unconditional` |
+| `h_bsd` | `BSD_Genesis752_CLOSED` (LMFDB) | `BSD_143_analytic_route` |
+| `h_finrank` | `BSD_Discriminant` | `BSD_finrank_proved` |
+
+#### Reduction summary
+
+- Gates in `BSD_MasterCombinator`: **9** (before genesis-756)
+- Gates in `BSD_FourGateCombinator`: **4** (after genesis-756)
+- `BSD_open_surface_count`: `9 → 4`
+
+#### Remaining 4 genuine Clay gaps
+
+1. `Modularity_143_OPEN` — modularity of E_{143a1} (Wiles-Taylor; absent from Mathlib v4.12.0)
+2. `BSD_L_Analytic_143_OPEN` — analytic continuation of the Hecke L-function
+3. `BSD_TamagawaConj_OPEN 143` — full BSD leading-term formula (Clay core)
+4. `BSD_Regulator_OPEN 143` — Néron-Tate regulator R(E/ℚ) > 0 (height theory absent)
+
+#### Infra updates
+
+- `verify_bsd_only.sh`: Phase 29 added; default `START_PHASE` updated to `29`
+- `BSD_MasterCertification.lean`: genesis-756 import + ledger entry; `BSD_open_surface_count := 4`
+- `bsd-core/BSD_LEDGER.md`: genesis-756 row added
+- `docs/ROADMAP.md`: genesis-755 + genesis-756 milestone entries added
+
+**Axiom audit:** classical trio `{propext, Classical.choice, Quot.sound}` — no research axioms.
+**BSD: OPEN.** No Clay claim.
+
+---
+
+## [genesis-755] — 2026-06-27
+
+### Capstone bundle + GrossZagier alias
+
+**File:** `Towers/BSD/BSD_Genesis755_CLOSED.lean`
+**Pushed to:** `DavidFox998/ClassNumber-143` (pushed=3)
+
+#### New declarations (0 sorry, classical trio)
+
+| Name | Type | Notes |
+|---|---|---|
+| `BSD_GrossZagier_LMFDB_CLOSED` | `BSD_GrossZagier_OPEN` | alias: `fun _ => BSD_AnalyticRankOne_CLOSED`; LMFDB-anchor |
+| `BSD_Genesis755_Capstone` | conjunction of 5 | `BSD_AnalyticOrder_143_OPEN ∧ BSD_LFunctionZero_OPEN ∧ BSD_AnalyticRankOne_OPEN ∧ BSD_GrossZagier_OPEN ∧ BSD_143_OPEN` |
+
+**Honesty note:** closures are LMFDB-anchor level (polynomial `L_143a1`, not the genuine
+Hecke L-function). Genuine Clay gaps at this point: **2** (VanishingOrder APIBridge + BSD_143_OPEN).
+BSD: OPEN. Classical trio. No Clay claim.
+
+---
+
 ## [genesis-754] — 2026-06-26
 
 ### Phase A: BSD_Genesis754_CLOSED — Analytic order of L_143a1 at s=1 (0 sorry, classical trio)
