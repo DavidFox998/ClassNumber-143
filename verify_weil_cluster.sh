@@ -812,25 +812,6 @@ compile_with_olean \
   "BSD/BSD_MasterCertification" || p9_ok=false
 echo ""
 
-# genesis-757/758/759 compiled AFTER MasterCertification (they transitively import it).
-compile_with_olean \
-  "Towers/BSD/BSD_Genesis757_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_Genesis757_CLOSED.olean" \
-  "BSD/BSD_Genesis757_CLOSED" || p9_ok=false
-echo ""
-
-compile_with_olean \
-  "Towers/BSD/BSD_Genesis758_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_Genesis758_CLOSED.olean" \
-  "BSD/BSD_Genesis758_CLOSED" || p9_ok=false
-echo ""
-
-compile_with_olean \
-  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
-  "BSD/BSD_Genesis759_CLOSED" || p9_ok=false
-echo ""
-
 compile_with_olean \
   "Towers/BSD/BSD_Tier3B.lean" \
   ".lake/build/lib/Towers/BSD/BSD_Tier3B.olean" \
@@ -841,6 +822,12 @@ compile_with_olean \
   "Towers/BSD/BSD_AlgNorm.lean" \
   ".lake/build/lib/Towers/BSD/BSD_AlgNorm.olean" \
   "BSD/BSD_AlgNorm" || p9_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_HeegnerPoint_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_HeegnerPoint_CLOSED.olean" \
+  "BSD/BSD_HeegnerPoint_CLOSED" || p9_ok=false
 echo ""
 
 compile_with_olean \
@@ -871,12 +858,6 @@ compile_with_olean \
   "Towers/BSD/BSD_SurfaceClose_CLOSED.lean" \
   ".lake/build/lib/Towers/BSD/BSD_SurfaceClose_CLOSED.olean" \
   "BSD/BSD_SurfaceClose_CLOSED" || p9_ok=false
-echo ""
-
-compile_with_olean \
-  "Towers/BSD/BSD_HeegnerPoint_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_HeegnerPoint_CLOSED.olean" \
-  "BSD/BSD_HeegnerPoint_CLOSED" || p9_ok=false
 echo ""
 
 compile_with_olean \
@@ -919,6 +900,62 @@ compile_with_olean \
   "Towers/BSD/BSD_Clay_Certificate.lean" \
   ".lake/build/lib/Towers/BSD/BSD_Clay_Certificate.olean" \
   "BSD/BSD_Clay_Certificate" || p9_ok=false
+echo ""
+
+# BSD_ClassNum_Unconditional_CLOSED must be compiled after BSD_SurfaceClose_CLOSED
+# (it imports it); genesis-757/758/759 require it.
+compile_with_olean \
+  "Towers/BSD/BSD_ClassNum_Unconditional_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_ClassNum_Unconditional_CLOSED.olean" \
+  "BSD/BSD_ClassNum_Unconditional_CLOSED" || p9_ok=false
+echo ""
+
+# Force-recompile B06_BSDCollection and BSD_Genesis737_CLOSED before genesis-757.
+# Their oleans may be content-stale: compile_with_olean's timestamp check
+# (olean newer than source) can pass even when the olean's dep hashes are stale
+# (e.g. after B03_LFunction was recompiled by BSD Verify with content-identical
+# but hash-updated output).  Direct lean -o calls bypass the timestamp skip.
+echo "--- Towers/BSD/B06_BSDCollection.lean (force-recompile: content-stale guard) ---"
+t_start=$(date +%s)
+if LEAN_PATH="$LP" $LEAN -o ".lake/build/lib/Towers/BSD/B06_BSDCollection.olean" \
+    "Towers/BSD/B06_BSDCollection.lean" 2>&1; then
+  t_end=$(date +%s)
+  echo "  PASS -- olean: .lake/build/lib/Towers/BSD/B06_BSDCollection.olean ($(( t_end - t_start ))s)"
+else
+  echo "  FAIL: BSD/B06_BSDCollection"
+  p9_ok=false
+fi
+echo ""
+
+echo "--- Towers/BSD/BSD_Genesis737_CLOSED.lean (force-recompile: content-stale guard) ---"
+t_start=$(date +%s)
+if LEAN_PATH="$LP" $LEAN -o ".lake/build/lib/Towers/BSD/BSD_Genesis737_CLOSED.olean" \
+    "Towers/BSD/BSD_Genesis737_CLOSED.lean" 2>&1; then
+  t_end=$(date +%s)
+  echo "  PASS -- olean: .lake/build/lib/Towers/BSD/BSD_Genesis737_CLOSED.olean ($(( t_end - t_start ))s)"
+else
+  echo "  FAIL: BSD/BSD_Genesis737_CLOSED"
+  p9_ok=false
+fi
+echo ""
+
+# genesis-757/758/759 compiled LAST in Phase 9 so all their deps are fresh.
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis757_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis757_CLOSED.olean" \
+  "BSD/BSD_Genesis757_CLOSED" || p9_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis758_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis758_CLOSED.olean" \
+  "BSD/BSD_Genesis758_CLOSED" || p9_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
+  "BSD/BSD_Genesis759_CLOSED" || p9_ok=false
 echo ""
 
 # Phase 9 axiom audit: classNumber=10, orderOf≥10, HeegnerPoint, semistability
