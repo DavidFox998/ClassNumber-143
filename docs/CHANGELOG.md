@@ -6,6 +6,76 @@ this file is the version history.
 
 ---
 
+## [genesis-758] — 2026-06-27
+
+### Frobenius-Analytic Combinator — Modularity gate atomized
+
+**File:** `Towers/BSD/BSD_Genesis758_CLOSED.lean`
+**Pushed to:** `DavidFox998/ClassNumber-143`
+
+#### What changed
+
+Uses Milestone 5.1 work (`BSD_Multiplicativity_Closed.lean`, written 2026-06-23)
+that was already local but not wired into the genesis chain.
+
+`BSD_HeckeMultiplicativity_143_CLOSED` proves Hecke multiplicativity
+`a_n(mn) = a_n m · a_n n` for gcd(m,n)=1 **unconditionally** (0 sorry,
+classical trio), via Finsupp disjoint-support split on coprime factorizations.
+
+`Modularity_143_CLOSED_1gate h_hasse : Modularity_143_OPEN` — reduces the
+Modularity gate from 2 inputs to 1: only `BSD_HasseFull_143_OPEN` remains.
+
+#### New declarations (0 sorry, classical trio)
+
+| Name | Type | Source |
+|---|---|---|
+| `BSD_FrobeniusAnalytic_Combinator` | `BSD_HasseFull_143_OPEN → BSD_L_Analytic_143_OPEN → (scaffold ∧ BSD_143_OPEN)` | `BSD_Genesis758_CLOSED.lean` |
+| `BSD_open_surface_count_758` | `ℕ := 2` | documentation constant |
+
+#### Gate comparison
+
+| Combinator | Gate 1 | Gate 2 |
+|-----------|--------|--------|
+| genesis-756 | `Modularity_143_OPEN` (opaque existential) | `BSD_L_Analytic_143_OPEN` |
+| genesis-757 | `Modularity_143_OPEN` (opaque existential) | `BSD_L_Analytic_143_OPEN` |
+| **genesis-758** | **`BSD_HasseFull_143_OPEN`** (atomic Frobenius surface) | `BSD_L_Analytic_143_OPEN` |
+
+#### Decomposition of Modularity_143_OPEN
+
+| Condition | Status | Proved by |
+|-----------|--------|-----------|
+| `a_f 1 = 1` | ✓ PROVED | `a_n_one` (B01, unconditional) |
+| Multiplicativity `a_n(mn)=a_n m·a_n n` | ✓ PROVED | `BSD_HeckeMultiplicativity_143_CLOSED` (Milestone 5.1) |
+| Hecke recurrence `a_n(p²)=(a_n p)²−p` | ✓ PROVED | `a_n_sq_recurrence` (B02_Modularity_Closed) |
+| Weil bound `∀ p prime good, \|a_p p\|≤2√p` | **OPEN** | `BSD_HasseFull_143_OPEN` (Frobenius gap) |
+
+The only blocking sub-gap in Modularity is now the Frobenius degree theory
+for all good primes — a specific named surface with 168-prime partial evidence.
+
+#### Genuine Clay gaps after genesis-758
+
+1. `BSD_HasseFull_143_OPEN` = `∀ p prime, ¬p∣143 → |a_p p:ℝ| ≤ 2·√p`
+   - 168 primes p ≤ 997: `BSD_Weil_168_CLOSED` gives the INTEGER bound `(ap p)²≤4p`.
+     The compatibility bridge `ap p = a_p p` (trace table ↔ geometric count) is also open.
+   - Primes p > 997: `EllipticCurve.Frobenius` degree theory absent from Mathlib v4.12.0.
+   - Route B: E_{143a1} IS modular (Wiles-Taylor 1995; 143=11×13 semistable), so
+     Ramanujan–Petersson gives the bound for all primes — but modular-forms API absent.
+
+2. `BSD_L_Analytic_143_OPEN` = `AnalyticOn ℂ (BSDLFunction 143) Set.univ`
+   Follows from modularity (Hecke 1936); Mellin transform + Hecke L-function API
+   absent from Mathlib v4.12.0.
+
+#### Infra updates
+
+- `verify_bsd_only.sh`: Phase 31 added (default `START_PHASE` updated to `31`)
+- `BSD_MasterCertification.lean`: genesis-758 import + ledger entry
+- `bsd-core/BSD_LEDGER.md`: genesis-758 row + Modularity decomposition table added
+
+**Axiom audit:** classical trio `{propext, Classical.choice, Quot.sound}` — no research axioms.
+**BSD: OPEN.** No Clay claim.
+
+---
+
 ## [genesis-757] — 2026-06-27
 
 ### Two-Gate Clay Combinator — 4 open surfaces → 2
