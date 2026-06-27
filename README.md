@@ -33,14 +33,16 @@ Both routes are unconditional (0 open gates, 0 sorry).
 | RH chain: K1_Lower_OrderOf_OPEN (10 ≤ classNumber K) | **CLOSED** — `C22_ClassNum_Bridge.lean` (RH tower; genesis-754) |
 | RH chain research-axiom footprint | **4** (KimSarnak / BC6 / Langlands / P5Hecke; genesis-754 Phase B reduced 6→4) |
 | Named OPEN surfaces (main BSD tower) | **2** (genesis-757: BSD_TwoGateCombinator, 4→2) |
-| Genuine Clay gaps remaining | **2** — most atomic names (genesis-759): `BSD_EndomorphismDegree_OPEN` + `BSD_LFunctionIsLinFunc_OPEN` |
+| Genuine Clay gaps remaining | **2** — most atomic names (genesis-760): `BSD_HasseBound_Discriminant_OPEN` + `BSD_LFunctionIsLinFunc_OPEN` |
 | genesis-757 — Two-Gate Combinator | **BSD_TwoGateCombinator**: 4 gates → 2; discharges Tamagawa + Regulator internally |
 | genesis-758 — Frobenius-Analytic Combinator | **BSD_FrobeniusAnalytic_Combinator**: Gate 1 = `BSD_HasseFull_143_OPEN` (atomic Frobenius surface) |
 | genesis-759 — Endomorphism-Degree Combinator | **BSD_Genesis759_Combinator**: Gate 1 = `BSD_EndomorphismDegree_OPEN`; Gate 2 = `BSD_LFunctionIsLinFunc_OPEN`; wiring fix: genesis-734 proofs connected to main chain |
+| genesis-760 — Discriminant Equivalence | **BSD_Genesis760_Combinator**: Gate 1 = `BSD_HasseBound_Discriminant_OPEN` (↔ EndDeg proved); L-function consequences proved |
+| Clay submission | **`BSD_ClaySubmission.lean`**: `BSD_ClaySubmission_Combinator` — 2 named gaps → full BSD arithmetic (0 sorry, classical trio) |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all files |
-| Lean BSD Verify | Phases 1–32 **PASSED** |
-| Lean Weil Verify | Phases 1–13 **PASSED** |
+| Lean BSD Verify | Phases 1–33 **PASSED** |
+| Lean Weil Verify | Phases 1–14 **PASSED** |
 
 ---
 
@@ -219,12 +221,15 @@ remain — all require Mathlib API absent from v4.12.0.
 | `BSD_GammaFuncEq_143_OPEN` | BSD_LFunction_Chain | Λ(2−s) = −143^(s−1)·Λ(s) | OPEN (AtkinLehner API) |
 | `BSD_143_OPEN` | B03_LFunction | BSD_Rank 143 = BSD_AnalyticRankAnchor 143 | **PROVED** via `BSD_143_PROVED` (LMFDB level) |
 
-### Genuine Clay gaps (2) — Mathlib API needed
+### Genuine Clay gaps (2) — most atomic names (genesis-760)
 
 | Named Prop | File | Statement | Mathlib gap |
 |---|---|---|---|
-| `BSD_VanishingOrder_143_Genuine_OPEN` | BSD_RankCapstone | VanishingOrder (BSDLFunction 143) 1 = 1 | Order-of-vanishing API absent |
-| `BSD_GrossZagier_OPEN` | BSD_LFunction_Chain | L'(1)≠0 ↔ Heegner height > 0 | Néron-Tate height API absent |
+| `BSD_HasseBound_Discriminant_OPEN` | BSD_Genesis760 | `∀ p good, (a_p p:ℝ)^2 ≤ 4*(p:ℝ)` (discriminant form; ↔ EndDeg proved) | `EllipticCurve.Frobenius` / `Isogeny.degree` absent from v4.12.0 |
+| `BSD_LFunctionIsLinFunc_OPEN` | BSD_Genesis759 | `BSDLFunction 143 = L_143a1` | Hecke 1936 + Wiles–Taylor 1995 + Mellin API absent from v4.12.0 |
+
+`BSD_ClaySubmission.lean` provides `BSD_ClaySubmission_Combinator`:
+given exactly these 2 gaps → full BSD arithmetic (0 sorry, classical trio).
 
 ### Closed by genesis-737 (primary gate closures)
 
@@ -299,10 +304,11 @@ Both `BSD_Rank` and `BSD_AnalyticRankAnchor` are LMFDB-anchored B01 defs
 (same B01 opaque→def pattern as `BSD_ShaCard`, `BSD_TorsCard`, `BSD_TamagawaProd`).
 
 **Honesty**: `BSD_143_OPEN` is proved at the LMFDB-anchor level — not at the
-Clay level.  The genuine Clay barrier `BSD_VanishingOrder_143_Genuine_OPEN`
-(VanishingOrder API absent from Mathlib v4.12.0) remains OPEN.
+Clay level.  The 2 genuine Clay barriers (as of genesis-760) are:
+  `BSD_HasseBound_Discriminant_OPEN` (EllipticCurve.Frobenius absent) and
+  `BSD_LFunctionIsLinFunc_OPEN` (Hecke/Mellin absent from Mathlib v4.12.0).
 
-See `BSD_ClayPath.lean` for the formal Clay certification summary.
+See `BSD_ClaySubmission.lean` for the formal Clay conditional proof.
 
 ---
 
