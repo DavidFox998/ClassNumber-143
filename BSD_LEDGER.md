@@ -527,15 +527,53 @@ These close K1 surfaces in `verify_weil_cluster.sh Phase 13` by importing BSD re
 | `K1_Lower_OrderOf_OPEN` | `C22_ClassNum_Bridge.lean` (RH tower) | `K1_ClassNumber_Lower_CLOSED BSD_ClassNum_Unconditional` | **754 Phase B** |
 | `K1_ClassNumber_via_BSD` | `C22_ClassNum_Bridge.lean` (RH tower) | `classNumber K = 10` (Nat.le_antisymm upper lower) — unconditional | **754 Phase B** |
 
-### Still OPEN (4 primary gaps — main tower — all require absent Mathlib API)
-| Name | Gap | Why not closeable |
-|------|-----|-------------------|
-| `BSD_HasseFull_143_OPEN` | `∀ p prime, (a_p p)^2 ≤ 4*p` (all primes) | EllipticCurve.Frobenius eigenvalue API absent from Mathlib v4.12.0; infinite set not expressible by finite decide |
-| `BSD_AnalyticContinuation_143_OPEN` | L(E,s) extends to an entire function | Complex.MellinTransform for elliptic curve L-functions absent from Mathlib v4.12.0 |
-| `BSD_GammaFuncEq_143_OPEN` | Λ(E,s) = ε(E)·Λ(E,2−s) | Atkin-Lehner operator + Hecke theory absent from Mathlib v4.12.0 |
-| `BSD_143_OPEN` | rank E(ℚ) = ord_{s=1} L(E,s) | BSD conjecture itself — Clay Millennium Problem |
+### Still OPEN — 4 genuine Clay gaps (as of genesis-756, 2026-06-27)
 
-CAVEAT: `BSD_143` (BSD conjecture itself) remains OPEN — Clay Millennium Problem.
+These are the **exact four hypotheses** accepted by `BSD_FourGateCombinator`
+(all five dischargeable gates from the original 9-gate `BSD_MasterCombinator` are now supplied
+unconditionally). All four require Mathlib APIs absent in v4.12.0.
+
+| # | Surface | Lean `def Prop` | Gap | Reference |
+|---|---------|-----------------|-----|-----------|
+| 1 | `Modularity_143_OPEN` | `∃ a_f : ℕ → ℤ, a_f 1 = 1 ∧ multiplicativity ∧ Hecke recurrence ∧ Weil bound` (B02, line 74) | `NewForm` type + L-function coefficient matching absent from Mathlib v4.12.0 | Wiles-Taylor 1995; BCDT 2001 |
+| 2 | `BSD_L_Analytic_143_OPEN` | `AnalyticOn ℂ (BSDLFunction 143) Set.univ` (B02, line 86) | Mellin transform + modular forms API absent; `BSDLFunction` is an opaque constant | Hecke 1936 |
+| 3 | `BSD_TamagawaConj_OPEN 143` | `0 < BSD_TorsCard 143 ∧ 0 < BSD_ShaCard 143 ∧ BSD_LeadingCoeff 143 * (BSD_ShaCard 143 : ℝ) * (BSD_TorsCard 143 : ℝ)^2 = BSD_RealPeriod 143 * BSD_RegulatorVal 143 * (BSD_TamagawaProd 143 : ℝ)` (B03, line 36) | Full BSD leading-term formula — Clay core; connecting opaque anchor defs to genuine arithmetic requires height pairings + Néron models absent from Mathlib v4.12.0 | Birch-Swinnerton-Dyer 1965 |
+| 4 | `BSD_Regulator_OPEN 143` | `0 < BSD_RegulatorVal 143` (B03, line 44) | Néron-Tate height pairing not in Mathlib v4.12.0; `BSD_RegulatorVal` is an LMFDB-anchored opaque def (= 5882/10000), not the genuine height determinant | Néron 1965; Tate 1966 |
+
+**Precise Lean Prop expansions:**
+
+```lean
+-- Gap 1: Modularity (B02_Modularity.lean)
+def Modularity_143_OPEN : Prop := Modularity_BSD_OPEN 143
+-- where Modularity_BSD_OPEN N :=
+--   ∃ (a_f : ℕ → ℤ),
+--     a_f 1 = 1 ∧
+--     (∀ m n, Nat.Coprime m n → a_f (m * n) = a_f m * a_f n) ∧
+--     (∀ p, Nat.Prime p → ¬(p ∣ N) → a_f (p^2) = a_f p ^ 2 - (p : ℤ)) ∧
+--     (∀ p, Nat.Prime p → ¬(p ∣ N) → (a_f p : ℝ)^2 ≤ 4 * (p : ℝ))
+
+-- Gap 2: Analytic continuation (B02_Modularity.lean)
+def BSD_L_Analytic_143_OPEN : Prop := BSD_Hecke_OPEN 143
+-- where BSD_Hecke_OPEN N := AnalyticOn ℂ (BSDLFunction N) Set.univ
+
+-- Gap 3: Leading-term formula (B03_LFunction.lean)
+def BSD_TamagawaConj_OPEN (N : ℕ) : Prop :=
+  0 < BSD_TorsCard N ∧ 0 < BSD_ShaCard N ∧
+  BSD_LeadingCoeff N * (BSD_ShaCard N : ℝ) * (BSD_TorsCard N : ℝ)^2 =
+    BSD_RealPeriod N * BSD_RegulatorVal N * (BSD_TamagawaProd N : ℝ)
+
+-- Gap 4: Regulator (B03_LFunction.lean)
+def BSD_Regulator_OPEN (N : ℕ) : Prop := 0 < BSD_RegulatorVal N
+```
+
+**Honesty note:** `BSD_TamagawaConj_CLOSED` and `BSD_Regulator_CLOSED` (genesis-737) close
+these at **LMFDB-anchor level** — they prove the arithmetic identities using opaque defs
+(`BSD_RegulatorVal 143 := 5882/10000`, etc.) that are not the genuine Néron-Tate height
+determinant or the actual BSD leading coefficient. The genuine Clay content — connecting
+these constants to the elliptic curve via height theory, BSD formula, and Hecke L-functions —
+is what `BSD_TamagawaConj_OPEN` and `BSD_Regulator_OPEN` represent as remaining gaps.
+
+CAVEAT: `BSD_143_OPEN` (rank = analytic rank) remains a Clay Millennium Problem.
 No Clay submission has been made or is implied by any file in this repository.
 
 ### Still OPEN (ClassGroup / ancillary gaps)
