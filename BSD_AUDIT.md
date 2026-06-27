@@ -117,3 +117,26 @@ remain open in principle — closed here only because BSD_ClassNum_Unconditional
 now an unconditional theorem that can be directly applied.
 
 RH chain research-axiom footprint reduced: **6 → 4** (KimSarnak / BC6 / Langlands / P5Hecke remain).
+
+---
+
+## genesis-755 addendum (2026-06-27)
+
+### New declarations (0 sorry, classical trio)
+| Declaration | File | Proof |
+|-------------|------|-------|
+| `BSD_GrossZagier_LMFDB_CLOSED` | `BSD_Genesis755_CLOSED.lean` | `fun _ => BSD_AnalyticRankOne_CLOSED` — direct alias of genesis-752 closure |
+| `BSD_Genesis755_Capstone` | `BSD_Genesis755_CLOSED.lean` | 5-conjunction bundling genesis-752+754 analytic closures |
+
+`BSD_Genesis755_Capstone` proves:
+```
+BSD_AnalyticOrder_143_OPEN ∧ BSD_LFunctionZero_OPEN ∧
+BSD_AnalyticRankOne_OPEN ∧ BSD_GrossZagier_OPEN ∧ BSD_143_OPEN
+```
+using `BSD_AnalyticOrder_143_CLOSED` (genesis-754) and the four genesis-752 closures.
+
+Axiom audit (confirmed via `#print axioms`):
+- `BSD_GrossZagier_LMFDB_CLOSED` depends on `[propext, Classical.choice, Quot.sound]`
+- `BSD_Genesis755_Capstone` depends on `[propext, Classical.choice, Quot.sound]`
+
+Genuine Clay gaps: **2** (`BSD_VanishingOrder_APIBridge_OPEN` + `BSD_143_OPEN`). BSD: OPEN.
