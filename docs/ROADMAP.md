@@ -655,6 +655,32 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-760** (`BSD_Genesis760_CLOSED.lean`, 2026-06-27): **Discriminant Equivalence + L-function Consequence.**
+    `BSD_Genesis760_Combinator`: same 2-gate structure as genesis-759 but Gate 1 is now expressed
+    as `BSD_HasseBound_Discriminant_OPEN` = `∀ p good, (a_p p:ℝ)^2 ≤ 4*(p:ℝ)` (discriminant form).
+    **Gate 1 algebra — proved equivalent to BSD_EndomorphismDegree_OPEN (0 sorry, classical trio):**
+      `BSD_EndDeg_from_DiscBound`: discriminant ≤ 0 → quadratic ≥ 0 everywhere on ℝ.
+        Proof: 4·(r²−a·r+p) = (2r−a)²+(4p−a²) ≥ 0 via `nlinarith [sq_nonneg (2r−a_p)]`.
+      `BSD_DiscBound_from_EndDeg`: quadratic ≥ 0 → discriminant ≤ 0.
+        Proof: specialise at r = a_p/2, giving p−a_p²/4 ≥ 0, then `nlinarith`.
+      `BSD_HasseBound_Discriminant_iff_EndDeg`: the iff theorem.
+    **Gate 2 consequences — proved conditionally on BSD_LFunctionIsLinFunc_OPEN (0 sorry, classical trio):**
+      `BSD_LFunction_zero_at_one_from_LinFunc`: `BSDLFunction 143 (1:ℂ) = 0` (ring).
+      `BSD_BSDFunction_nonzero_from_LinFunc`: `∀ s≠1, BSDLFunction 143 s ≠ 0` (norm_num + sub_ne_zero).
+      `BSD_LFunction_simple_zero_from_LinFunc`: conjunction — simple zero structure at s=1.
+    **Local tower (NOT pushed to ClassNumber-143): `C23_RHAtomization.lean`**
+      Sub-atomizes P5_HeckeTransfer_14_OPEN and BC6_Mechanism_proved into their most atomic
+      sub-gaps at the Mathlib v4.12.0 API boundary:
+      - `P5_BostConnesHecke6_OPEN` + `P5_LanglandsDescent_OPEN` → `P5_HeckeTransfer_14_OPEN` (proved).
+      - `BC6_HeckeTraceStep_OPEN` + `BC6_WeilExplicitStep_OPEN` → `BC6_Mechanism_proved` (proved).
+      All four sub-surfaces OPEN. P5 equivalent to `_root_.RiemannHypothesis` (both proved inputs
+      collapse the implication). BC6 needs Selberg trace formula for Γ₀(143) (BC95 §3, ~40 pages).
+    `verify_bsd_only.sh` Phase 33 added (default START_PHASE=33).
+    Genuine Clay gaps: **2** (unchanged — discriminant form is logically equivalent to EndDeg form):
+      (1) `BSD_HasseBound_Discriminant_OPEN` — `(a_p p)² ≤ 4p` for all good primes.
+          Equiv: `BSD_EndomorphismDegree_OPEN`. Gap: EllipticCurve.Frobenius/Isogeny.degree/Rosati.
+      (2) `BSD_LFunctionIsLinFunc_OPEN` — `BSDLFunction 143 = L_143a1`. Gap: Mellin/Hecke API.
+    BSD: OPEN (Clay). Classical trio. No Clay claim. Pushed to `DavidFox998/ClassNumber-143`.
   - **genesis-759** (`BSD_Genesis759_CLOSED.lean`, `BSD_HasseEndDeg_CLOSED.lean`,
     `BSD_LAnalytic_Anchor_CLOSED.lean`, 2026-06-27): **Endomorphism-Degree Combinator —
     both gates fully atomized.**
