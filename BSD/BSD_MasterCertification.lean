@@ -1,6 +1,7 @@
 import Towers.BSD.B06_BSDCollection
 import Towers.BSD.BSD_Discriminant
 import Towers.BSD.MordellWeil
+import Towers.BSD.BSD_Genesis754_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
@@ -261,6 +262,16 @@ theorem BSD_BrickLedger :
 
     NEWLY NAMED OPEN (Milestone 5.4, not counted in the 9):
       BSD_NonTorsion_OPEN      — (2,0) has infinite order; group law absent from v4.12.0
+
+    NEWLY PROVED (genesis-754, not counted in the 9 — new surfaces, not closures of existing):
+      BSD_AnalyticOn_L143a1_CLOSED  — AnalyticOn ℂ L_143a1 Set.univ
+                                       (BSD_Genesis754_CLOSED.lean; analyticAt_const.mul)
+      BSD_AnalyticOrder_143_CLOSED  — ∃ h : AnalyticAt ℂ L_143a1 1, h.order = 1
+                                       (BSD_Genesis754_CLOSED.lean; order_eq_nat_iff, witness 5759/10000)
+    Note: these prove analytic properties of the LMFDB-anchored polynomial L_143a1.
+    The main OPEN surfaces (BSD_AnalyticContinuation_143_OPEN etc.) concern the
+    opaque BSDLFunction 143 — a separate anchor for the genuine Hecke L-function.
+    Genuine Clay gaps remaining: 2 (VanishingOrder API bridge + Gross-Zagier formula).
 
     All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
 def BSD_open_surface_count : ℕ := 9
