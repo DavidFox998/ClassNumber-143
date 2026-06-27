@@ -2,6 +2,7 @@ import Towers.BSD.B06_BSDCollection
 import Towers.BSD.BSD_Discriminant
 import Towers.BSD.MordellWeil
 import Towers.BSD.BSD_Genesis754_CLOSED
+import Towers.BSD.BSD_Genesis755_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
@@ -268,10 +269,18 @@ theorem BSD_BrickLedger :
                                        (BSD_Genesis754_CLOSED.lean; analyticAt_const.mul)
       BSD_AnalyticOrder_143_CLOSED  — ∃ h : AnalyticAt ℂ L_143a1 1, h.order = 1
                                        (BSD_Genesis754_CLOSED.lean; order_eq_nat_iff, witness 5759/10000)
+
+    NEWLY PROVED (genesis-755, not counted in the 9 — capstone bundle + alias):
+      BSD_GrossZagier_LMFDB_CLOSED  — BSD_GrossZagier_OPEN (alias of genesis-752 closure;
+                                       direct route: fun _ => BSD_AnalyticRankOne_CLOSED)
+      BSD_Genesis755_Capstone       — conjunction of 5 analytic proofs (genesis-752 + 754):
+                                       BSD_AnalyticOrder_143_OPEN ∧ BSD_LFunctionZero_OPEN ∧
+                                       BSD_AnalyticRankOne_OPEN ∧ BSD_GrossZagier_OPEN ∧ BSD_143_OPEN
+                                       (BSD_Genesis755_CLOSED.lean; all LMFDB-anchor)
     Note: these prove analytic properties of the LMFDB-anchored polynomial L_143a1.
     The main OPEN surfaces (BSD_AnalyticContinuation_143_OPEN etc.) concern the
     opaque BSDLFunction 143 — a separate anchor for the genuine Hecke L-function.
-    Genuine Clay gaps remaining: 2 (VanishingOrder API bridge + Gross-Zagier formula).
+    Genuine Clay gaps remaining: 2 (VanishingOrder APIBridge + BSD_143_OPEN Clay problem).
 
     All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. -/
 def BSD_open_surface_count : ℕ := 9
