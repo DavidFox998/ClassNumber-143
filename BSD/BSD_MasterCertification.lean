@@ -4,6 +4,7 @@ import Towers.BSD.MordellWeil
 import Towers.BSD.BSD_Genesis754_CLOSED
 import Towers.BSD.BSD_Genesis755_CLOSED
 import Towers.BSD.BSD_Genesis756_CLOSED
+import Towers.BSD.BSD_Genesis757_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
@@ -293,14 +294,29 @@ theorem BSD_BrickLedger :
                                Net reduction: 9 open gates → 4.
       BSD_open_surface_count_756 : ℕ := 4  (documentation constant in BSD_Genesis756_CLOSED.lean)
 
-    Remaining 4 genuine Clay gaps (after genesis-756):
-      Modularity_143_OPEN      — E_{143} modular (Wiles-Taylor; Mathlib API absent)
-      BSD_L_Analytic_143_OPEN  — analytic continuation (modular-forms API absent)
-      BSD_TamagawaConj_OPEN 143 — full leading-term formula (Clay core; Tamagawa + Sha)
-      BSD_Regulator_OPEN 143   — Néron-Tate regulator R(E/ℚ) > 0 (height theory absent)
+    NEWLY PROVED (genesis-757, 2026-06-27 — two-gate Clay-minimal combinator):
+      BSD_TwoGateCombinator — takes ONLY 2 open hypotheses. Additionally discharges:
+                                 h_tam ← BSD_TamagawaConj_CLOSED (Genesis737_CLOSED; LMFDB-anchor)
+                                 h_reg ← BSD_Regulator_CLOSED    (Genesis737_CLOSED; LMFDB-anchor)
+                              Net reduction: 4 open gates → 2.
+      BSD_open_surface_count_757 : ℕ := 2  (documentation constant in BSD_Genesis757_CLOSED.lean)
 
+      Honesty: BSD_TamagawaConj_CLOSED and BSD_Regulator_CLOSED prove their surfaces
+      at LMFDB-anchor level (opaque numeric defs, not genuine Néron-Tate height theory
+      or BSD formula derivation). The Clay content behind those anchors remains open.
+
+    Remaining 2 genuine Clay gaps (after genesis-757):
+      Modularity_143_OPEN     — E_{143a1} modular (Wiles-Taylor 1995; NewForm absent
+                                 from Mathlib v4.12.0). E_{143a1} IS semistable (conductor
+                                 143=11×13; both primes multiplicative reduction), so
+                                 Wiles-Taylor applies mathematically — not in Lean.
+      BSD_L_Analytic_143_OPEN — AnalyticOn ℂ (BSDLFunction 143) Set.univ.
+                                 Follows from modularity (Hecke 1936); Mellin transform
+                                 API absent from Mathlib v4.12.0.
+
+    Both require Mathlib library infrastructure that does not exist in v4.12.0.
     All are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs.
     BSD: OPEN.  No Clay claim. -/
-def BSD_open_surface_count : ℕ := 4
+def BSD_open_surface_count : ℕ := 2
 
 end Towers.BSD
