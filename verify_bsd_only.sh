@@ -600,11 +600,13 @@ compile_with_olean \
   "BSD/BostBound_143" || p12_ok=false
 echo ""
 
-# genesis-759 files must be compiled before BSD_MasterCertification
-# (MasterCertification now imports BSD_Genesis759_CLOSED).
-# BSD_HasseEndDeg_CLOSED imports BSD_HasseBridge_CLOSED (pre-built olean).
-# BSD_LAnalytic_Anchor_CLOSED imports BSD_Genesis754_CLOSED (pre-built olean).
-# BSD_Genesis759_CLOSED imports both above + BSD_Genesis758_CLOSED (pre-built).
+# genesis-759 architecture (genesis-759 removed from MasterCertification imports to break cycle):
+# BSD_HasseEndDeg_CLOSED imports BSD_HasseBridge_CLOSED (no dep on MasterCertification).
+# BSD_LAnalytic_Anchor_CLOSED imports BSD_Genesis754_CLOSED (no dep on MasterCertification).
+# Both can be compiled before MasterCertification.
+# BSD_Genesis759_CLOSED → BSD_Genesis758_CLOSED → BSD_Genesis757_CLOSED → (transitively) →
+#   BSD_MasterCertification: so genesis-757/758/759 must be compiled AFTER MasterCertification.
+# Genesis-757/758/759 are compiled in Phases 30/31/32 respectively (or run START_PHASE=30).
 compile_with_olean \
   "Towers/BSD/BSD_HasseEndDeg_CLOSED.lean" \
   ".lake/build/lib/Towers/BSD/BSD_HasseEndDeg_CLOSED.olean" \
@@ -617,10 +619,12 @@ compile_with_olean \
   "BSD/BSD_LAnalytic_Anchor_CLOSED" || p12_ok=false
 echo ""
 
+# BSD_MasterCertification source changed (genesis-757/758/759 imports removed to break cycle).
+# Compile it explicitly before files that import it.
 compile_with_olean \
-  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
-  "BSD/BSD_Genesis759_CLOSED" || p12_ok=false
+  "Towers/BSD/BSD_MasterCertification.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_MasterCertification.olean" \
+  "BSD/BSD_MasterCertification" || p12_ok=false
 echo ""
 
 compile_with_olean \
