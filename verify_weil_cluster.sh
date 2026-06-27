@@ -790,8 +790,10 @@ compile_with_olean \
   "BSD/BSD_Multiplicativity_Closed" || p9_ok=false
 echo ""
 
-# genesis-759 files must be compiled before BSD_MasterCertification
-# (MasterCertification imports BSD_Genesis759_CLOSED, which needs these oleans).
+# genesis-759 architecture (genesis-759 removed from MasterCertification imports to break cycle):
+# BSD_HasseEndDeg_CLOSED and BSD_LAnalytic_Anchor_CLOSED have no dep on MasterCertification.
+# BSD_Genesis759_CLOSED → BSD_Genesis758_CLOSED → BSD_Genesis757_CLOSED → (transitively) →
+#   BSD_MasterCertification: so genesis-757/758/759 must be compiled AFTER MasterCertification.
 compile_with_olean \
   "Towers/BSD/BSD_HasseEndDeg_CLOSED.lean" \
   ".lake/build/lib/Towers/BSD/BSD_HasseEndDeg_CLOSED.olean" \
@@ -805,15 +807,28 @@ compile_with_olean \
 echo ""
 
 compile_with_olean \
-  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
-  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
-  "BSD/BSD_Genesis759_CLOSED" || p9_ok=false
-echo ""
-
-compile_with_olean \
   "Towers/BSD/BSD_MasterCertification.lean" \
   ".lake/build/lib/Towers/BSD/BSD_MasterCertification.olean" \
   "BSD/BSD_MasterCertification" || p9_ok=false
+echo ""
+
+# genesis-757/758/759 compiled AFTER MasterCertification (they transitively import it).
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis757_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis757_CLOSED.olean" \
+  "BSD/BSD_Genesis757_CLOSED" || p9_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis758_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis758_CLOSED.olean" \
+  "BSD/BSD_Genesis758_CLOSED" || p9_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
+  "BSD/BSD_Genesis759_CLOSED" || p9_ok=false
 echo ""
 
 compile_with_olean \
