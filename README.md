@@ -32,10 +32,15 @@ Both routes are unconditional (0 open gates, 0 sorry).
 | RH chain: K1_Upper_ClassGroup_OPEN (classNumber K ≤ 10) | **CLOSED** — `C22_ClassNum_Bridge.lean` (RH tower; genesis-754) |
 | RH chain: K1_Lower_OrderOf_OPEN (10 ≤ classNumber K) | **CLOSED** — `C22_ClassNum_Bridge.lean` (RH tower; genesis-754) |
 | RH chain research-axiom footprint | **4** (KimSarnak / BC6 / Langlands / P5Hecke; genesis-754 Phase B reduced 6→4) |
-| Named OPEN surfaces (main BSD tower) | **4** (down from 7; genesis-737); BSD_143_PROVED at LMFDB level (genesis-748) |
-| Genuine Clay gaps remaining | **2**: VanishingOrder API + Gross-Zagier formula |
+| Named OPEN surfaces (main BSD tower) | **2** (genesis-757: BSD_TwoGateCombinator, 4→2) |
+| Genuine Clay gaps remaining | **2** — most atomic names (genesis-759): `BSD_EndomorphismDegree_OPEN` + `BSD_LFunctionIsLinFunc_OPEN` |
+| genesis-757 — Two-Gate Combinator | **BSD_TwoGateCombinator**: 4 gates → 2; discharges Tamagawa + Regulator internally |
+| genesis-758 — Frobenius-Analytic Combinator | **BSD_FrobeniusAnalytic_Combinator**: Gate 1 = `BSD_HasseFull_143_OPEN` (atomic Frobenius surface) |
+| genesis-759 — Endomorphism-Degree Combinator | **BSD_Genesis759_Combinator**: Gate 1 = `BSD_EndomorphismDegree_OPEN`; Gate 2 = `BSD_LFunctionIsLinFunc_OPEN`; wiring fix: genesis-734 proofs connected to main chain |
 | Axiom footprint | `{propext, Classical.choice, Quot.sound}` only |
 | sorry count | **0** across all files |
+| Lean BSD Verify | Phases 1–32 **PASSED** |
+| Lean Weil Verify | Phases 1–13 **PASSED** |
 
 ---
 
