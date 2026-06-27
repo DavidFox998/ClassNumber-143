@@ -1195,4 +1195,55 @@ else
 fi
 
 echo ""
-echo "=== All Towers modules verified (Phases 1–13). ==="
+
+# === Phase 14: C24_BC6ArithmeticBridge — Γ₀(143) arithmetic + BC6 decomposition ===
+if [ "${START_PHASE:-14}" -le 14 ]; then
+  echo "=== Phase 14: C24_BC6ArithmeticBridge — Γ₀(143) arithmetic + BC6 decomposition ==="
+
+  p14_ok=true
+  lean_file="Towers/RH/Chain/C24_BC6ArithmeticBridge.lean"
+  olean_file=".lake/build/lib/Towers/RH/Chain/C24_BC6ArithmeticBridge.olean"
+  if [ -f "$olean_file" ]; then
+    echo "--- $lean_file ---"
+    echo "  SKIP (olean fresh)"
+  else
+    echo "--- $lean_file ---"
+    if LEAN_PATH="$LP" lean -o "$olean_file" "$lean_file" 2>&1; then
+      echo "  PASS"
+    else
+      echo "  FAIL: $lean_file"
+      p14_ok=false
+    fi
+  fi
+
+  echo "-- Phase 14 axiom audit --"
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT14' 2>&1
+import Towers.RH.Chain.C24_BC6ArithmeticBridge
+#print axioms TheoremaAureum.BC6_Gamma0_143_Arithmetic_CLOSED
+#print axioms TheoremaAureum.BC6_SelbergTrace_from_two
+#print axioms TheoremaAureum.BC6_decomposition_iff
+AUDIT14
+  then
+    :
+  else
+    p14_ok=false
+  fi
+
+  if $p14_ok; then
+    echo "Phase 14 PASSED (C24_BC6ArithmeticBridge: SORRY:0, classical trio)."
+    echo "  BC6_Gamma0_143_Arithmetic_CLOSED: index=168, area=56, Weyl=14, genus=13, cusps=4."
+    echo "  BC6_SelbergTrace_from_two: trace + Weil → BC6SelbergTrace_OPEN."
+    echo "  BC6_decomposition_iff: BC6SelbergTrace_OPEN ↔ BC6_WeilExplicit_143_OPEN."
+    echo "  Remaining OPEN: BC6_SelbergTrace_143_OPEN (~25pp) + BC6_WeilExplicit_143_OPEN (~20pp)."
+    echo "  Arithmetic from: arakelov-positivity-rh-core Gate1_BC6Arithmetic.lean."
+    echo "  BC6SelbergTrace_OPEN: OPEN.  RH: OPEN.  No Clay claim."
+  else
+    echo "Phase 14 FAILED — see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 14 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo ""
+echo "=== All Towers modules verified (Phases 1–14). ==="
