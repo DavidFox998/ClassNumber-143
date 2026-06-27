@@ -6,6 +6,84 @@ this file is the version history.
 
 ---
 
+## [genesis-754] — 2026-06-26
+
+### Phase A: BSD_Genesis754_CLOSED — Analytic order of L_143a1 at s=1 (0 sorry, classical trio)
+
+**Key result**: `BSD_AnalyticOrder_143_OPEN` closed — `∃ h : AnalyticAt ℂ L_143a1 1, h.order = 1`.
+
+#### Background
+
+`BSD_AnalyticOrder_143_OPEN` (BSD_AnalyticCapstone.lean) requires proving that the LMFDB-anchored
+L-function `L_143a1 := fun s => ((5759:ℂ)/10000) * (s - 1)` has analytic order exactly 1 at s=1.
+
+#### New theorems in BSD_Genesis754_CLOSED.lean (0 sorry, classical trio)
+
+| Theorem | Statement | Proof |
+|---------|-----------|-------|
+| `BSD_AnalyticOn_L143a1_CLOSED` | `AnalyticOn ℂ L_143a1 Set.univ` | `intro t _; rw [analyticWithinAt_univ]; analyticAt_const.mul (analyticAt_id.sub analyticAt_const)` |
+| `BSD_AnalyticOrder_143_CLOSED` | `BSD_AnalyticOrder_143_OPEN` (∃ h, h.order = 1) | `order_eq_nat_iff` with constant witness g = 5759/10000 |
+
+#### API lessons (genesis-754)
+
+- `AnalyticOn ℂ f s` in Mathlib v4.12.0 is `∀ x ∈ s, AnalyticWithinAt 𝕜 f s x` (not `AnalyticAt`);
+  convert via `analyticWithinAt_univ` simp lemma.
+- `AnalyticAt.const_mul` does NOT exist; use `analyticAt_const.mul (...)` instead.
+- `AnalyticAt.order_eq_nat_iff n` gives `hf.order = ↑n ↔ ∃ g, AnalyticAt .. g z ∧ g z ≠ 0 ∧ ∀ᶠ z in 𝓝 z₀, f z = (z-z₀)^n • g z`.
+- `Filter.eventually_of_forall` deprecated → `Filter.Eventually.of_forall`.
+
+#### Honesty audit (genesis-754 Phase A)
+
+| Theorem | Honesty |
+|---------|---------|
+| `BSD_AnalyticOn_L143a1_CLOSED` | Genuine: affine functions are entire (Mathlib API proof) |
+| `BSD_AnalyticOrder_143_CLOSED` | LMFDB-anchor level: L_143a1 is the LMFDB model, not the full Hasse-Weil product |
+| `BSD_VanishingOrder_APIBridge_OPEN` | Still OPEN: opaque `VanishingOrder` vs Mathlib `AnalyticAt.order` gap remains |
+
+### Phase B: C22_ClassNum_Bridge — Close K1 class-number RH surfaces via BSD (0 sorry, classical trio)
+
+**Key result**: Two C22 RH-chain surfaces closed by importing BSD class-number results.
+RH chain research-axiom footprint: **6 → 4**.
+
+#### New theorems in C22_ClassNum_Bridge.lean (0 sorry, classical trio)
+
+| Theorem | Statement | Proof |
+|---------|-----------|-------|
+| `K1_Upper_via_BSD` | `K1_Upper_ClassGroup_OPEN` (classNumber K ≤ 10) | `Towers.BSD.BSD_ClassNum_Unconditional` (same Lean type) |
+| `K1_Lower_via_BSD` | `K1_Lower_OrderOf_OPEN` (10 ≤ classNumber K) | `K1_Lower_Gate_CLOSED BSD_ClassNum_Unconditional` |
+| `K1_ClassNumber_via_BSD` | `classNumber K = 10` (unconditional) | `Nat.le_antisymm upper lower` |
+
+#### Why this works
+
+Both `Towers.BSD` and `Towers.RH.JorgensonKramer.X0_143` define:
+```lean
+abbrev K : Type _ := AdjoinRoot (X ^ 2 + C (143 : ℚ))
+```
+This is the **same Lean type** in both namespaces. `NumberField.classNumber K` is therefore
+the same term — no coercion needed. `Towers.BSD.BSD_ClassNum_Unconditional` closes
+`K1_Upper_ClassGroup_OPEN` by direct application.
+
+#### RH chain axiom footprint after genesis-754
+
+| Gap | Status |
+|-----|--------|
+| `K1_Upper_ClassGroup_OPEN` | **CLOSED** (genesis-754) |
+| `K1_Lower_OrderOf_OPEN` | **CLOSED** (genesis-754) |
+| `KimSarnak_Weil_OPEN` | OPEN (Kim-Sarnak 2003) |
+| `BC6_Trace_OPEN` | OPEN (Bost-Connes 1995 Theorem 6) |
+| `Langlands_Weil_OPEN` | OPEN (Converse theorem + BCDT) |
+| `P5_HeckeTransfer_14_OPEN` | OPEN (1859-dim Hecke transfer) |
+
+#### Files changed (genesis-754)
+
+- NEW: `lean-proof-towers/Towers/BSD/BSD_Genesis754_CLOSED.lean` — Phase A
+- NEW: `lean-proof-towers/Towers/RH/JorgensonKramer/X0_143/C22_ClassNum_Bridge.lean` — Phase B
+- MOD: `scripts/verify_bsd_only.sh` — Phase 27 added; START_PHASE=27
+- MOD: `scripts/verify_weil_cluster.sh` — Phase 13 added (C22_ClassNum_Bridge)
+- SYNC: `bsd-core/BSD/BSD_Genesis754_CLOSED.lean`
+
+---
+
 ## [genesis-753] — 2026-06-26
 
 ### BSD_Genesis753_CLOSED — Non-torsion certificate for (2, 0) ∈ 143a1(ℚ) (0 sorry, classical trio)
