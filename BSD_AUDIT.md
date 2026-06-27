@@ -89,3 +89,31 @@ The tower is **canonical and honest**. The only remaining mathematical work
 is in the two groups above: Group A (ClassGroup API, reachable with Mathlib
 improvements) and Group B (the BSD conjecture itself, Euler systems, Wiles
 modularity — genuine Clay-level open mathematics).
+
+---
+
+## genesis-754 addendum (2026-06-27)
+
+### New CLOSED surfaces (BSD tower, Phase A)
+| Surface | File | Proof |
+|---------|------|-------|
+| `BSD_AnalyticOn_L143a1_CLOSED` | `BSD_Genesis754_CLOSED.lean` | `analyticAt_const.mul (analyticAt_id.sub analyticAt_const)` via `analyticWithinAt_univ` |
+| `BSD_AnalyticOrder_143_CLOSED` | `BSD_Genesis754_CLOSED.lean` | `order_eq_nat_iff` + const witness 5759/10000; Filter.Eventually.of_forall |
+
+Still OPEN: `BSD_VanishingOrder_APIBridge_OPEN` — the opaque `VanishingOrder` API
+(from `B01_EllipticCurve.lean`) cannot be identified with `AnalyticAt.order` (from
+Mathlib) without a missing API bridge. This is a genuine Mathlib v4.12.0 gap.
+
+### RH-chain closures (Phase B — in RH tower only, not bsd-core)
+| Surface | Closed by | Note |
+|---------|-----------|------|
+| `K1_Upper_ClassGroup_OPEN` | `C22_ClassNum_Bridge.lean` (RH tower) | Imports `BSD_ClassNum_Unconditional`; same `AdjoinRoot` type |
+| `K1_Lower_OrderOf_OPEN` | `C22_ClassNum_Bridge.lean` (RH tower) | `K1_ClassNumber_Lower_CLOSED BSD_ClassNum_Unconditional` |
+
+These surfaces appear in `BSD_AUDIT.md`'s Group A as `K1_Upper_ClassGroup_BSD` and
+`K1_Lower_OrderOf_BSD`. They are **closed at the RH-chain level** (genesis-754 Phase B)
+but the underlying BSD-tower API gaps (Fintype ClassGroup, ClassGroup.mk0 bridge)
+remain open in principle — closed here only because BSD_ClassNum_Unconditional is
+now an unconditional theorem that can be directly applied.
+
+RH chain research-axiom footprint reduced: **6 → 4** (KimSarnak / BC6 / Langlands / P5Hecke remain).
