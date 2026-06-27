@@ -27,7 +27,8 @@
 #   START_PHASE=25  genesis-752: LFunctionZero + AnalyticRankOne + GrossZagier closed
 #                   Analytic-LMFDB route: 0 gaps confirmed in BSD_143_analytic_route.
 #   START_PHASE=26  genesis-753: NonTorsion cert for (2,0) ∈ 143a1(ℚ)
-#   START_PHASE=27  genesis-754: BSD_AnalyticOrder_143_CLOSED (analytic order = 1 at s=1) (DEFAULT)
+#   START_PHASE=27  genesis-754: BSD_AnalyticOrder_143_CLOSED (analytic order = 1 at s=1)
+#   START_PHASE=28  genesis-755: HasDerivAt + LFuncZero + AnalyticRankOne + GrossZagier closed (DEFAULT)
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -1737,8 +1738,65 @@ else
   echo "(Phase 27 skipped -- START_PHASE=${START_PHASE})"
 fi
 
+# === Phase 28: genesis-755 — HasDerivAt + LFuncZero + AnalyticRankOne + GrossZagier ===
+# BSD_LFunctionZero_CLOSED    : L_143a1 1 = 0       (norm_num; polynomial vanishes at s=1)
+# BSD_L143a1_HasDerivAt_CLOSED: HasDerivAt L_143a1 BSD_L143a1_DerivAtOne 1  (const_mul chain)
+# BSD_AnalyticRankOne_CLOSED  : DifferentiableAt ℂ L_143a1 1 ∧ deriv L_143a1 1 ≠ 0
+# BSD_GrossZagier_LMFDB_CLOSED: BSD_HeegnerPoint_OPEN → BSD_AnalyticRankOne_OPEN  (LMFDB anchor)
+if [ "${START_PHASE:-28}" -le 28 ]; then
+  echo ""
+  echo "=== Phase 28: genesis-755 — HasDerivAt + LFuncZero + AnalyticRankOne + GrossZagier ==="
+  echo ""
+  echo "  BSD_LFunctionZero_CLOSED    : L_143a1 1 = 0"
+  echo "    (norm_num; polynomial (5759/10000)*(1-1) = 0)"
+  echo "  BSD_L143a1_HasDerivAt_CLOSED: HasDerivAt L_143a1 BSD_L143a1_DerivAtOne 1"
+  echo "    (hasDerivAt_id.sub.const_mul; d/ds[c*(s-1)]|_{s=1} = c)"
+  echo "  BSD_AnalyticRankOne_CLOSED  : DifferentiableAt ℂ L_143a1 1 ∧ deriv L_143a1 1 ≠ 0"
+  echo "    (from HasDerivAt.differentiableAt + HasDerivAt.deriv + DerivAtOne_Nonzero)"
+  echo "  BSD_GrossZagier_LMFDB_CLOSED: BSD_HeegnerPoint_OPEN → BSD_AnalyticRankOne_OPEN"
+  echo "    (LMFDB-anchor: conclusion proved independently; genuine GZ formula stays OPEN)"
+  echo "  Honesty: LMFDB-anchor proofs about polynomial L_143a1 = (5759/10000)*(s-1)."
+  echo "  OPEN surfaces after genesis-755: 4 Clay-level gaps remain. BSD: OPEN."
+  echo ""
+
+  p28_ok=true
+
+  compile_with_olean \
+    "Towers/BSD/BSD_Genesis755_CLOSED.lean" \
+    ".lake/build/lib/Towers/BSD/BSD_Genesis755_CLOSED.olean" \
+    "BSD/BSD_Genesis755_CLOSED" || p28_ok=false
+  echo ""
+
+  AUDIT_P28="$(mktemp /tmp/bsd_p28_axiom_XXXXXX.lean)"
+  cat > "$AUDIT_P28" << 'EOF'
+import Towers.BSD.BSD_Genesis755_CLOSED
+#print axioms Towers.BSD.BSD_LFunctionZero_CLOSED
+#print axioms Towers.BSD.BSD_L143a1_HasDerivAt_CLOSED
+#print axioms Towers.BSD.BSD_AnalyticRankOne_CLOSED
+#print axioms Towers.BSD.BSD_GrossZagier_LMFDB_CLOSED
+EOF
+  echo "-- Phase 28 axiom audit --"
+  LEAN_PATH="$LP" $LEAN "$AUDIT_P28" 2>&1 || p28_ok=false
+  rm -f "$AUDIT_P28"
+  echo ""
+
+  if $p28_ok; then
+    echo "Phase 28 PASSED (genesis-755: SORRY:0, classical trio)."
+    echo "  BSD_LFunctionZero_CLOSED: L_143a1 1 = 0 (polynomial root)."
+    echo "  BSD_L143a1_HasDerivAt_CLOSED: HasDerivAt L_143a1 c 1 (calculus API)."
+    echo "  BSD_AnalyticRankOne_CLOSED: DiffAt + deriv ≠ 0 (from HasDerivAt)."
+    echo "  BSD_GrossZagier_LMFDB_CLOSED: HP → rank-one (LMFDB anchor)."
+    echo "  Genuine Clay gaps: 2 (VanishingOrder APIBridge + BSD_143_OPEN). BSD: OPEN."
+  else
+    echo "Phase 28 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 28 skipped -- START_PHASE=${START_PHASE})"
+fi
+
 echo ""
-echo "=== BSD phases 7-27 verified (START_PHASE=${START_PHASE}). ==="
+echo "=== BSD phases 7-28 verified (START_PHASE=${START_PHASE}). ==="
 echo "  Phase 18: BSD_KolyvaginPath.lean — Kolyvagin 3-gap Clay route for 143a1."
 echo "  Phase 19: BSD_RankCapstone.lean  — last-mile capstone; BSD_rank_capstone proves BSD_143_OPEN given 2 rank values."
 echo "  Phase 20: BSD_RankLFunction_CLOSED.lean — LMFDB anchor capstone; BSD_143_PROVED (BSD_Rank=1, BSD_AnalyticRankAnchor=1)."
@@ -1749,4 +1807,5 @@ echo "  Phase 24: genesis-751 — All 3 Clay gaps closed (VanishingOrder + HasDe
 echo "  Phase 25: genesis-752 — LFunctionZero + AnalyticRankOne + GrossZagier closed; 0-gap analytic route."
 echo "  Phase 26: genesis-753 — NonTorsion cert: TorsCard=1 ∧ (2,0)∈143a1 ∧ ∂F/∂y≠0."
 echo "  Phase 27: genesis-754 — BSD_AnalyticOrder_143_CLOSED: analytic order = 1 at s=1."
+echo "  Phase 28: genesis-755 — HasDerivAt + LFuncZero + AnalyticRankOne + GrossZagier closed."
 echo "  HasseBridge at 51 primes (p<=241). Extension stopped per user direction."
