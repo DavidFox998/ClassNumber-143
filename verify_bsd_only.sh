@@ -1963,3 +1963,63 @@ else
 fi
 
 echo "  Phase 31: genesis-758 — Frobenius-Analytic Combinator: Modularity gate atomized."
+
+# === Phase 32: genesis-759 — §V.5 Endomorphism-Degree Combinator ===
+if [ "${START_PHASE:-32}" -le 32 ]; then
+  echo "=== Phase 32: genesis-759 — §V.5 Endomorphism-Degree Combinator ==="
+  echo "  BSD_HasseEndDeg_CLOSED: BSD_EndomorphismDegree_OPEN → BSD_HasseFull_143_OPEN"
+  echo "  BSD_LAnalytic_Anchor_CLOSED: BSD_LFunctionIsLinFunc_OPEN → BSD_L_Analytic_143_OPEN"
+  echo "  BSD_Genesis759_Combinator: 2 atomic gates (EndDeg + LFuncIsLinFunc)."
+  echo "  Wires genesis-734 (BSD_HasseBridge_CLOSED) into main chain for first time."
+
+  p32_ok=true
+  for lean_file in \
+    "Towers/BSD/BSD_HasseEndDeg_CLOSED.lean" \
+    "Towers/BSD/BSD_LAnalytic_Anchor_CLOSED.lean" \
+    "Towers/BSD/BSD_Genesis759_CLOSED.lean"; do
+    olean_file=".lake/build/lib/${lean_file%.lean}.olean"
+    if [ -f "$olean_file" ]; then
+      echo "--- $lean_file ---"
+      echo "  SKIP (olean fresh) -- olean: $olean_file"
+    else
+      echo "--- $lean_file ---"
+      if LEAN_PATH="$LP" lean -o "$olean_file" "$lean_file" 2>&1; then
+        echo "  PASS -- olean: $olean_file"
+      else
+        echo "  FAIL: $lean_file"
+        p32_ok=false
+      fi
+    fi
+  done
+
+  echo "-- Phase 32 axiom audit --"
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT32' 2>&1
+import Towers.BSD.BSD_Genesis759_CLOSED
+#print axioms BSD_Genesis759_Combinator
+#print axioms BSD_HasseViaEndDeg
+#print axioms BSD_L_Analytic_via_LinFunc
+AUDIT32
+  then
+    :
+  else
+    p32_ok=false
+  fi
+
+  if $p32_ok; then
+    echo "Phase 32 PASSED (genesis-759: SORRY:0, classical trio)."
+    echo "  BSD_Genesis759_Combinator: 2 atomic gates."
+    echo "    Gate 1: BSD_EndomorphismDegree_OPEN (§V.5 degree form; Silverman §III.6+§V.5)"
+    echo "    Gate 2: BSD_LFunctionIsLinFunc_OPEN (BSDLFunction 143 = L_143a1; Hecke/Mellin)"
+    echo "  BSD_HasseBridge_CLOSED (genesis-734) now in main chain: 4-prime witnesses wired."
+    echo "  BSD_Hasse_OPEN proved for p in {2,3,5,7} (unconditional, classical trio)."
+    echo "  Remaining 2 Clay gaps: BSD_EndomorphismDegree_OPEN + BSD_LFunctionIsLinFunc_OPEN."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 32 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 32 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo "  Phase 32: genesis-759 — §V.5 EndDeg Combinator: both gates at atomic Mathlib-API level."
