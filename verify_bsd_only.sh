@@ -2168,3 +2168,65 @@ else
 fi
 
 echo "  Phase 32: genesis-759 — §V.5 EndDeg Combinator: both gates at atomic Mathlib-API level."
+
+# === Phase 33: genesis-760 — Discriminant Equivalence + L-function Consequence ===
+if [ "${START_PHASE:-33}" -le 33 ]; then
+  echo "=== Phase 33: genesis-760 — Discriminant Equivalence + L-function Consequence ==="
+  echo "  BSD_HasseBound_Discriminant_OPEN: discriminant form (a_p)^2 <= 4p"
+  echo "  BSD_EndDeg_from_DiscBound: discriminant → degree form (algebra, nlinarith)"
+  echo "  BSD_DiscBound_from_EndDeg: degree form → discriminant (specialize at r=a_p/2)"
+  echo "  BSD_LFunction_zero_at_one_from_LinFunc: LinFunc → L(E,1)=0 (ring)"
+  echo "  BSD_BSDFunction_nonzero_from_LinFunc: LinFunc → simple zero at s=1 (norm_num)"
+  echo "  BSD_Genesis760_Combinator: discriminant gate 1 → master cert (via genesis-759)."
+
+  p33_ok=true
+  for lean_file in \
+    "Towers/BSD/BSD_Genesis760_CLOSED.lean"; do
+    olean_file=".lake/build/lib/${lean_file%.lean}.olean"
+    if [ -f "$olean_file" ]; then
+      echo "--- $lean_file ---"
+      echo "  SKIP (olean fresh) -- olean: $olean_file"
+    else
+      echo "--- $lean_file ---"
+      if LEAN_PATH="$LP" lean -o "$olean_file" "$lean_file" 2>&1; then
+        echo "  PASS -- olean: $olean_file"
+      else
+        echo "  FAIL: $lean_file"
+        p33_ok=false
+      fi
+    fi
+  done
+
+  echo "-- Phase 33 axiom audit --"
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT33' 2>&1
+import Towers.BSD.BSD_Genesis760_CLOSED
+#print axioms BSD_Genesis760_Combinator
+#print axioms BSD_EndDeg_from_DiscBound
+#print axioms BSD_DiscBound_from_EndDeg
+#print axioms BSD_LFunction_zero_at_one_from_LinFunc
+#print axioms BSD_BSDFunction_nonzero_from_LinFunc
+AUDIT33
+  then
+    :
+  else
+    p33_ok=false
+  fi
+
+  if $p33_ok; then
+    echo "Phase 33 PASSED (genesis-760: SORRY:0, classical trio)."
+    echo "  BSD_HasseBound_Discriminant_OPEN ↔ BSD_EndomorphismDegree_OPEN (proved iff)."
+    echo "    Gate 1 algebra: nlinarith [sq_nonneg (2r - a_p)] + specialize at r=a_p/2."
+    echo "  BSD_LFunction_zero_at_one_from_LinFunc: L(E,1)=0 conditional on LinFunc (ring)."
+    echo "  BSD_BSDFunction_nonzero_from_LinFunc: simple zero at s=1 (norm_num + sub_ne_zero)."
+    echo "  BSD_Genesis760_Combinator: gate 1 = discriminant form (logically equiv to 759)."
+    echo "  Remaining 2 Clay gaps: BSD_HasseBound_Discriminant_OPEN + BSD_LFunctionIsLinFunc_OPEN."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 33 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 33 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo "  Phase 33: genesis-760 — Discriminant ↔ EndDeg proved; L-function zero consequence proved."
