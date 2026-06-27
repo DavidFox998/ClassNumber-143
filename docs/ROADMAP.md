@@ -92,6 +92,36 @@ Status legend:
   RH. A formal proof would require, at minimum, formalizing a
   zero-density estimate strong enough to rule out off-line zeros,
   which is itself an open mathlib-scale project.
+- **Polymath8b external reference** (`C09b_PrimeGapRef.lean`, 2026-06-27):
+  DHJ Polymath, "Variants of the Selberg sieve, and bounded intervals
+  containing many primes," arXiv:1407.4897v4 [math.NT], 2014.
+  **Key results** (proved in the literature; Lean formalization targets):
+    - Theorem 1.4(i): H₁ = lim inf (p_{n+1}−p_n) ≤ **246** unconditionally.
+    - Theorem 1.4(xii): H₁ ≤ **6** under the Generalized Elliott-Halberstam (GEH) conjecture.
+    - §8 (Selberg parity obstruction): H₁ ≤ 6 is the **best possible** from
+      purely sieve-theoretic methods — the GEH bound is tight for sieves.
+  **Lean content** (0 sorry, classical trio, NOT a brick):
+    - `conductor_143_eq_11_mul_13`: 143 = 11 × 13 by norm_num.
+    - `conductor_prime_11/13`: both conductor primes certified by decide.
+    - `conductor_prime_gap_eq_2`: gap 13 − 11 = 2 by norm_num.
+    - `conductor_gap_within_polymath8b_bound`: 2 ≤ 246 (Polymath8b unconditional).
+    - `conductor_gap_within_polymath8b_GEH_bound`: 2 ≤ 6 (GEH-conditional).
+    - `conductor_primes_satisfy_both_polymath8b_bounds`: ⟨≤246, ≤6⟩ in one shot.
+    - Named open surfaces: `Polymath8b_H1_le_246_OPEN`, `Polymath8b_H1_le_6_GEH_OPEN`,
+      `Polymath8b_parity_obstruction_OPEN` (all Lean formalization targets).
+  **Critical distinction — Selberg SIEVE vs. Selberg TRACE FORMULA:**
+    Polymath8b uses the Selberg SIEVE (combinatorial prime filter; Selberg 1947).
+    The tower's BC6 surface (C14/C19) uses the Selberg TRACE FORMULA for Hecke
+    operators on X₀(143) (Bost-Connes 1995, §3 — a spectral-geometry identity).
+    Despite sharing "Selberg," these are COMPLETELY DIFFERENT tools.
+    Polymath8b does NOT close or advance any of the four remaining OPEN surfaces:
+      * `P5_HeckeTransfer_14_OPEN`: Bost-Connes Theorem 6 + Langlands functoriality
+      * `BC6SelbergTrace_OPEN`: Selberg TRACE formula for Γ₀(143) (~40 pages; BC95 §3)
+      * `BSD_EndomorphismDegree_OPEN`: EllipticCurve.Frobenius API (absent)
+      * `BSD_LFunctionIsLinFunc_OPEN`: Mellin/Hecke L-function identification (absent)
+  The conductor prime pair (11, 13) witnesses gap = 2, trivially satisfying both
+  bounds. This is the only direct Lean-verifiable consequence of Polymath8b for
+  this tower. RH: OPEN. BSD: OPEN. No Clay claim.
 
 ## 2. Yang-Mills mass gap
 
