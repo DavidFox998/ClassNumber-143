@@ -6,6 +6,7 @@ import Towers.BSD.BSD_ClassNumber_10_CLOSED
 import Towers.BSD.BSD_Genesis752_CLOSED
 import Towers.BSD.BSD_Genesis737_CLOSED
 
+namespace Towers.BSD
 open NumberField NumberField.InfinitePlace Real
 
 /-!
@@ -49,10 +50,10 @@ Remaining 2 genuine Clay gaps:
 
 /-! ## Open-surface count -/
 
-/-- **BSD_open_surface_count** = 2 (as of genesis-757).
+/-- **BSD_open_surface_count_757** = 2 (as of genesis-757).
     Down from 9 (genesis-700) → 4 (genesis-756) → **2** (this file).
     Remaining: `Modularity_143_OPEN` + `BSD_L_Analytic_143_OPEN`. -/
-def BSD_open_surface_count : ℕ := 2
+def BSD_open_surface_count_757 : ℕ := 2
 
 /-! ## Gate table (genesis-757)
 
@@ -100,3 +101,5 @@ theorem BSD_TwoGateCombinator
     BSD_ClassNum_Unconditional      -- h_upper discharged (genesis-720, BQF bijection)
     BSD_LowerGate_Discharged        -- h_lower discharged (genesis-730, orderOf)
     BSD_finrank_proved              -- h_finrank discharged (BSD_Discriminant, disc=143)
+
+end Towers.BSD
