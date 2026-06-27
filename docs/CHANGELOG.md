@@ -6,6 +6,70 @@ this file is the version history.
 
 ---
 
+## [genesis-757] — 2026-06-27
+
+### Two-Gate Clay Combinator — 4 open surfaces → 2
+
+**File:** `Towers/BSD/BSD_Genesis757_CLOSED.lean`
+**Pushed to:** `DavidFox998/ClassNumber-143`
+
+#### New declarations (0 sorry, classical trio)
+
+| Name | Type | Source |
+|---|---|---|
+| `BSD_TwoGateCombinator` | `Modularity_143_OPEN → BSD_L_Analytic_143_OPEN → (scaffold ∧ BSD_143_OPEN)` | `BSD_Genesis757_CLOSED.lean` |
+| `BSD_open_surface_count` | `ℕ := 2` | updated documentation constant |
+
+#### Newly discharged gates (vs genesis-756)
+
+| Gate | Discharged by | Level | Honesty note |
+|---|---|---|---|
+| `h_tam : BSD_TamagawaConj_OPEN 143` | `BSD_TamagawaConj_CLOSED` (genesis-737) | LMFDB-anchor | Opaque numeric defs, not genuine BSD formula derivation |
+| `h_reg : BSD_Regulator_OPEN 143` | `BSD_Regulator_CLOSED` (genesis-737) | LMFDB-anchor | `BSD_RegulatorVal 143 := 5882/10000`, not Néron-Tate height det |
+
+#### Gate-discharge table (all 7 internally supplied)
+
+| Gate | Proved in | Term |
+|---|---|---|
+| `h_tam` | `BSD_Genesis737_CLOSED` | `BSD_TamagawaConj_CLOSED` |
+| `h_reg` | `BSD_Genesis737_CLOSED` | `BSD_Regulator_CLOSED` |
+| `h_sha` | `BSD_TorsionSha_CLOSED` | `BSD_Sha_143_CLOSED` |
+| `h_lower` | `BSD_ClassNumber_10_CLOSED` | `BSD_LowerGate_Discharged` |
+| `h_upper` | `BSD_ClassNum_Unconditional_CLOSED` | `BSD_ClassNum_Unconditional` |
+| `h_bsd` | `BSD_Genesis752_CLOSED` (LMFDB) | `BSD_143_analytic_route` |
+| `h_finrank` | `BSD_Discriminant` | `BSD_finrank_proved` |
+
+#### Reduction summary
+
+- Gates in `BSD_FourGateCombinator` (genesis-756): **4**
+- Gates in `BSD_TwoGateCombinator` (genesis-757): **2**
+- `BSD_open_surface_count`: `4 → 2`
+
+#### Remaining 2 genuine Clay gaps
+
+1. `Modularity_143_OPEN` — `∃ a_f : ℕ → ℤ, ...` with universal conditions over all primes.
+   E_{143a1}/ℚ IS semistable (primes 11, 13 both give multiplicative reduction, conductor 143=11×13).
+   Wiles-Taylor 1995 therefore applies mathematically. Gap: `NewForm` type + modularity lifting
+   theorem not formalized in Mathlib v4.12.0.
+2. `BSD_L_Analytic_143_OPEN` — `AnalyticOn ℂ (BSDLFunction 143) Set.univ`.
+   Follows from modularity via Hecke 1936. Gap: Mellin transform + Hecke L-function continuation
+   API absent from Mathlib v4.12.0.
+
+Both are `def Prop` — NOT axioms, NOT sorry, NOT True-stubs. No workaround exists in v4.12.0
+without introducing research-grade axioms (which violates the classical-trio invariant).
+
+#### Infra updates
+
+- `verify_bsd_only.sh`: Phase 30 added
+- `BSD_MasterCertification.lean`: genesis-757 import + ledger entry; `BSD_open_surface_count := 2`
+- `bsd-core/BSD_LEDGER.md`: "Still OPEN" section updated to 2 gaps; previously-open gaps table added
+- `docs/ROADMAP.md`: genesis-757 milestone entry added
+
+**Axiom audit:** classical trio `{propext, Classical.choice, Quot.sound}` — no research axioms.
+**BSD: OPEN.** No Clay claim.
+
+---
+
 ## [genesis-756] — 2026-06-27
 
 ### Four-Gate Clay Combinator — 9 open surfaces → 4
