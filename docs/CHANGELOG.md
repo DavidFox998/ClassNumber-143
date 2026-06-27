@@ -6,6 +6,62 @@ this file is the version history.
 
 ---
 
+## [polymath8b-ref] — 2026-06-27
+
+### Polymath8b prime gap reference: C09b_PrimeGapRef.lean
+
+**Files:**
+- `Towers/RH/Chain/C09b_PrimeGapRef.lean` (new — local tower, not in ClassNumber-143 BSD dir)
+- `docs/ROADMAP.md` (updated — Polymath8b section added to §1 RH)
+- `bsd-core/BSD_LEDGER.md` (updated — external reference cross-note)
+**Pushed to:** `DavidFox998/ClassNumber-143` (ROADMAP + LEDGER only)
+
+#### Paper assessed
+
+DHJ Polymath, "Variants of the Selberg sieve, and bounded intervals containing many
+primes," arXiv:1407.4897v4 [math.NT], 22 Dec 2014.
+
+**Key results (proved in literature; Lean formalization targets):**
+- Theorem 1.4(i): H₁ = lim inf (p_{n+1}−p_n) ≤ **246** unconditionally.
+- Theorem 1.4(xii): H₁ ≤ **6** under GEH (Generalized Elliott-Halberstam conjecture).
+- §8 (Selberg parity obstruction): H₁ ≤ 6 is the best possible from sieve methods.
+
+#### Critical assessment — Selberg SIEVE ≠ Selberg TRACE FORMULA
+
+Polymath8b uses the **Selberg sieve** (combinatorial prime-counting filter).
+The tower's BC6 surface (C14/C19) uses the **Selberg trace formula** for Hecke
+operators on X₀(143) (Bost-Connes 1995, §3 — spectral geometry).
+Despite sharing the name "Selberg," these are COMPLETELY DIFFERENT tools.
+
+**Polymath8b does NOT close any current OPEN surface.** Specifically:
+- `P5_HeckeTransfer_14_OPEN`: needs Bost-Connes Theorem 6 + Langlands (≠ Selberg sieve)
+- `BC6SelbergTrace_OPEN`: needs Selberg TRACE formula for Γ₀(143) (≠ Selberg sieve)
+- `BSD_EndomorphismDegree_OPEN`: needs EllipticCurve.Frobenius API
+- `BSD_LFunctionIsLinFunc_OPEN`: needs Mellin/Hecke L-function identification
+
+#### What C09b_PrimeGapRef.lean proves (0 sorry, classical trio)
+
+| Theorem | Statement | Tactic |
+|---------|-----------|--------|
+| `conductor_143_eq_11_mul_13` | 143 = 11 × 13 | norm_num |
+| `conductor_prime_11` | Nat.Prime 11 | decide |
+| `conductor_prime_13` | Nat.Prime 13 | decide |
+| `conductor_prime_gap_eq_2` | 13 − 11 = 2 | norm_num |
+| `conductor_prime_11_lt_13` | 11 < 13 | norm_num |
+| `conductor_primes_odd` | ¬2∣11 ∧ ¬2∣13 | decide |
+| `conductor_gap_within_polymath8b_bound` | Prime 11 ∧ Prime 13 ∧ 13−11 ≤ 246 | decide+norm_num |
+| `conductor_gap_within_polymath8b_GEH_bound` | Prime 11 ∧ Prime 13 ∧ 13−11 ≤ 6 | decide+norm_num |
+| `conductor_primes_satisfy_both_polymath8b_bounds` | 13−11 ≤ 246 ∧ 13−11 ≤ 6 | norm_num |
+
+**Named OPEN surfaces (Lean formalization targets, not yet provable in v4.12.0):**
+- `Polymath8b_H1_le_246_OPEN` — Theorem 1.4(i); needs multidimensional Selberg sieve
+- `Polymath8b_H1_le_6_GEH_OPEN` — Theorem 1.4(xii); needs GEH + extended sieve
+- `Polymath8b_parity_obstruction_OPEN` — §8; sieve floor H₁ ≥ 6
+
+**Genuine Clay gaps: 2 (unchanged). BSD: OPEN. RH: OPEN. No Clay claim.**
+
+---
+
 ## [genesis-759] — 2026-06-27
 
 ### §V.5 Endomorphism-Degree Combinator — both gates fully atomized
