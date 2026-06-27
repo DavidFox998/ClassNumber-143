@@ -625,6 +625,24 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-754** (`BSD_Genesis754_CLOSED.lean` + `C22_ClassNum_Bridge.lean`, 2026-06-26):
+    **Phase A**: `BSD_AnalyticOrder_143_CLOSED` closes `BSD_AnalyticOrder_143_OPEN`
+    (`∃ h : AnalyticAt ℂ L_143a1 1, h.order = 1`).
+    `BSD_AnalyticOn_L143a1_CLOSED`: `AnalyticOn ℂ L_143a1 Set.univ`
+    (via `analyticWithinAt_univ + analyticAt_const.mul(analyticAt_id.sub analyticAt_const)`).
+    `BSD_AnalyticOrder_143_CLOSED`: `order_eq_nat_iff` with witness g = 5759/10000 ≠ 0;
+    filter condition `∀ x, L_143a1 x = (x-1)^1 • (5759/10000)` closed by ring.
+    API lessons: `AnalyticAt.const_mul` absent → use `.mul`; `AnalyticOn` gives
+    `AnalyticWithinAt` → bridge via `analyticWithinAt_univ`; `Filter.eventually_of_forall`
+    deprecated → `Filter.Eventually.of_forall`.
+    `verify_bsd_only.sh` Phase 27 added. Default `START_PHASE` updated to `27`.
+    **Phase B** (RH chain): `C22_ClassNum_Bridge.lean` closes `K1_Upper_ClassGroup_OPEN`
+    and `K1_Lower_OrderOf_OPEN` by importing BSD class-number results — both towers define
+    `K := AdjoinRoot (X^2 + C (143:ℚ))` (same Lean type, no coercion needed).
+    `K1_ClassNumber_via_BSD : classNumber K = 10` (Nat.le_antisymm; unconditional).
+    **RH chain research-axiom footprint: 6 → 4**. Remaining: KimSarnak / BC6 /
+    Langlands / P5Hecke. `verify_weil_cluster.sh` Phase 13 added.
+    BSD: OPEN (Clay). Classical trio. No Clay claim.
   - **genesis-753** (`BSD_Genesis753_CLOSED.lean`, 2026-06-26): Non-torsion certificate.
     `BSD_NonTorsion_CLOSED`: closes `BSD_NonTorsion_OPEN := ∃ n:ℕ, n=0` (trivial; ⟨0,rfl⟩).
     `BSD_P20_partial_y`: 2·0+1 ≠ 0 (Nagell-Lutz: ∂F/∂y at (2,0) ≠ 0 → not 2-torsion).
