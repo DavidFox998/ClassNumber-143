@@ -643,6 +643,64 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
       (4) `BSD_Regulator_OPEN 143` — Néron-Tate regulator
     All 4 require Mathlib APIs absent in v4.12.0. Axiom audit: classical trio.
     BSD: OPEN (Clay). No Clay claim. Pushed to `DavidFox998/ClassNumber-143`.
+  - **Four remaining Clay gaps — technical specification (post genesis-756, 2026-06-27):**
+    The four surfaces required by `BSD_FourGateCombinator` are the minimal frontier.
+    Each is a `def Prop` in the tower — not sorry, not axiom, not True-stub.
+    All require Mathlib APIs absent in v4.12.0. Closing any one would require
+    substantial new Lean 4 library infrastructure; closing all four would constitute
+    a Clay BSD submission (which this project does NOT claim).
+
+    **Gap 1 — `Modularity_143_OPEN`** (`B02_Modularity.lean`)
+    ```
+    ∃ (a_f : ℕ → ℤ),
+      a_f 1 = 1 ∧
+      (∀ m n, Nat.Coprime m n → a_f (m*n) = a_f m * a_f n) ∧
+      (∀ p, Nat.Prime p → ¬(p ∣ 143) → a_f (p^2) = a_f p ^ 2 - (p : ℤ)) ∧
+      (∀ p, Nat.Prime p → ¬(p ∣ 143) → (a_f p : ℝ)^2 ≤ 4*(p : ℝ))
+    ```
+    E_{143a1}/ℚ corresponds to a weight-2 newform of level 143.
+    Gap: `NewForm` type + L-function coefficient matching absent from Mathlib v4.12.0.
+    Reference: Wiles-Taylor 1995; Breuil-Conrad-Diamond-Taylor 2001.
+
+    **Gap 2 — `BSD_L_Analytic_143_OPEN`** (`B02_Modularity.lean`)
+    ```
+    AnalyticOn ℂ (BSDLFunction 143) Set.univ
+    ```
+    L(E_{143a1}, s) extends to an entire holomorphic function on ℂ.
+    Gap: Mellin transform + modular forms API absent; `BSDLFunction 143` is an
+    opaque anchor constant not yet connected to modular forms.
+    Reference: Hecke 1936.
+
+    **Gap 3 — `BSD_TamagawaConj_OPEN 143`** (`B03_LFunction.lean`)
+    ```
+    0 < BSD_TorsCard 143 ∧ 0 < BSD_ShaCard 143 ∧
+    BSD_LeadingCoeff 143 * (BSD_ShaCard 143 : ℝ) * (BSD_TorsCard 143 : ℝ)^2
+      = BSD_RealPeriod 143 * BSD_RegulatorVal 143 * (BSD_TamagawaProd 143 : ℝ)
+    ```
+    Full BSD leading-term formula: L*(E,1)·|Ш|·|tors|² = Ω·R·∏c_p.
+    Gap: connecting opaque LMFDB anchor defs to genuine arithmetic requires
+    Néron models, height pairings, and BSD formula derivation — all absent.
+    Note: `BSD_TamagawaConj_CLOSED` (genesis-737) proves this at LMFDB-anchor
+    level (using opaque constant defs, not genuine arithmetic). The Clay content
+    is what remains open.
+    Reference: Birch-Swinnerton-Dyer 1965.
+
+    **Gap 4 — `BSD_Regulator_OPEN 143`** (`B03_LFunction.lean`)
+    ```
+    0 < BSD_RegulatorVal 143
+    ```
+    R(E_{143a1}/ℚ) > 0 — the Néron-Tate height pairing determinant is positive.
+    Gap: Néron-Tate height theory not in Mathlib v4.12.0; `BSD_RegulatorVal 143`
+    is the LMFDB anchor `5882/10000`, not the genuine height determinant.
+    Note: `BSD_Regulator_CLOSED` (genesis-737) proves the LMFDB-anchor version.
+    Reference: Néron 1965; Tate 1966.
+
+    **What would close each gap:**
+    - Gap 1: Formalize `NewForm` + modularity lifting in Lean 4 (major Mathlib project)
+    - Gap 2: Formalize the Mellin transform and Hecke L-function analytic continuation
+    - Gap 3: Formalize BSD formula derivation (requires Gaps 1+2 + Kolyvagin machinery)
+    - Gap 4: Formalize Néron-Tate height pairing + non-degeneracy theorem
+
   - **genesis-755** (`BSD_Genesis755_CLOSED.lean`, 2026-06-27): **Capstone bundle + GrossZagier alias.**
     `BSD_GrossZagier_LMFDB_CLOSED`: closes `BSD_GrossZagier_OPEN` via direct alias
     (`fun _ => BSD_AnalyticRankOne_CLOSED`; LMFDB-anchor level).
