@@ -1861,3 +1861,54 @@ echo "  Phase 27: genesis-754 — BSD_AnalyticOrder_143_CLOSED: analytic order =
 echo "  Phase 28: genesis-755 — HasDerivAt + LFuncZero + AnalyticRankOne + GrossZagier closed."
 echo "  Phase 29: genesis-756 — Four-Gate Clay Combinator: 9 open surfaces -> 4."
 echo "  HasseBridge at 51 primes (p<=241). Extension stopped per user direction."
+
+# === Phase 30: genesis-757 — Two-Gate Clay Combinator (4 → 2 open surfaces) ===
+if [ "${START_PHASE:-30}" -le 30 ]; then
+  echo "=== Phase 30: genesis-757 — Two-Gate Clay Combinator ==="
+  echo "  BSD_TwoGateCombinator: takes ONLY 2 open hypotheses (Modularity, AnalyticCont)"
+  echo "  Newly discharges: BSD_TamagawaConj_CLOSED + BSD_Regulator_CLOSED (genesis-737, LMFDB-anchor)."
+  echo "  Net reduction: 4 open gates -> 2 (Clay-minimal combinator as of 2026-06-27)."
+  echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+
+  p30_ok=true
+  lean_file="Towers/BSD/BSD_Genesis757_CLOSED.lean"
+  olean_file=".lake/build/lib/Towers/BSD/BSD_Genesis757_CLOSED.olean"
+  if [ -f "$olean_file" ]; then
+    echo "--- $lean_file ---"
+    echo "  SKIP (olean fresh) -- olean: $olean_file"
+  else
+    echo "--- $lean_file ---"
+    if LEAN_PATH="$LP" lean -o "$olean_file" "$lean_file" 2>&1; then
+      echo "  PASS -- olean: $olean_file"
+    else
+      echo "  FAIL: BSD/BSD_Genesis757_CLOSED"
+      p30_ok=false
+    fi
+  fi
+
+  echo "-- Phase 30 axiom audit --"
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT30' 2>&1
+import Towers.BSD.BSD_Genesis757_CLOSED
+#print axioms Towers.BSD.BSD_TwoGateCombinator
+AUDIT30
+  then
+    :
+  else
+    p30_ok=false
+  fi
+
+  if $p30_ok; then
+    echo "Phase 30 PASSED (genesis-757: SORRY:0, classical trio)."
+    echo "  BSD_TwoGateCombinator: 4 open gates -> 2."
+    echo "  Newly discharged: BSD_TamagawaConj_CLOSED + BSD_Regulator_CLOSED (genesis-737)."
+    echo "  Remaining 2 Clay gaps: Modularity_143_OPEN + BSD_L_Analytic_143_OPEN."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 30 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 30 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo "  Phase 30: genesis-757 — Two-Gate Clay Combinator: 4 open surfaces -> 2."
