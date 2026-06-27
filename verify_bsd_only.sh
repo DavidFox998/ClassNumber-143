@@ -600,6 +600,29 @@ compile_with_olean \
   "BSD/BostBound_143" || p12_ok=false
 echo ""
 
+# genesis-759 files must be compiled before BSD_MasterCertification
+# (MasterCertification now imports BSD_Genesis759_CLOSED).
+# BSD_HasseEndDeg_CLOSED imports BSD_HasseBridge_CLOSED (pre-built olean).
+# BSD_LAnalytic_Anchor_CLOSED imports BSD_Genesis754_CLOSED (pre-built olean).
+# BSD_Genesis759_CLOSED imports both above + BSD_Genesis758_CLOSED (pre-built).
+compile_with_olean \
+  "Towers/BSD/BSD_HasseEndDeg_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_HasseEndDeg_CLOSED.olean" \
+  "BSD/BSD_HasseEndDeg_CLOSED" || p12_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_LAnalytic_Anchor_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_LAnalytic_Anchor_CLOSED.olean" \
+  "BSD/BSD_LAnalytic_Anchor_CLOSED" || p12_ok=false
+echo ""
+
+compile_with_olean \
+  "Towers/BSD/BSD_Genesis759_CLOSED.lean" \
+  ".lake/build/lib/Towers/BSD/BSD_Genesis759_CLOSED.olean" \
+  "BSD/BSD_Genesis759_CLOSED" || p12_ok=false
+echo ""
+
 compile_with_olean \
   "Towers/BSD/BSD_BQF_Bridge_Closed.lean" \
   ".lake/build/lib/Towers/BSD/BSD_BQF_Bridge_Closed.olean" \
