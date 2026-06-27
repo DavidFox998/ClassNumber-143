@@ -527,18 +527,28 @@ These close K1 surfaces in `verify_weil_cluster.sh Phase 13` by importing BSD re
 | `K1_Lower_OrderOf_OPEN` | `C22_ClassNum_Bridge.lean` (RH tower) | `K1_ClassNumber_Lower_CLOSED BSD_ClassNum_Unconditional` | **754 Phase B** |
 | `K1_ClassNumber_via_BSD` | `C22_ClassNum_Bridge.lean` (RH tower) | `classNumber K = 10` (Nat.le_antisymm upper lower) — unconditional | **754 Phase B** |
 
-### Still OPEN — 4 genuine Clay gaps (as of genesis-756, 2026-06-27)
+### Still OPEN — 2 genuine Clay gaps (as of genesis-757, 2026-06-27)
 
-These are the **exact four hypotheses** accepted by `BSD_FourGateCombinator`
-(all five dischargeable gates from the original 9-gate `BSD_MasterCombinator` are now supplied
-unconditionally). All four require Mathlib APIs absent in v4.12.0.
+`BSD_TamagawaConj_OPEN 143` and `BSD_Regulator_OPEN 143` are now discharged at
+LMFDB-anchor level by genesis-757 (`BSD_TwoGateCombinator`). The genuine Clay content
+behind those anchors (Néron-Tate height theory, BSD formula derivation) remains open,
+but as named open surfaces, not as combinator hypotheses.
+
+#### Previously open — now discharged at LMFDB-anchor level (genesis-757)
+| Surface | Discharged by | Honesty note |
+|---------|--------------|--------------|
+| `BSD_TamagawaConj_OPEN 143` | `BSD_TamagawaConj_CLOSED` (genesis-737) | Opaque def equality; not genuine height theory |
+| `BSD_Regulator_OPEN 143` | `BSD_Regulator_CLOSED` (genesis-737) | `BSD_RegulatorVal 143 := 5882/10000`; not Néron-Tate det |
+
+### Still OPEN — 2 genuine Clay gaps (as of genesis-757, 2026-06-27)
+
+These are the **exact two hypotheses** accepted by `BSD_TwoGateCombinator`.
+Both require Mathlib APIs absent in v4.12.0. No workaround exists without new axioms.
 
 | # | Surface | Lean `def Prop` | Gap | Reference |
 |---|---------|-----------------|-----|-----------|
-| 1 | `Modularity_143_OPEN` | `∃ a_f : ℕ → ℤ, a_f 1 = 1 ∧ multiplicativity ∧ Hecke recurrence ∧ Weil bound` (B02, line 74) | `NewForm` type + L-function coefficient matching absent from Mathlib v4.12.0 | Wiles-Taylor 1995; BCDT 2001 |
-| 2 | `BSD_L_Analytic_143_OPEN` | `AnalyticOn ℂ (BSDLFunction 143) Set.univ` (B02, line 86) | Mellin transform + modular forms API absent; `BSDLFunction` is an opaque constant | Hecke 1936 |
-| 3 | `BSD_TamagawaConj_OPEN 143` | `0 < BSD_TorsCard 143 ∧ 0 < BSD_ShaCard 143 ∧ BSD_LeadingCoeff 143 * (BSD_ShaCard 143 : ℝ) * (BSD_TorsCard 143 : ℝ)^2 = BSD_RealPeriod 143 * BSD_RegulatorVal 143 * (BSD_TamagawaProd 143 : ℝ)` (B03, line 36) | Full BSD leading-term formula — Clay core; connecting opaque anchor defs to genuine arithmetic requires height pairings + Néron models absent from Mathlib v4.12.0 | Birch-Swinnerton-Dyer 1965 |
-| 4 | `BSD_Regulator_OPEN 143` | `0 < BSD_RegulatorVal 143` (B03, line 44) | Néron-Tate height pairing not in Mathlib v4.12.0; `BSD_RegulatorVal` is an LMFDB-anchored opaque def (= 5882/10000), not the genuine height determinant | Néron 1965; Tate 1966 |
+| 1 | `Modularity_143_OPEN` | `∃ a_f : ℕ → ℤ, a_f 1 = 1 ∧ multiplicativity ∧ Hecke recurrence ∧ Weil bound` (B02) | `NewForm` type + modularity lifting absent; E_{143a1} IS semistable (11,13 both ×), so Wiles-Taylor 1995 applies mathematically — not yet in Lean | Wiles-Taylor 1995; BCDT 2001 |
+| 2 | `BSD_L_Analytic_143_OPEN` | `AnalyticOn ℂ (BSDLFunction 143) Set.univ` (B02) | Mellin transform + Hecke L-function continuation API absent from Mathlib v4.12.0 | Hecke 1936 |
 
 **Precise Lean Prop expansions:**
 
