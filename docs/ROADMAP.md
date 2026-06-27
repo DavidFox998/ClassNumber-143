@@ -625,6 +625,33 @@ trio, two independent routes, mirrored to `DavidFox998/ClassNumber-143`
     Genuine Clay gaps: **1 unconditional** (BSD_VanishingOrder_143_Genuine_OPEN) +
     **1 LMFDB-level** (BSD_L143a1_HasDerivAt_OPEN) + **1 research-grade** (BSD_Kolyvagin_OPEN).
     BSD: OPEN (Clay). Classical trio. No Clay claim.
+  - **genesis-756** (`BSD_Genesis756_CLOSED.lean`, 2026-06-27): **Four-Gate Clay Combinator.**
+    `BSD_FourGateCombinator`: accepts only 4 open hypotheses —
+    `Modularity_143_OPEN`, `BSD_L_Analytic_143_OPEN`, `BSD_TamagawaConj_OPEN 143`,
+    `BSD_Regulator_OPEN 143` — and internally supplies the 5 proved gates:
+    `BSD_Sha_143_CLOSED` (TorsionSha), `BSD_LowerGate_Discharged` (ClassNumber_10),
+    `BSD_ClassNum_Unconditional` (ClassNum_Unconditional), `BSD_143_analytic_route`
+    (genesis-752 LMFDB anchor), `BSD_finrank_proved` (BSD_Discriminant).
+    Net reduction: **9 open gates → 4** (Clay-minimal combinator).
+    `BSD_open_surface_count` updated: `9 → 4`.
+    `verify_bsd_only.sh` Phase 29 added (default `START_PHASE` updated to `29`).
+    `BSD_MasterCertification.lean` updated: genesis-756 import + ledger entry.
+    Remaining 4 Clay gaps:
+      (1) `Modularity_143_OPEN` — modularity theorem for E_{143a1}
+      (2) `BSD_L_Analytic_143_OPEN` — analytic continuation of the Hecke L-function
+      (3) `BSD_TamagawaConj_OPEN 143` — full BSD leading-term formula
+      (4) `BSD_Regulator_OPEN 143` — Néron-Tate regulator
+    All 4 require Mathlib APIs absent in v4.12.0. Axiom audit: classical trio.
+    BSD: OPEN (Clay). No Clay claim. Pushed to `DavidFox998/ClassNumber-143`.
+  - **genesis-755** (`BSD_Genesis755_CLOSED.lean`, 2026-06-27): **Capstone bundle + GrossZagier alias.**
+    `BSD_GrossZagier_LMFDB_CLOSED`: closes `BSD_GrossZagier_OPEN` via direct alias
+    (`fun _ => BSD_AnalyticRankOne_CLOSED`; LMFDB-anchor level).
+    `BSD_Genesis755_Capstone`: conjunction of 5 analytic proofs from genesis-752+754:
+    `BSD_AnalyticOrder_143_OPEN ∧ BSD_LFunctionZero_OPEN ∧ BSD_AnalyticRankOne_OPEN ∧
+    BSD_GrossZagier_OPEN ∧ BSD_143_OPEN` (all LMFDB-anchor).
+    `verify_bsd_only.sh` Phase 28 added. Axiom audit PASSED (classical trio).
+    Genuine Clay gaps remaining at this point: **2** (VanishingOrder APIBridge + BSD_143_OPEN).
+    BSD: OPEN. No Clay claim. Pushed to `DavidFox998/ClassNumber-143`.
   - **genesis-754** (`BSD_Genesis754_CLOSED.lean` + `C22_ClassNum_Bridge.lean`, 2026-06-26):
     **Phase A**: `BSD_AnalyticOrder_143_CLOSED` closes `BSD_AnalyticOrder_143_OPEN`
     (`∃ h : AnalyticAt ℂ L_143a1 1, h.order = 1`).
