@@ -5,6 +5,7 @@ import Towers.BSD.BSD_Genesis754_CLOSED
 import Towers.BSD.BSD_Genesis755_CLOSED
 import Towers.BSD.BSD_Genesis756_CLOSED
 import Towers.BSD.BSD_Genesis757_CLOSED
+import Towers.BSD.BSD_Genesis758_CLOSED
 
 /-
   # BSD_MasterCertification — Terminal Node of the BSD Tower
@@ -305,11 +306,27 @@ theorem BSD_BrickLedger :
       at LMFDB-anchor level (opaque numeric defs, not genuine Néron-Tate height theory
       or BSD formula derivation). The Clay content behind those anchors remains open.
 
-    Remaining 2 genuine Clay gaps (after genesis-757):
-      Modularity_143_OPEN     — E_{143a1} modular (Wiles-Taylor 1995; NewForm absent
-                                 from Mathlib v4.12.0). E_{143a1} IS semistable (conductor
-                                 143=11×13; both primes multiplicative reduction), so
-                                 Wiles-Taylor applies mathematically — not in Lean.
+    NEWLY PROVED (genesis-758, 2026-06-27 — Frobenius-Analytic combinator):
+      BSD_FrobeniusAnalytic_Combinator — takes ONLY 2 ATOMIC open hypotheses:
+                                 h_hasse ← BSD_HasseFull_143_OPEN  (Frobenius sub-gap of Modularity)
+                                 h_hecke ← BSD_L_Analytic_143_OPEN (Mellin/Hecke gap)
+                              Uses Modularity_143_CLOSED_1gate (Milestone 5.1) to supply
+                              Modularity_143_OPEN from BSD_HasseFull_143_OPEN alone.
+                              BSD_HeckeMultiplicativity_143_CLOSED proved unconditionally.
+
+      Key insight: Modularity_143_OPEN decomposes into 4 conditions:
+        (1) a_f 1 = 1                  — PROVED: a_n_one (B01)
+        (2) Multiplicativity           — PROVED: BSD_HeckeMultiplicativity_143_CLOSED (Milestone 5.1)
+        (3) Hecke recurrence a_n(p²)   — PROVED: a_n_sq_recurrence (B02_Modularity_Closed)
+        (4) Weil bound ∀ p prime good  — OPEN: BSD_HasseFull_143_OPEN (Frobenius gap)
+      The only blocking sub-gap is now (4): the Frobenius degree theory.
+
+    Remaining 2 genuine Clay gaps (after genesis-758):
+      BSD_HasseFull_143_OPEN  — ∀ p prime, ¬p∣143 → |a_p p : ℝ| ≤ 2·√p.
+                                 168 primes ≤ 997: integer bound proved (BSD_Weil_168_CLOSED).
+                                 Primes > 997: Frobenius degree theory (Silverman AEC §V.2;
+                                 EllipticCurve.Frobenius absent from Mathlib v4.12.0).
+                                 Compatibility bridge ap=a_p also open (BSD_Frobenius_Certificate).
       BSD_L_Analytic_143_OPEN — AnalyticOn ℂ (BSDLFunction 143) Set.univ.
                                  Follows from modularity (Hecke 1936); Mellin transform
                                  API absent from Mathlib v4.12.0.
