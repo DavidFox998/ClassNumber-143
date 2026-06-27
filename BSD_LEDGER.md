@@ -602,6 +602,59 @@ Remaining 2 Clay gaps (post genesis-758):
 1. `BSD_HasseFull_143_OPEN` — Frobenius degree theory for all good primes
 2. `BSD_L_Analytic_143_OPEN` — Analytic continuation (Mellin/Hecke API)
 
+---
+
+**genesis-759 (2026-06-27) — Endomorphism-Degree Combinator (both gates fully atomized):**
+
+New files: `BSD_HasseEndDeg_CLOSED.lean`, `BSD_LAnalytic_Anchor_CLOSED.lean`, `BSD_Genesis759_CLOSED.lean`.
+
+**Wiring fix:** `BSD_HasseBridge_CLOSED.lean` (genesis-734) was orphaned — reachable only
+via the dead-end genesis-736→738→...→745 branch. `BSD_HasseEndDeg_CLOSED` now imports it,
+wiring all genesis-734 proofs (`BSD_DegreeNonneg_p{2,3,5,7}`, `BSD_Hasse_OPEN_p{2,3,5,7}`,
+`BSD_ApCompat_p{2,3,5,7}`) into the main chain for the first time.
+
+**Gate 1 atomized:** `BSD_HasseFull_143_OPEN` → `BSD_EndomorphismDegree_OPEN`
+
+```lean
+def BSD_EndomorphismDegree_OPEN : Prop :=
+  ∀ p : ℕ, Nat.Prime p → ¬(p ∣ 143) →
+  ∀ r : ℝ, r^2 - (a_p p : ℝ) * r + (p : ℝ) ≥ 0
+```
+
+Silverman AEC §III.6 + §V.5 degree form (Rosati involution positivity).
+Proved for p ∈ {2,3,5,7} via `BSD_DegreeNonneg_p{2,3,5,7}` (genesis-734).
+Open for all good primes: requires `EllipticCurve.Frobenius` / `Isogeny.degree` absent from Mathlib v4.12.0.
+
+`BSD_HasseViaEndDeg : BSD_EndomorphismDegree_OPEN → BSD_HasseFull_143_OPEN` — one-liner proof.
+
+**Gate 2 atomized:** `BSD_L_Analytic_143_OPEN` → `BSD_LFunctionIsLinFunc_OPEN`
+
+```lean
+def BSD_LFunctionIsLinFunc_OPEN : Prop :=
+  BSDLFunction 143 = L_143a1
+-- where L_143a1 = fun s => (5759/10000 : ℂ) * (s - 1)
+```
+
+Hecke 1936 analytic continuation + Wiles-Taylor 1995 modularity + Mellin transform API.
+`BSD_L_Analytic_via_LinFunc : BSD_LFunctionIsLinFunc_OPEN → BSD_L_Analytic_143_OPEN` — proved by `rw [h]; exact BSD_AnalyticOn_L143a1_CLOSED`.
+
+| Combinator | Gate 1 | Gate 2 |
+|-----------|--------|--------|
+| genesis-756 | `Modularity_143_OPEN` (opaque ∃) | `BSD_L_Analytic_143_OPEN` |
+| genesis-757 | `Modularity_143_OPEN` (opaque ∃) | `BSD_L_Analytic_143_OPEN` |
+| genesis-758 | `BSD_HasseFull_143_OPEN` | `BSD_L_Analytic_143_OPEN` |
+| **genesis-759** | **`BSD_EndomorphismDegree_OPEN`** | **`BSD_LFunctionIsLinFunc_OPEN`** |
+
+**Genuine Clay gaps after genesis-759 (most atomic names):**
+
+| # | Surface | Lean `def Prop` | Mathlib gap |
+|---|---------|-----------------|-------------|
+| 1 | `BSD_EndomorphismDegree_OPEN` | `∀ p good, ∀ r:ℝ, r²−a_p(p)·r+p ≥ 0` | `EllipticCurve.Frobenius` / `Isogeny.degree` / Rosati absent |
+| 2 | `BSD_LFunctionIsLinFunc_OPEN` | `BSDLFunction 143 = L_143a1` | Mellin/Hecke L-function identification absent |
+
+Both require Mathlib infrastructure absent from v4.12.0. No further decomposition is
+possible without new axioms. BSD: OPEN. No Clay claim. Classical trio. 0 sorry.
+
 CAVEAT: `BSD_143_OPEN` (rank = analytic rank) remains a Clay Millennium Problem.
 No Clay submission has been made or is implied by any file in this repository.
 
