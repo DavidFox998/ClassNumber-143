@@ -929,3 +929,56 @@ Each prime proves 5 theorems following genesis-740 pattern:
 | `BSD_LFunctionIsLinFunc_OPEN` (Gate 2) | OPEN -- Mellin/Hecke absent from Mathlib v4.12.0 |
 
 NOT a brick.  BSD: OPEN (Clay).  No Clay claim.
+
+## genesis-764 through genesis-774 — HasseBridge Batches 2-12 (2026-06-28)
+
+**All 11 files pushed in one session. 105 new primes proved.**
+**Tier A after genesis-774: 166 primes (all LMFDB good primes <= 997).**
+0 sorry, classical trio, throughout.
+
+### File summary
+
+| File | Commits | Primes | Count | Tier A total |
+|------|---------|--------|-------|--------------|
+| genesis-764 | 728325230317 | 311..367 | 10 | 71 |
+| genesis-765 | f74935e5f221 | 373..431 | 10 | 81 |
+| genesis-766 | 1532f89be22a | 433..487 | 10 | 91 |
+| genesis-767 | 245238117f3e | 491..563 | 10 | 101 |
+| genesis-768 | d82700c73f41 | 569..617 | 10 | 111 |
+| genesis-769 | f4a1e2581398 | 619..677 | 10 | 121 |
+| genesis-770 | 48c8f0091997 | 683..751 | 10 | 131 |
+| genesis-771 | 2b42e7371981 | 757..823 | 10 | 141 |
+| genesis-772 | 4f74294693ae | 827..883 | 10 | 151 |
+| genesis-773 | ae4d9933f19f | 887..967 | 10 | 161 |
+| genesis-774 | 4c226262fe06 | 971..997 | 5 | 166 |
+
+### Proof structure (per prime, per file)
+
+  §1 BSD_E143_card_pN  — (E143_Finset p).card = k   by decide
+  §2 BSD_ap_pN         — a_p p = exact int           by omega
+  §3 BSD_DegreeNonneg  — FrobeniusDegreeNonneg_OPEN  completed-square + linarith
+  §4 BSD_Hasse_OPEN    — BSD_Hasse_OPEN p            via BSD_hasse_of_degree_nonneg
+  §5 BSD_HasseBound_Disc_pN — (a_p p)^2 <= 4p       via local BSD_disc_from_deg_NNN
+  §6 dispatcher        — fin_cases over 10-prime Finset
+  §7 combinator        — chains from previous genesis
+
+set_option maxHeartbeats 0 added for large-prime decides (p^2 up to 994009 pairs).
+
+### Selected a_p values (notable cases)
+
+  p=431:  a_p=-40, disc=-124  (closest to 4p=1724, narrowest Hasse margin)
+  p=643:  a_p=-49, disc=-171  (second narrowest in this session)
+  p=839:  a_p=+53, disc=-547  (largest |a_p| in Batch 10)
+  p=769:  a_p=0,   disc=-3076 (supersingular candidate)
+  p=821:  a_p=0,   disc=-3284 (supersingular candidate)
+
+### Gap map after genesis-774
+
+| Gap | Status |
+|-----|--------|
+| `BSD_HasseBound_Discriminant_OPEN` (Gate 1) | **Tier A: 166/inf** (all LMFDB good primes <= 997); Tier C (p>997) still OPEN — needs EllipticCurve.Frobenius |
+| `BSD_LFunctionIsLinFunc_OPEN` (Gate 2) | OPEN — Mellin/Hecke absent from Mathlib v4.12.0 |
+
+Tier B is now fully absorbed into Tier A.
+Remaining: Tier C (infinitely many primes p > 997) and Gate 2.
+NOT a brick.  BSD: OPEN (Clay).  No Clay claim.
