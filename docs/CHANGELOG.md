@@ -6,6 +6,82 @@ this file is the version history.
 
 ---
 
+## [C25 + genesis-761] — 2026-06-28
+
+**C25_BC6WeilExplicit.lean + BSD_Genesis761_CLOSED.lean**
+All proofs: 0 sorry, classical trio. Phase 15 (Weil) + Phase 34 (BSD) added.
+
+### C25 — BC6 Weil Explicit Sub-surface Decomposition (Phase 15, verify_weil_cluster.sh)
+
+Source: Weil 1952 explicit formula; Bost-Connes 1995 §4–§5.
+Imports: C24_BC6ArithmeticBridge.
+
+**Sub-surface decomposition of BC6_WeilExplicit_143_OPEN (~20pp) into three:**
+
+| Surface | Content | Gap | Pages |
+|---------|---------|-----|-------|
+| `BC6_WeilSpectralGap_143_OPEN` | λ₁>0 → zero-free region for L(s,f₁₄₃a₁) | Maass/spectral API | ~8pp |
+| `BC6_WeilArithBound_143_OPEN` | arithmetic Weil sum \|Σ aₚ log p/√p\| ≤ C·T | Frobenius API (= BSD Gate 1) | ~7pp |
+| `BC6_WeilLogFactor_143_OPEN` | \|S_weil(T)\| ≤ C_S14_143·T/log T from cond+func.eq. | func.eq. API (= BSD Gate 2) | ~5pp |
+
+**Proved combinators (0 sorry, classical trio):**
+- `BC6_WeilExplicit_from_Three`: three sub-surfaces → BC6_WeilExplicit_143_OPEN.
+- `BC6_WeilExplicit_to_LogFactor`: converse (with λ₁/Arakelov inputs).
+
+**New arithmetic certificates (0 sorry, classical trio):**
+
+| Theorem | Statement | Method |
+|---------|-----------|--------|
+| `BC6_LogConductor_143_lt` | log(143) < 5 | 13-term Taylor + sum_le_exp_of_nonneg |
+| `C_S14_143_sq_gt_52` | C_S14_143² > 52 = 4·13 | product witness (C−2√13)(C+2√13)>0 |
+| `BC6_Conductor_prod` | 143 = 11 × 13 | norm_num |
+| `BC6_WeylPlusGenus` | 14 + 13 = 27 | norm_num |
+| `BC6_Conductor_log_bound` | log(11)+log(13) < 5 | log_mul + BC6_LogConductor_143_lt |
+
+**Shared API gaps documented:**
+- BC6_WeilArithBound_143_OPEN ↔ BSD Gate 1 (EllipticCurve.Frobenius absent)
+- BC6_WeilLogFactor_143_OPEN ↔ BSD Gate 2 (functional equation API absent)
+
+BC6SelbergTrace_OPEN: OPEN. RH: OPEN (Clay). No Clay claim.
+
+---
+
+### genesis-761 — Ramanujan Bound + L-Function Decomposition (Phase 34, verify_bsd_only.sh)
+
+Source: Hasse 1936 (|aₚ|≤2√p for elliptic curves); Wiles-Taylor 1995 (modularity).
+Imports: BSD_Genesis760_CLOSED.
+
+**New named surface:**
+`BSD_RamanujanBound_143 : ∀ p prime, p∤143 → |a_p(p):ℝ| ≤ 2·√p`
+This is the absolute-value form of the Hasse bound (= Ramanujan for weight-2 newforms).
+
+**Proved theorems (0 sorry, classical trio):**
+
+| Theorem | Statement | Method |
+|---------|-----------|--------|
+| `BSD_Ramanujan_from_Discriminant` | BSD_HasseBound_Discriminant_OPEN → BSD_RamanujanBound_143 | calc: \|a\|=√(a²)≤√(4p)=2√p |
+| `BSD_Discriminant_from_Ramanujan` | BSD_RamanujanBound_143 → BSD_HasseBound_Discriminant_OPEN | sq_le_sq' + sq_sqrt |
+| `BSD_RamanujanBound_iff_Discriminant` | \|aₚ\|≤2√p ↔ aₚ²≤4p | iff of above two |
+| `BSD_LinFunc_from_WilesTaylor` | WilesTaylor ∧ Mellin → LinFunc | trivial combinator |
+| `BSD_Genesis761_Combinator` | 2 gates → master cert ∧ Ramanujan bound | pairs genesis-760 + Ramanujan |
+
+**Sub-decomposition of BSD_LFunctionIsLinFunc_OPEN:**
+- `BSD_WilesTaylor_143_OPEN`: modularity of E_{143a1} (= Gate 2, equivalent)
+- `BSD_MellinL_143_OPEN`: Mellin transform identification (= Gate 2, equivalent)
+
+**Axiom audit:**
+- `BSD_Ramanujan_from_Discriminant` depends on: `[propext, Classical.choice, Quot.sound]`
+- `BSD_RamanujanBound_iff_Discriminant` depends on: `[propext, Classical.choice, Quot.sound]`
+- `BSD_Genesis761_Combinator` depends on: `[propext, Classical.choice, Quot.sound]`
+
+Genuine Clay gaps: **2** (unchanged from genesis-760).
+- Gate 1: BSD_HasseBound_Discriminant_OPEN ↔ BSD_RamanujanBound_143 (Frobenius API)
+- Gate 2: BSD_LFunctionIsLinFunc_OPEN (= WilesTaylor = Mellin; automorphic API)
+
+BSD: OPEN (Clay). No Clay claim. GitHub: `DavidFox998/ClassNumber-143` updated.
+
+---
+
 ## [C24] — 2026-06-27
 
 **C24_BC6ArithmeticBridge.lean — Γ₀(143) Arithmetic Foundations + BC6 Sub-surface Decomposition**
