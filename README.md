@@ -1,5 +1,11 @@
 # h(ℚ(√-143)) = 10 — Unconditional Lean 4 Proof
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21013914.svg)](https://doi.org/10.5281/zenodo.21013914)
+[![GitHub release](https://img.shields.io/github/v/release/DavidFox998/birch-swinnerton-dyer-143)](https://github.com/DavidFox998/birch-swinnerton-dyer-143/releases/tag/v1.0-bsd-143)
+
+**Zenodo DOI (forensic clone + lake + ledger):** https://doi.org/10.5281/zenodo.21013914
+**GitHub release:** https://github.com/DavidFox998/birch-swinnerton-dyer-143/releases/tag/v1.0-bsd-143
+
 **Lean 4 · Mathlib v4.12.0 · 0 sorry · Axiom footprint: classical trio only**
 
 Standalone formal proof that the class number of the imaginary quadratic
