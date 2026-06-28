@@ -1416,3 +1416,81 @@ Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
 Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
 
 **NOT a Clay claim.**
+
+## genesis-780 — Avenue 3 + Avenue 4 CLOSED; LSeriesSummable down to 2 hypotheses
+
+**File**: `BSD/BSD_Genesis780_CLOSED.lean` (182 lines, 0 sorry)
+**Import chain tip**: `import Towers.BSD.BSD_Genesis780_CLOSED`
+**Mathlib imports**: `Mathlib.NumberTheory.LSeries.Basic`, `Mathlib.Algebra.Order.BigOperators.Ring.Finset`
+
+### Avenues closed this batch
+
+**Avenue 3 — BSD_Finsupp_prod_le_OPEN** — CLOSED (conditional Gate 1, all n)
+
+  `BSD_Finsupp_prod_le_close : forall n, BSD_Finsupp_prod_le_OPEN n`
+
+  Chain (0 sorry):
+  - `Finset.prod_le_prod` (Ring/Finset.lean L36): nonneg h0 + pointwise h1 -> product <= product
+  - h0: `split_ifs` -> true: `abs_nonneg _`; false: `norm_num` (0 <= 1)
+  - h1: `p in n.factorization.support -> p.Prime`
+    via `Nat.support_factorization` + `prime_of_mem_primeFactors`
+    -> `split_ifs` -> true: `hGate1 p <h> (n.factorization p)` (Gate 1 directly)
+    -> false: `absurd hprime h`
+
+**Avenue 4 — BSD_isBigO_to_LSeries_OPEN** — CLOSED (unconditional)
+
+  `BSD_isBigO_to_LSeries_close : BSD_isBigO_to_LSeries_OPEN`
+
+  Chain (0 sorry):
+  - Choose eps0 = (Re(s) - 3/2)/2 > 0; obtain C0 with |a_n n| <= C0 * n^(1/2+eps0) for all n : N+
+  - Set x := 3/2 + eps0 < Re(s) (by construction); x - 1 = 1/2 + eps0
+  - norm_cast: `(a_n n : C) = ((a_n n : R) : C)`; then Complex.norm_real + Real.norm_eq_abs
+  - Apply `LSeriesSummable_of_le_const_mul_rpow hx_lt <C, bound>` (LSeries/Basic.lean L313)
+  - `Summable.comp_injective Subtype.val_injective` pulls back N -> N+
+  - `Summable.congr` + `simp [LSeries.term_of_ne_zero n.pos.ne']`
+
+**S3 BSD_aNBound_all_n_v3** (PROVED, Gate 1 ONLY):
+  BSD_aNBound_all_n_v2 hGate1 BSD_aNBound_Finsupp_bridge_close BSD_Finsupp_prod_le_close BSD_tau_sqrt_close_pos
+  All three bridge args now proved; Gate 1 is the sole remaining hypothesis.
+
+**S4 BSD_LSeriesSummable_v3** (PROVED, Gate 1 + TauBound ONLY):
+  BSD_isBigO_to_LSeries_close applied to BSD_aNBound_times_tau_isBigO + BSD_aNBound_all_n_v3.
+  Hypothesis count: genesis-778 had 6; genesis-780 has 2 (Gate1 + TauBound).
+
+#### Mathlib v4.12.0 APIs confirmed and used
+
+| API | Source (confirmed) |
+|-----|--------------------|
+| `Finset.prod_le_prod h0 h1` | Algebra/Order/BigOperators/Ring/Finset.lean L36 |
+| `LSeriesSummable_of_le_const_mul_rpow hx h` | NumberTheory/LSeries/Basic.lean L313 |
+| `Summable.comp_injective Subtype.val_injective` | Topology/Algebra/InfiniteSum |
+| `LSeries.term_of_ne_zero hn` | NumberTheory/LSeries/Basic.lean (@[simp]) |
+| `Complex.norm_real r` | Analysis (norm of real embedded in C) |
+| `Real.norm_eq_abs r` | Analysis (real norm = abs) |
+| `norm_cast` | Lean 4 tactic (Z->R->C cast chain) |
+
+#### Updated gap table
+
+| Surface | Status |
+|---------|--------|
+| BSD_WeilHasse_Weierstrass_OPEN | OPEN (Gate 1, Hasse-Weil) |
+| BSD_LFunctionIsLinFunc_OPEN | OPEN (Gate 2, Hecke/Mellin) |
+| BSD_aNBound_Finsupp_bridge_OPEN | **PROVED** (genesis-779 S2, unconditional) |
+| BSD_Finsupp_prod_le_OPEN | **PROVED** (genesis-780 S1, cond Gate 1) |
+| BSD_tau_sqrt_OPEN | **PROVED** (genesis-779 S8, n >= 1) |
+| BSD_TauBound_OPEN | OPEN (Dirichlet hyperbola, not in Mathlib v4.12.0) |
+| BSD_isBigO_to_LSeries_OPEN | **PROVED** (genesis-780 S2, unconditional) |
+| BSD_{NT,Reg,SHA,Coeff,Period,Tamagawa,Torsion,Generator}_OPEN | OPEN (genesis-777) |
+| BSD_abs_prod_real | **PROVED** (genesis-778 S1) |
+| BSD_aNBound_PROVED | **PROVED** (genesis-778 S3, cond Gate 1 + 3 bridges) |
+| BSD_aNBound_all_n_v2 | **PROVED** (genesis-779 S9) |
+| BSD_aNBound_all_n_v3 | **PROVED** (genesis-780 S3, Gate 1 only) |
+| BSD_LSeriesSummable_conditional | **PROVED** (genesis-778 S4, 6-hyp chain) |
+| BSD_LSeriesSummable_v2 | **PROVED** (genesis-779 S10) |
+| BSD_LSeriesSummable_v3 | **PROVED** (genesis-780 S4, Gate 1 + TauBound only) |
+| BSD_ap_count (def + glue lemmas) | **COMPUTABLE** (genesis-778 S5) |
+| a_p for p in {2,3,5,7,11,13,17,19} | **PROVED** (genesis-778 S6, native_decide) |
+
+Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
+
+**NOT a Clay claim.**
