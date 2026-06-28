@@ -1,4 +1,4 @@
-# ClassNumber-143 — SHA-256 manifest
+# birch-swinnerton-dyer-143 — SHA-256 manifest
 # Generated: 2026-06-28
 
 f8c31c4089c710a8cf1f3f54039e37f38c9c1777c2175257090af805981d4564  BSD/B01_EllipticCurve.lean
@@ -101,3 +101,4 @@ fd9d468ae8a6ede82b31a5736f789349a51d2f63871391f0030c1a7022b73001  docs/ROADMAP.m
 e6930c662006db4d6dc76c651d60a608e4f6a18bcfd53e6b0167d70a125285d5  lean-toolchain
 3c5b988359cbf106851518402ac38d3e0d5f5a1fd2b5dfaaa57b5d3d311ff8c0  verify_bsd_only.sh
 27d25c5c5790482c3f89cd8c47d1f05ad6e6ba644a546b3c1d0d9cb3782659cf  verify_weil_cluster.sh
+
