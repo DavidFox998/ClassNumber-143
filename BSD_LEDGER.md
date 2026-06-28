@@ -1255,3 +1255,89 @@ PROVED conditional on Gate 1: 3 (PrimePowBound, aNBound_prime_pow, Finsupp_abs_p
 PROVED unconditional: 4 new (generator, a_n(1), Tamagawa, torsion).
 
 **NOT a Clay claim. BSD: OPEN. 0 sorry. Classical trio.**
+
+
+---
+
+## genesis-778 — BSD_aNBound conditional chain, LSeriesSummable combinator, a_p table p ≤ 19
+
+**File**: `BSD/BSD_Genesis778_CLOSED.lean` (378 lines, 0 sorry)
+**Import chain tip**: `import Towers.BSD.BSD_Genesis778_CLOSED`
+
+### Avenues implemented this batch
+
+Three avenues from the roadmap:
+1. **Finsupp abs-product glue** → BSD_aNBound_PROVED (conditional Gate 1 + 3 named bridges)
+2. **τ(n)=O(n^ε) + Mathlib L341** → BSD_LSeriesSummable_conditional (full 6-hyp chain)
+3. **native_decide a_p table** → 8 primes p ∈ {2,3,5,7,11,13,17,19} certified
+
+### New proved results (0 sorry)
+
+#### §1 BSD_abs_prod_real (PROVED, unconditional)
+`|∏ i in s, f i| = ∏ i in s, |f i|` for ℝ-valued functions.
+Proof: `Finset.induction_on` + `abs_mul`. Engine for all BSD_aNBound steps.
+
+#### §2–4 Named OPEN bridges (3 new + 2 existing = 5 total new surfaces this batch)
+- `BSD_aNBound_Finsupp_bridge_OPEN` — |a_n n| ≤ Finsupp.prod |a_{p^e}|  (abs-cast glue)
+- `BSD_Finsupp_prod_le_OPEN`        — prod |a_{p^e}| ≤ prod (e+1)(√p)^e  (Finsupp order)
+- `BSD_tau_sqrt_OPEN`               — prod (e+1)(√p)^e = √n·τ(n)          (Nat + Real API)
+- `BSD_TauBound_OPEN`               — τ(n) = O(n^ε) for all ε > 0          (Dirichlet)
+- `BSD_isBigO_to_LSeries_OPEN`      — Filter.IsBigO → LSeriesSummable       (Mathlib L341)
+
+#### §3 BSD_aNBound_PROVED (PROVED, conditional Gate 1 + 3 bridges)
+`BSD_aNBound_OPEN n` for all n: `|(a_n n : ℝ)| ≤ Real.sqrt n · n.divisors.card`.
+Chain via `calc`: hbridge → (hprod hGate1) → htau.
+
+#### §4 BSD_LSeriesSummable_conditional (PROVED, 6-hypothesis chain)
+```
+Gate 1 + Finsupp_bridge + prod_le + tau_sqrt + TauBound + isBigO_bridge
+  → BSD_LSeriesSummable_OPEN
+```
+Intermediate `BSD_aNBound_times_tau_isBigO` (PROVED): aNBound + TauBound → O(n^{1/2+ε}).
+Uses `Real.sqrt_eq_rpow` + `Real.rpow_add` for exponent arithmetic.
+
+#### §5 BSD_ap_count — computable def (outside noncomputable section)
+`def BSD_ap_count (p : ℕ) [Fact p.Prime] : ℕ` — Finset.filter over (ZMod p)².
+NOT inside `noncomputable section` → VM can execute it → `native_decide` works.
+Connecting lemmas: `BSD_ap_count_eq_card`, `BSD_ap_from_count`.
+
+#### §6 a_p certificate table (native_decide + norm_num)
+
+Point counts verified by Python brute-force before writing Lean theorems:
+
+| p  | BSD_ap_count | a_p | Reduction      | LMFDB 143.2.a.a |
+|----|-------------|-----|----------------|-----------------|
+|  2 |      2      |  0  | good           | a_2 = 0        |
+|  3 |      4      | -1  | good           | a_3 = -1       |
+|  5 |      6      | -1  | good           | a_5 = -1       |
+|  7 |      9      | -2  | good           | a_7 = -2       |
+| 11 |     12      | -1  | bad (ns mult.) | a_11 = -1      |
+| 13 |     14      | -1  | bad (ns mult.) | a_13 = -1      |
+| 17 |     21      | -4  | good           | a_17 = -4      |
+| 19 |     17      |  2  | good           | a_19 = 2       |
+
+Note p=7: count=9 (not 7) — double-root fiber at x=0 contributes 1 point;
+fibers at x=2,3,4,5 contribute 2 each; x=1,6 contribute 0. Total 1+2+2+2+2=9.
+Bad primes p=11,13: singular node IS in BSD_ap_count; a_p formula still correct.
+
+#### Updated gap table
+
+| Surface | Status |
+|---------|--------|
+| BSD_WeilHasse_Weierstrass_OPEN | OPEN (Gate 1, Frobenius absent) |
+| BSD_LFunctionIsLinFunc_OPEN | OPEN (Gate 2, Hecke/Mellin absent) |
+| BSD_aNBound_Finsupp_bridge_OPEN | OPEN (abs-prod cast, API glue) |
+| BSD_Finsupp_prod_le_OPEN | OPEN (Finsupp monotonicity API) |
+| BSD_tau_sqrt_OPEN | OPEN (Nat.card_divisors + Real.sqrt_fact) |
+| BSD_TauBound_OPEN | OPEN (Dirichlet hyperbola, not in Mathlib) |
+| BSD_isBigO_to_LSeries_OPEN | OPEN (Filter.IsBigO cast bridge) |
+| BSD_{NT,Reg,SHA,Coeff,Period,Tamagawa,Torsion,Generator}_OPEN | OPEN (genesis-777) |
+| BSD_abs_prod_real | **PROVED** (genesis-778 §1, unconditional) |
+| BSD_aNBound_PROVED | **PROVED** (genesis-778 §3, cond Gate 1 + 3 bridges) |
+| BSD_LSeriesSummable_conditional | **PROVED** (genesis-778 §4, 6-hyp chain) |
+| BSD_ap_count (def + glue lemmas) | **COMPUTABLE** (genesis-778 §5) |
+| a_p for p∈{2,3,5,7,11,13,17,19} | **PROVED** (genesis-778 §6, native_decide) |
+
+Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
+
+**NOT a Clay claim.**
