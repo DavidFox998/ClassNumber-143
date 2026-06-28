@@ -1341,3 +1341,78 @@ Bad primes p=11,13: singular node IS in BSD_ap_count; a_p formula still correct.
 Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
 
 **NOT a Clay claim.**
+
+## genesis-779 — Finsupp abs-product bridge + τ(n)·√n identity (Avenues 1 & 2 CLOSED)
+
+**File**: `BSD/BSD_Genesis779_CLOSED.lean` (285 lines, 0 sorry)
+**Import chain tip**: `import Towers.BSD.BSD_Genesis779_CLOSED`
+**Mathlib import**: `Mathlib.NumberTheory.ArithmeticFunction`
+
+### Avenues closed this batch
+
+**Avenue 1 — BSD_aNBound_Finsupp_bridge_OPEN** — CLOSED (unconditional, all n ≥ 0)
+
+  `BSD_aNBound_Finsupp_bridge_close : ∀ n, BSD_aNBound_Finsupp_bridge_OPEN n`
+
+  Chain (0 sorry):
+  - §1 `finset_prod_int_cast`  — `(∏_ℤ f : ℤ) : ℝ = ∏_ℝ (f : ℝ)` (Finset induction)
+  - §2 n=0: `a_n 0 = 0`, empty Finsupp.prod = 1, so 0 ≤ 1 by `norm_num`
+  - §2 n≥1: unfold `a_n` (n≠0 branch = Finsupp.prod in ℤ); cast via §1; apply BSD_abs_prod_real
+
+**Avenue 2 — BSD_tau_sqrt_OPEN** — CLOSED for n ≥ 1 (unconditional)
+
+  `BSD_tau_sqrt_close_pos : ∀ n, 0 < n → BSD_tau_sqrt_OPEN n`
+
+  Chain (0 sorry):
+  - §3 `finset_prod_nat_cast`  — `(∏_ℕ f : ℕ) : ℝ = ∏_ℝ (f : ℝ)` (Finset induction)
+  - §4 `sqrt_pow_nat`          — `√(x^n) = (√x)^n` for x ≥ 0 (induction, Real.sqrt_mul)
+  - §5 `sqrt_finset_prod`      — `√(∏ fᵢ) = ∏ √fᵢ` for all fᵢ ≥ 0 (induction, Real.sqrt_mul)
+  - §6 `BSD_sqrt_factorization_close` — `∏_p (√p)^{e_p} = √n` (Nat.factorization_prod_pow_eq_self + §4+§5)
+  - §7 `BSD_card_divisors_close`      — `τ(n) = ∏_p (e_p+1)` (Nat.card_divisors, L1291 ArithmeticFunction)
+  - §8 `BSD_tau_sqrt_close_pos`       — PROVED: Finset.prod_mul_distrib + §6 + §7
+
+**Bug fix — BSD_tau_sqrt_OPEN 0 is false (discovered this batch)**:
+  `0.factorization.prod f = 1` (empty product) but `√0 · 0.divisors.card = 0 · 0 = 0`.
+  Genesis-778's `BSD_aNBound_all_n` had hypothesis `∀ m, BSD_tau_sqrt_OPEN m`
+  including m=0 — impossible to instantiate consistently.
+
+**§9 BSD_aNBound_all_n_v2** (PROVED, replaces genesis-778's BSD_aNBound_all_n):
+  Hypothesis corrected to `htau_pos : ∀ m, 0 < m → BSD_tau_sqrt_OPEN m`.
+  n=0 case: `|a_n 0| = 0 = √0 · 0.divisors.card` closed by `simp [a_n_zero, Nat.divisors_zero]`.
+
+**§10 BSD_LSeriesSummable_v2** (PROVED): updated chain using BSD_aNBound_all_n_v2.
+
+#### Mathlib v4.12.0 APIs confirmed and used
+
+| API | Source (confirmed) |
+|-----|--------------------|
+| `Nat.card_divisors hn` | ArithmeticFunction.lean L1291 |
+| `Nat.factorization_prod_pow_eq_self` | Factorization.lean |
+| `Nat.prime_of_mem_primeFactors` | Factorization.lean |
+| `Nat.support_factorization` | primeFactors = factorization.support (def) |
+| `Real.sqrt_mul (hx) y` | Analysis/SpecialFunctions |
+| `Finset.prod_mul_distrib` | Algebra/BigOperators |
+
+#### Updated gap table
+
+| Surface | Status |
+|---------|--------|
+| BSD_WeilHasse_Weierstrass_OPEN | OPEN (Gate 1, Frobenius absent) |
+| BSD_LFunctionIsLinFunc_OPEN | OPEN (Gate 2, Hecke/Mellin absent) |
+| BSD_aNBound_Finsupp_bridge_OPEN | **PROVED** (genesis-779 §2, unconditional, all n) |
+| BSD_Finsupp_prod_le_OPEN | OPEN (Finsupp monotonicity API) |
+| BSD_tau_sqrt_OPEN | **PROVED** (genesis-779 §8, n ≥ 1; n=0 false — see bug fix) |
+| BSD_TauBound_OPEN | OPEN (Dirichlet hyperbola, not in Mathlib) |
+| BSD_isBigO_to_LSeries_OPEN | OPEN (Filter.IsBigO cast bridge) |
+| BSD_{NT,Reg,SHA,Coeff,Period,Tamagawa,Torsion,Generator}_OPEN | OPEN (genesis-777) |
+| BSD_abs_prod_real | **PROVED** (genesis-778 §1, unconditional) |
+| BSD_aNBound_PROVED | **PROVED** (genesis-778 §3, cond Gate 1 + 3 bridges) |
+| BSD_aNBound_all_n_v2 | **PROVED** (genesis-779 §9, htau_pos corrected) |
+| BSD_LSeriesSummable_conditional | **PROVED** (genesis-778 §4, 6-hyp chain) |
+| BSD_LSeriesSummable_v2 | **PROVED** (genesis-779 §10, updated chain) |
+| BSD_ap_count (def + glue lemmas) | **COMPUTABLE** (genesis-778 §5) |
+| a_p for p∈{2,3,5,7,11,13,17,19} | **PROVED** (genesis-778 §6, native_decide) |
+
+Clay gaps: 2 (unchanged). BSD: OPEN. 0 sorry. Classical trio.
+
+**NOT a Clay claim.**
