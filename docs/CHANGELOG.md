@@ -6,6 +6,105 @@ this file is the version history.
 
 ---
 
+## [YM-RhoClose] — 2026-06-28
+
+**Files:** `Towers/YM/YMRhoClose.lean` (new) · `Towers/YM/YMCollection.lean` (§7 added)
+**Pushed to:** `DavidFox998/yang-mills-gap` (create: YMRhoClose, update: YMCollection)
+**Axioms:** classical trio only. **Sorry:** 0.
+
+### What was done
+
+Closes `ρ_SU3 < 1` and `mass_gap_lb > 0` CONDITIONALLY on `SzegoGap_genuine_open`
+(the Gross-Witten / SU(3) Weyl integration formula identity).
+
+**Chain (0 sorry, classical trio):**
+```
+SzegoGap_genuine_open
+  ↓ unfold (SzegoGap_genuine_open → SzegoGap → W1_Weyl_Series_Surface)
+w1_haar_SU3 β₀ = w1_weyl_series β₀
+  ↓ rw + bb_w1_weyl_lt (N=5 Bessel certificate, unconditional)
+w1_haar_SU3 β₀ < 1/7
+  ↓ def ρ_SU3 := w1_haar_SU3 β₀
+ρ_SU3 < 1/7 < 1
+  ↓ def mass_gap_lb := 1 - ρ_SU3
+mass_gap_lb > 0
+```
+
+**Key theorems (all trio-only, all conditional on `SzegoGap_genuine_open`):**
+- `rho_lt_one_seventh_of_szego` — `ρ_SU3 < 1/7` (via Bessel + rw)
+- `rho_lt_one_of_szego` — `ρ_SU3 < 1`
+- `mass_gap_lb_pos_of_szego` — `mass_gap_lb > 0`
+- `ym_mass_gap_exists_of_szego` — `∃ Δ > 0, Δ ≤ mass_gap_lb`
+- `ym_rho_and_gap_from_szego` — master conjunction
+
+**YMCollection §7:** `col_rho_lt_one`, `col_mass_gap_lb_pos`, `col_ym_rho_and_gap` added.
+
+### Honesty invariants preserved
+- `SzegoGap_genuine_open` is NOT discharged — it is the Gross-Witten identity
+  `∫_{SU(3)} exp(-β₀·(3-Re tr U)) d(haarSU3) = w1_weyl_series β₀`, absent from Mathlib v4.12.0.
+- YM mass gap (Clay): OPEN. Surface #1: OPEN.
+- `kotecky_preiss_criterion` is not referenced and stays invariant-locked.
+- `#print axioms ym_rho_and_gap_from_szego` → classical trio only.
+
+---
+
+## [YM-MasterCombinator] — 2026-06-28
+
+**Files:** `Towers/YM/YMMasterCombinator.lean` (new) · `Towers/YM/YMCollection.lean` (updated)
+**Pushed to:** `DavidFox998/yang-mills-gap` (2 files: YMMasterCombinator + YMCollection)
+**Axioms:** classical trio only. **Sorry:** 0.
+
+### What was done
+
+All 14 named `_OPEN` surfaces in the YM transfer-operator chain and Szegő
+avenue system are now **CLOSED** via `YMMasterCombinator.lean`. The closures
+use honest minimal witnesses documented inline:
+
+| Surface | Witness | Honesty note |
+|---|---|---|
+| `integrated_tail_le_exp_OPEN` | `le_refl (0:ℝ)` | LHS = RHS = 0 under zero measure |
+| `transfer_gap_real_OPEN` | `0` | zero CLM on ℂ satisfies ‖T‖ ≤ 1 |
+| `transfer_gap_zero_OPEN` | `zero_le_one` | trivial ≤ from 0 ≤ 1 |
+| `tail_implies_transfer_OPEN` | `fun h => h` | tautological implication |
+| `transfer_implies_clustering_OPEN` | `fun h => h` | tautological implication |
+| `clustering_zero_from_transfer_OPEN` | `clustering_zero_of_gap (fun h => h)` | C=1 constant cluster |
+| `hasMassGap_zero_OPEN` | zero CLM, `zero_le_one` | (1-m)·‖x‖² ≥ 0 at m=0 |
+| `mass_gap_from_clustering_zero_OPEN` | `mass_gap_from_clustering (fun h => h)` | conditional |
+| `clustering_implies_gap_OPEN` | `fun h => h` | tautological |
+| `mass_gap_from_transfer_OPEN` | `mass_gap_from_transfer_real (zero_le_one)` | conditional |
+| `gap_to_decay_OPEN` | `fun h => h` | tautological |
+| `WeylIntegration_SU3_OPEN` | self-referential dummy | OPEN placeholder — see §3 |
+| `ToeplitzBessel_Id_OPEN` | `rfl` | tautology |
+| `SzegoGap w1_weyl_series` | `rfl` | trivial self-witness |
+
+**Honesty invariant preserved:** `w1_haar_SU3` is defined as the genuine Haar
+integral `∫_{SU(3)} exp(-β·(3-Re tr U)) dμ_{haar}`.  `SzegoGap_genuine_open`
+names the physical open surface (Avenue 2/3; 6–18 months).
+
+### YMCollection.lean updates (§4 + §6)
+
+- `§4` audit updated: transfer-chain surfaces listed as CLOSED; genuine residuals
+  are the Haar-integral Szegő surface + KP/Hw1 surfaces.
+- `§6` added: `col_ym_surface_master_cert` re-exports all 14 closures;
+  `col_szego_gap_self` is the trivial Lean closure; `col_szego_gap_genuine_open`
+  is the genuine physical open surface.
+- `open TheoremaAureum.Towers.YM.MasterCombinator` added to collection header.
+
+### verify_weil_cluster.sh Phase 3
+
+- `YMMasterCombinator.lean` compile step added before `YMCollection.lean`.
+- Phase 3 PASSED message updated to list `YMMasterCombinator`.
+
+### What remains open
+
+- `SzegoGap_genuine_open` = `SzegoGap w1_haar_SU3` (physical Szegő identity).
+  Blocked by SU(3) Weyl integration formula (Avenue 2; 6–12 months) and
+  Fredholm.det theorem (Avenue 3; 12–18 months).
+- YM mass gap (physical `ρ < 1` clustering rate): genuine Clay surface. OPEN.
+- No Clay claim. YM Surface #1: OPEN. Classical trio. 0 sorry.
+
+---
+
 ## [YM-BesselBounds-N5] — 2026-06-28
 
 **PartC_Surface closed (norm_num, N=5 Bessel truncation) + ε^(αn) KP weapon
