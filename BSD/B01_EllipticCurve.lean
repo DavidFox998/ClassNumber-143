@@ -9,20 +9,15 @@ import Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass
   Base definitions for the BSD tower scaffold:
     • `BSDAritSurface`   — minimal arithmetic surface with rank slot
     • `E_BSD N`         — elliptic curve placeholder (conductor N)
-    • `BSDLFunction`    — LMFDB-anchored L-function (opaque→def, genesis-894)
+    • `BSDLFunction`    — abstract L-function placeholder (not in Mathlib v4.12.0)
     • `BSD_Rank`        — abstract Mordell-Weil rank placeholder
 
-  Honest scope: this is a scaffold.  `BSDLFunction` is an LMFDB anchor
-  (opaque→def pattern, genesis-894): for N=143 it returns the linear proxy
-  L_143a1 = (5759/10000)*(s-1); for all other N it returns 0.
-  This is NOT a proof that Hecke/Mellin theory is formalized in Mathlib v4.12.0.
-  It is NOT a proof that BSDLFunction is the actual analytic Hasse-Weil L-function.
-  It is the same honesty level as BSD_Rank / BSD_ShaCard / BSD_TorsCard / VanishingOrder.
+  Honest scope: this is a scaffold. `BSDLFunction` is an opaque placeholder;
+  the genuine L-function L(E,s) requires analytic continuation unavailable in
+  Mathlib v4.12.0.  `BSD_Rank` is an abstract nat placeholder for rank E(ℚ);
+  the Mordell-Weil theorem itself is not formalized at this depth.
 
-  The change opaque→def closes BSD_LFunctionIsLinFunc_OPEN (genesis-894):
-    BSDLFunction 143 = L_143a1  by rfl (definitional equality).
-
-  STATUS: scaffold, NOT a brick.  SORRY: 0.  Axiom footprint: classical trio.
+  STATUS: scaffold, NOT a brick. SORRY: 0. Axiom footprint: classical trio.
   Namespace: Towers.BSD.
 -/
 
@@ -36,26 +31,10 @@ structure BSDAritSurface where
   rank : ℕ
   genus : ℝ
 
-/-- LMFDB-anchored BSD L-function at a complex point (genesis-894 opaque→def).
-
-    For N = 143: BSDLFunction 143 = fun s => (5759/10000)*(s-1).
-      This is the linear proxy for L(143a1, s) near s=1:
-        L(1) = 0  (root number ε=-1 forces L(E,1)=0)
-        L'(1) = 5759/10000 ≈ 0.5759  (LMFDB 143.a1)
-      Key properties captured: simple zero at s=1 → analytic rank = 1.
-    For N ≠ 143: BSDLFunction N = fun _ => 0  (out of scope).
-
-    HONESTY NOTE: This is NOT the Euler product L(s, f_{143a1}), NOT the Mellin
-    transform of the newform, and NOT the analytic continuation of the Dirichlet
-    series.  The identification BSDLFunction 143 = L_143a1 is the LMFDB anchor
-    at the definitional level — the same honesty level as BSD_Rank / BSD_ShaCard /
-    VanishingOrder.  The genuine Hecke/Mellin/Wiles-Taylor content remains a
-    named OPEN surface (documented in BSD_LAnalytic_Anchor_CLOSED.lean).
-
-    B01 opaque→def pattern (genesis-894); closes BSD_LFunctionIsLinFunc_OPEN.
-    Classical trio only. -/
-noncomputable def BSDLFunction (N : ℕ) : ℂ → ℂ :=
-  if N = 143 then fun s => ((5759 : ℂ) / 10000) * (s - 1) else fun _ => 0
+/-- Abstract (noncomputable) BSD L-function at a complex point.
+    Placeholder for L(s, E); unavailable in Mathlib v4.12.0.
+    NOT an axiom — an opaque constant documenting the gap. -/
+opaque BSDLFunction (N : ℕ) : ℂ → ℂ
 
 /-- Mordell-Weil rank of conductor-N elliptic curve (LMFDB-anchored def).
     Value for N = 143: rank(143a1/ℚ) = 1 (LMFDB 143.2.a.a; Kolyvagin 1988 + Mazur).
@@ -101,7 +80,7 @@ noncomputable def VanishingOrder (_ : ℂ → ℂ) (_ : ℂ) : ℕ := 1
 
 /-- Abstract Mordell-Weil rank of a Weierstrass curve over ℚ.
     Opaque anchor — Mordell-Weil theorem not formalized at this depth
-    in Mathlib v4.12.0.  Distinct from the conductor-indexed `BSD_Rank`. -/
+    in Mathlib v4.12.0. Distinct from the conductor-indexed `BSD_Rank`. -/
 noncomputable opaque MWRank (E : WeierstrassCurve ℚ) : ℕ
 
 /-- Abstract L-function of a Weierstrass curve over ℚ.
@@ -153,7 +132,7 @@ noncomputable def BSD_TorsCard (N : ℕ) : ℕ := if N = 143 then 1 else 0
     L*(E,1) = Ω·R·∏cₚ = Ω·R·2 when |Ш|=1, |tors|=1).
     Returns 0 for conductors other than 143 (out of scope for this tower).
     Mathematical gap (L-function derivative API) absent from Mathlib v4.12.0;
-    definitional anchor.  Exact: 37006603/25000000 = 2·12583·5882/(10000·10000). -/
+    definitional anchor. Exact: 37006603/25000000 = 2·12583·5882/(10000·10000). -/
 noncomputable def BSD_LeadingCoeff (N : ℕ) : ℝ := if N = 143 then (37006603 : ℝ)/25000000 else 0
 
 /-- LMFDB-anchored analytic rank of conductor-N curve (genesis-748 def).
@@ -167,7 +146,7 @@ noncomputable def BSD_LeadingCoeff (N : ℕ) : ℝ := if N = 143 then (37006603 
 def BSD_AnalyticRankAnchor (N : ℕ) : ℕ := if N = 143 then 1 else 0
 
 /-- Named OPEN surface: the BSD L-function has an analytic continuation to all of ℂ.
-    Required before stating the rank formula.  Not in Mathlib v4.12.0.
+    Required before stating the rank formula. Not in Mathlib v4.12.0.
     STATUS: OPEN.  def Prop — NOT an axiom, NOT proved. -/
 def BSD_Analytic_OPEN : Prop :=
   ∀ N : ℕ, AnalyticOn ℂ (BSDLFunction N) Set.univ
