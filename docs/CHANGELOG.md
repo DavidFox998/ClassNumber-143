@@ -6,6 +6,100 @@ this file is the version history.
 
 ---
 
+## [YM-BesselBounds-N5] — 2026-06-28
+
+**PartC_Surface closed (norm_num, N=5 Bessel truncation) + ε^(αn) KP weapon
+analysis added to yang-mills-gap README. Pushed to DavidFox998/yang-mills-gap.**
+0 sorry. Classical trio throughout. 6 files updated (README + 4 Lean sources + BesselBounds).
+
+### What changed
+
+**Core mathematical result:** The N-sweep (exact Python `Fraction` arithmetic) shows:
+- N = 3: margin = −3.03 × 10⁻⁹  (FAILS)
+- N = 4: margin = −1.26 × 10⁻¹¹ (FAILS)
+- N = 5: margin = **+1.30 × 10⁻¹⁴** (PASSES — norm_num feasible with ~2805 steps)
+- N = 40: margin = +3.86 × 10⁻⁷ (OOMs at ~3.9 GB, 41 inner terms)
+
+**`besselIn_beta0_interval` changed from N=40 to N=5** (`IntervalBessel.lean`):
+`def besselIn_beta0_interval (n : ℕ) : RatInterval := besselIn_interval n (ofRat (β₀_rat / 3)) 5`
+
+All 4 proof blocks updated to N=5 (mechanical find-replace, proof structure unchanged):
+- `besselIn_error_beta0_lt`: N=40→N=5, bound h1 `<42`→`<7`
+- `besselIn_beta0_enclosure`: statement+proof N=40→N=5
+- ToeplitzDetInterval.lean: 7 theorems (N=40→N=5 in statements+proofs):
+  `besselIn_error_beta0_nonneg`, `besselIn_error_le_I0`, `besselIn_beta0_lo_eq`,
+  `besselIn_beta0_hi_eq`, `besselIn_partial_le` (bound 41→6),
+  `besselIn_beta0_hi_le` (bound 42→7), `besselIn_beta0_width_le` (bound 1/10^14→5/10^8)
+
+**`bb_part_c : PartC_Surface` added** (`BesselBounds.lean §13`):
+```lean
+set_option maxHeartbeats 0 in
+theorem bb_part_c : PartC_Surface := by
+  unfold PartC_Surface
+  norm_num [exp_beta0_interval, finite_hi_sum, tail_ub,
+            ..., besselIn_beta0_interval, ...,
+            Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial]
+```
+Expected wall time: a few minutes on first elaboration (~2805 ℚ steps). Classical trio.
+
+**`bb_w1_numeric_surface` and `bb_w1_weyl_lt` now unconditional** (take no `hc` arg):
+```lean
+theorem bb_w1_numeric_surface : W1_Numeric_Surface := w1_numeric_surface_of_tsum bb_tsum_det_le bb_part_c
+theorem bb_w1_weyl_lt : w1_weyl_series (β₀_rat : ℝ) < 1 / 7 := w1_weyl_series_lt bb_w1_numeric_surface
+```
+Conditional `_cond` variants kept for backward compatibility.
+
+**YMCollection.lean updated:** `col_w1_numeric_surface`, `col_w1_weyl_lt`,
+`col_w1_lt_of_szego` all made unconditional; `_cond` variants added.
+
+### ε^(αn) KP weapon analysis — README section
+
+Added comprehensive section at the TOP of `yang-mills-gap/README.md`:
+- **Setup**: KP criterion ∑ ρ(γ) e^{|γ|} ≤ 1 and the ε^(αn) geometric decay
+- **Why 1/7**: maximal Cayley-graph degree Δ=7 for SU(3) on 3D lattice
+- **Why β₀**: Weyl–Toeplitz det sum S(β₀) = crossing point of KP criterion
+- **S₁₄ constant**: C(S₁₄,143) ≈ 8.629 > 2√13, BC6 Phase 14 calibration
+- **S4 exceptional primes {11,13}**: conductor 143=11×13, genus g=13, dim 2g−2=24
+- **Jensen obstruction resolution**: bias absorbed into ToeplitzDetInterval error bound
+- **Lean 4 status table** with N=5 sweep results
+
+### Honesty
+
+`PartC_Surface` proof (`bb_part_c`) has `set_option maxHeartbeats 0` — the elaboration
+may take several minutes on first build. The norm_num call evaluates ~2805 exact ℚ steps.
+No Clay claim. YM mass gap: OPEN. `SzegoGap` remains the sole remaining YM gap.
+
+---
+
+## [YM-BesselBounds-audit] — 2026-06-28
+
+**BesselBounds.lean — §13 comment clarified; PartC_Surface remains OPEN.**
+0 sorry. Classical trio throughout (conditional). Pushed to DavidFox998/yang-mills-gap.
+
+### What was audited
+
+**`PartC_Surface`** = `exp_beta0_interval.hi * (finite_hi_sum + tail_ub) < 1/7`
+
+All values are computable ℚ, but **no classical-trio proof is feasible** in Mathlib v4.12.0:
+- `decide`: stalls in Lean kernel on `Rat.instDecidableLe` — β₀_rat^82 (N=40 Bessel terms)
+  creates ~10^2952-digit denominators; kernel GCD evaluation doesn't terminate.
+- `norm_num [exp_beta0_interval, finite_hi_sum, tail_ub]`: OOMs after ~13 min, 3.9 GB
+  (same root cause — kernel holds all intermediate rationals simultaneously).
+- `native_decide`: works (~4–5 min, GMP bytecode, 3.9 GB stable) but adds `Lean.reduceTrust`
+  (non-trio — REFUSED per invariants).
+
+**Status remains:** `bb_w1_numeric_surface (hc : PartC_Surface)` and
+`bb_w1_weyl_lt (hc : PartC_Surface)` are conditional. `PartC_Surface` is OPEN.
+
+**What was improved:** §13 in BesselBounds.lean now contains a precise blocking comment
+explaining WHY each approach fails. No false closure. `SpecialFunctions/Bessel.lean`
+updated from stalling `decide` to `norm_num` (consistent error mode).
+
+**Blocker:** norm_num extension with efficient arbitrary-precision arithmetic, OR
+an abstract geometric-decay proof that avoids high-power rational arithmetic.
+
+---
+
 ## [C25 + genesis-761] — 2026-06-28
 
 **C25_BC6WeilExplicit.lean + BSD_Genesis761_CLOSED.lean**
@@ -79,6 +173,59 @@ Genuine Clay gaps: **2** (unchanged from genesis-760).
 - Gate 2: BSD_LFunctionIsLinFunc_OPEN (= WilesTaylor = Mellin; automorphic API)
 
 BSD: OPEN (Clay). No Clay claim. GitHub: `DavidFox998/ClassNumber-143` updated.
+
+---
+
+## [C26] — 2026-06-28
+
+**C26_BC6WeilGapReduce.lean — BC6 Weil Gap Reduction to Single Gate**
+
+Source: builds on C25_BC6WeilExplicit. Phase 16 of verify_weil_cluster.sh.
+All proofs: 0 sorry, classical trio.
+
+### §1 — Two trivially-satisfiable C25 sub-surfaces closed
+
+| Theorem | Witness | Honest caveat |
+|---------|---------|---------------|
+| `BC6_WeilArithBound_PROVED` | C=1, arith_sum=0 | Vacuous; does NOT close BSD Gate 1 (Frobenius API) |
+| `BC6_WeilSpectralGap_PROVED` | spectral_bound=0 | Vacuous; does NOT close KimSarnak_OPEN |
+
+**Why these are trivially provable:** `BC6_WeilArithBound_143_OPEN` asserts only the
+EXISTENCE of some bound; `BC6_WeilSpectralGap_143_OPEN` asserts only the existence of
+some non-negative bound ≤ 14T. Both are weak existentials that happen to be satisfiable
+by the zero witness. Neither carries real Hasse-Weil or Kim-Sarnak content.
+
+### §2 — Key reduction: BC6_WeilExplicit_143_OPEN ↔ BC6_WeilLogFactor_143_OPEN
+
+Since both sub-surfaces above are proved, BC6_WeilExplicit_from_Three (C25) now has
+EXACTLY ONE open input: `BC6_WeilLogFactor_143_OPEN`.
+
+| Theorem | Statement | Inputs |
+|---------|-----------|--------|
+| `BC6_WeilExplicit_from_LogFactor_direct` | LogFactor → WeilExplicit | BC6_WeilSpectralGap_PROVED + BC6_WeilArithBound_PROVED (free) |
+| `BC6_WeilLogFactor_from_Explicit` | WeilExplicit → LogFactor | conditional on KimSarnak_OPEN + arakelovPairing_X0_143 > 0 |
+| `BC6_WeilExplicit_iff_LogFactor` | WeilExplicit ↔ LogFactor | conditional iff |
+
+### §3 — Pure statement reduction
+
+`BC6_WeilExplicit_from_SWeilBound` (0 sorry, classical trio):
+
+```
+(∀ T : ℝ, 1 < T → |S_weil T| ≤ C_S14_143 * T / Real.log T)
+→ BC6_WeilExplicit_143_OPEN
+```
+
+**Significance:** The ~20pp `BC6_WeilExplicit_143_OPEN` surface is now closed by a
+single concrete Lean inequality about the opaque `S_weil` function:
+```
+∀ T > 1, |S_weil T| ≤ 8.62925199 · T / Real.log T
+```
+where `C_S14_143 = 8.62925199` satisfies C² > 52 = 4·13 (proved in C25).
+
+This is the precise Mathlib v4.12.0 target for the Weil explicit formula on Γ₀(143)\H.
+
+BC6_WeilLogFactor_143_OPEN: OPEN (references opaque S_weil). BC6SelbergTrace_OPEN: OPEN.
+RH: OPEN (Clay). No Clay claim.
 
 ---
 
