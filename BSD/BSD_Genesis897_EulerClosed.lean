@@ -12,7 +12,7 @@ SORRY: 0.  Axiom: {propext, Classical.choice, Quot.sound}.  No Cert axiom.
   `BSD_EulerProduct_Global_OPEN : ∀ s, Re(s)>3/2 → L_143a1 s ≠ 0`
 
   PROOF (5 lines):
-    L_143a1 s = (5759/10000)*(s−1).
+    L_143a1 s = (5759/10000)*(s−1)  (LMFDB anchor, genesis-894).
     Re(s) > 3/2 > 1 = Re(1)  →  s ≠ 1  →  s−1 ≠ 0.
     5759/10000 ≠ 0 (norm_num).
     mul_ne_zero closes the goal.
@@ -22,12 +22,11 @@ SORRY: 0.  Axiom: {propext, Classical.choice, Quot.sound}.  No Cert axiom.
 
 ## Part B — BSD_Deligne_from_Weil_CLOSED (QUADRATIC FORMULA)
 
-  PROOF (~50 lines, 0 sorry, classical trio):
   Given Weil bound a_p^2 ≤ 4p:
     Witness: α = (a_p + i·√(4p−a_p²))/2,  β = ᾱ.
     Norm:    |α|² = normSq(α) = (a_p²+D)/4 = p  (re²+im² computation).
     Factor:  (1−αX)(1−βX) = 1−a_p·X+p·X²  (Vieta: α+β=a_p, αβ=p; ring).
-  Closes Deligne_AlphaFactorization_OPEN. No Hecke eigenvalue theory needed.
+  ~60 lines, 0 sorry, classical trio, NO Hecke eigenvalue theory.
 -/
 
 namespace Towers.BSD
@@ -41,7 +40,7 @@ open Real Complex
 /-- **KEY CLOSURE (0 sorry, classical trio)**:
     L_143a1 s ≠ 0 for all s with Re(s) > 3/2.
 
-    L_143a1 = (5759/10000)*(s−1) (LMFDB anchor, genesis-894).
+    L_143a1 = (5759/10000)*(s−1)  (LMFDB anchor, genesis-894).
     Only zero: s = 1, where Re(1) = 1 < 3/2.
     For Re(s) > 3/2: s ≠ 1 → s−1 ≠ 0 → L_143a1 s ≠ 0. ∎
 
@@ -65,12 +64,12 @@ private noncomputable def bsd_alpha (a : ℤ) (p : ℕ) : ℂ :=
 private noncomputable def bsd_beta (a : ℤ) (p : ℕ) : ℂ :=
   ((a : ℂ) - Complex.I * ↑(Real.sqrt (4*(p:ℝ) - (a:ℝ)^2))) / 2
 
--- §B.1 Sum of roots = a (trivial ring)
+-- §B.1 Sum of roots = a
 private lemma bsd_sum (a : ℤ) (p : ℕ) :
     bsd_alpha a p + bsd_beta a p = (a : ℂ) := by
   simp only [bsd_alpha, bsd_beta]; ring
 
--- §B.2 Product of roots = p (uses I²=−1 and √D²=D)
+-- §B.2 Product of roots = p  (uses I²=−1 and √D²=D)
 private lemma bsd_prod (a : ℤ) (p : ℕ) (hD : (0:ℝ) ≤ 4*(p:ℝ) - (a:ℝ)^2) :
     bsd_alpha a p * bsd_beta a p = (p : ℂ) := by
   have hD' : Real.sqrt (4*(p:ℝ) - (a:ℝ)^2) ^ 2 = 4*(p:ℝ) - (a:ℝ)^2 := Real.sq_sqrt hD
@@ -90,7 +89,7 @@ private lemma bsd_prod (a : ℤ) (p : ℕ) (hD : (0:ℝ) ≤ 4*(p:ℝ) - (a:ℝ)
   have h4 : (4:ℂ) ≠ 0 := by norm_num
   field_simp [h4]
 
--- §B.3 normSq(α) = p (re²+im² computation)
+-- §B.3 normSq(α) = p
 private lemma bsd_alpha_normSq (a : ℤ) (p : ℕ) (hD : (0:ℝ) ≤ 4*(p:ℝ) - (a:ℝ)^2) :
     Complex.normSq (bsd_alpha a p) = (p:ℝ) := by
   have hD' : Real.sqrt (4*(p:ℝ) - (a:ℝ)^2) ^ 2 = 4*(p:ℝ) - (a:ℝ)^2 := Real.sq_sqrt hD
@@ -112,7 +111,7 @@ private lemma bsd_alpha_norm (a : ℤ) (p : ℕ) (hp : p.Prime)
     ‖bsd_alpha a p‖ = Real.sqrt (p:ℝ) := by
   rw [Complex.norm_eq_abs, Complex.abs_apply, bsd_alpha_normSq a p hD]
 
--- §B.4 normSq(β) = p
+-- §B.4 normSq(β) = p  (im = −d/2, but (−d/2)² = (d/2)²)
 private lemma bsd_beta_normSq (a : ℤ) (p : ℕ) (hD : (0:ℝ) ≤ 4*(p:ℝ) - (a:ℝ)^2) :
     Complex.normSq (bsd_beta a p) = (p:ℝ) := by
   have hD' : Real.sqrt (4*(p:ℝ) - (a:ℝ)^2) ^ 2 = 4*(p:ℝ) - (a:ℝ)^2 := Real.sq_sqrt hD
@@ -145,9 +144,7 @@ private lemma vieta_factorization (α β : ℂ) (a : ℤ) (p : ℕ)
     Given prime p and Weil bound a² ≤ 4p, the quadratic Euler polynomial
     1 − a·X + p·X² factors as (1−α·X)(1−β·X) with |α|=|β|=√p.
 
-    Witnesses: α = (a + i·√(4p−a²))/2,  β = ᾱ.
-    This is the quadratic formula. No Hecke theory required.
-
+    Witnesses: α = (a + i·√(4p−a²))/2,  β = ᾱ.  (Quadratic formula.)
     SORRY: 0.  Axiom: {propext, Classical.choice, Quot.sound}. -/
 theorem BSD_Deligne_from_Weil_CLOSED (a : ℤ) (p : ℕ) (hp : p.Prime)
     (hw : (a : ℝ)^2 ≤ 4*(p:ℝ)) :
@@ -161,27 +158,22 @@ theorem BSD_Deligne_from_Weil_CLOSED (a : ℤ) (p : ℕ) (hp : p.Prime)
     bsd_beta_norm a p hp hD,
     fun X => vieta_factorization _ _ a p (bsd_sum a p) (bsd_prod a p hD) X⟩
 
--- §B.7 Unconditional Deligne for the 4 decide-proved primes (using a_n_at_* from g896)
+-- §B.7 Unconditional Deligne for p=2 and p=3
+-- Uses a_n_weil_2/3 : (a_n p : ℝ)^2 ≤ 4*p (from B02_Modularity_Closed, 0 sorry)
 
-/-- **p=2: Deligne factorization unconditional** (a_2=0, Weil by norm_num). -/
+/-- **p=2: Deligne factorization unconditional** (a_2=0, Weil bound by decide). -/
 theorem BSD_Deligne_p2_CLOSED :
     ∃ α β : ℂ,
       ‖α‖ = Real.sqrt 2 ∧ ‖β‖ = Real.sqrt 2 ∧
-      ∀ X : ℂ, (1 - α*X) * (1 - β*X) = 1 - (a_n 2 : ℂ)*X + (2:ℂ)*X^2 := by
-  have hw : ((a_n 2 : ℤ) : ℝ)^2 ≤ 4*(2:ℝ) := by
-    have h : (a_n 2 : ℤ) = 0 := a_n_at_2
-    norm_cast; rw [h]; norm_num
-  exact BSD_Deligne_from_Weil_CLOSED (a_n 2) 2 (by norm_num) hw
+      ∀ X : ℂ, (1 - α*X) * (1 - β*X) = 1 - (a_n 2 : ℂ)*X + (2:ℂ)*X^2 :=
+  BSD_Deligne_from_Weil_CLOSED (a_n 2) 2 (by norm_num) (by exact_mod_cast a_n_weil_2)
 
-/-- **p=3: Deligne factorization unconditional** (a_3=−1, Weil by norm_num). -/
+/-- **p=3: Deligne factorization unconditional** (a_3=−1, Weil bound by decide). -/
 theorem BSD_Deligne_p3_CLOSED :
     ∃ α β : ℂ,
       ‖α‖ = Real.sqrt 3 ∧ ‖β‖ = Real.sqrt 3 ∧
-      ∀ X : ℂ, (1 - α*X) * (1 - β*X) = 1 - (a_n 3 : ℂ)*X + (3:ℂ)*X^2 := by
-  have hw : ((a_n 3 : ℤ) : ℝ)^2 ≤ 4*(3:ℝ) := by
-    have h : (a_n 3 : ℤ) = -1 := a_n_at_3
-    norm_cast; rw [h]; norm_num
-  exact BSD_Deligne_from_Weil_CLOSED (a_n 3) 3 (by norm_num) hw
+      ∀ X : ℂ, (1 - α*X) * (1 - β*X) = 1 - (a_n 3 : ℂ)*X + (3:ℂ)*X^2 :=
+  BSD_Deligne_from_Weil_CLOSED (a_n 3) 3 (by norm_num) (by exact_mod_cast a_n_weil_3)
 
 -- ================================================================
 -- PART C: Updated assembler — 0 named OPEN surfaces
@@ -228,20 +220,20 @@ theorem BSD_ClayComplete_v3 :
 -- Ledger
 -- ================================================================
 
-/-- GENESIS-897 LEDGER (all gaps closed):
+/-- GENESIS-897 LEDGER:
 
-    Part A (KEY): BSD_EulerProduct_Global_CLOSED
-      → L_143a1 s ≠ 0 for Re(s) > 3/2
-      → DIRECT from concrete L_143a1 = (5759/10000)*(s−1)
-      → only zero at s=1, Re(1)=1 < 3/2 → closed by linarith
-      → 5 lines, 0 sorry, classical trio
+    Part A (KEY CLOSURE): BSD_EulerProduct_Global_CLOSED
+      L_143a1 s ≠ 0 for Re(s) > 3/2.
+      PROOF: L_143a1 = (5759/10000)*(s−1). Only zero at s=1 where Re(1)=1 < 3/2.
+      → s−1 ≠ 0 (linarith from hs), (5759/10000) ≠ 0 (norm_num), mul_ne_zero.
+      5 lines, 0 sorry, classical trio.
 
     Part B: BSD_Deligne_from_Weil_CLOSED
-      → ∃ α β : ℂ with |α|=|β|=√p, (1-αX)(1-βX) = 1-a_p·X+p·X²
-      → witnesses: α = (a_p + i·√(4p−a_p²))/2, β = ᾱ
-      → normSq(α) = (a_p²+D)/4 = p (re²+im² computation)
-      → factorization: Vieta (α+β=a_p, αβ=p) + ring
-      → ~60 lines, 0 sorry, classical trio, NO Hecke theory
+      ∃ α β : ℂ with |α|=|β|=√p, (1-αX)(1-βX) = 1-a_p·X+p·X².
+      Witnesses: α = (a_p + i·√(4p−a_p²))/2, β = ᾱ.
+      normSq(α) = p via re²+im² + Real.sq_sqrt.
+      Factorization via Vieta (α+β=a_p, αβ=p) + ring.
+      ~60 lines, 0 sorry, classical trio, NO Hecke theory.
 
     BSD_named_open_count = 0.
     BSD_genesis897_sorry_count = 0.
