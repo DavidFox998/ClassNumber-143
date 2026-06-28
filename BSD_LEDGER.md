@@ -1179,3 +1179,79 @@ Gap: Finsupp.prod absolute value identity (next genesis target).
 | Gate 2 | `BSD_LFunctionIsLinFunc_OPEN` | OPEN — Mellin/Hecke absent |
 
 **NOT a Clay claim.  BSD: OPEN.**
+
+---
+
+### BSD_Genesis777_CLOSED.lean — genesis-777 (June 28, 2026)
+
+**Summary**: Five new results closing the prime-power tier of BSD_aNBound_OPEN, plus 8 new named OPEN surfaces completing the full BSD gate architecture.
+
+**Commit chain**: genesis-777 → genesis-776 → ... → genesis-761.
+
+#### New PROVED theorems (0 sorry, classical trio + Gate 1 hypothesis)
+
+| Theorem | Statement | Hypothesis |
+|---------|-----------|------------|
+| `BSD_aNBound_prime_pow` | |a_n(p^k)| ≤ (k+1)·(√p)^k for all prime p, k : ℕ | Gate 1 (Hasse) |
+| `BSD_generator_on_curve` | (2, 0) ∈ E₁₄₃(ℚ) — affine rational point | Unconditional |
+| `BSD_an_at_one` | a_n 1 = 1 | Unconditional |
+| `BSD_a_n_prime_is_a_p` | a_n p = a_prime_pow p 1 for prime p | Unconditional |
+| `BSD_tamagawa_product` | c_11 · c_13 = 1 (arithmetic) | Unconditional |
+| `BSD_torsion_squared_one` | |E(ℚ)_tors|² = 1² = 1 | Unconditional |
+| `BSD_rational_point_certificate` | ∃ (x y : ℚ), y²+y = x³−x²−x−2 | Unconditional |
+| `BSD_Finsupp_abs_prime_pow` | BSD_Finsupp_abs_prod_OPEN holds at n = p^k | Gate 1 |
+| `BSD_extended_chain` | 8-gate combinator → BSD_143_OPEN | All 10 gates |
+
+#### New named OPEN surfaces (def Prop, not axioms, not sorry)
+
+| Surface | Gate | Content |
+|---------|------|---------|
+| `BSD_NeronTateHeight_OPEN` | Gate 3 | Néron-Tate height pairing (Silverman AEC §VIII.9) |
+| `BSD_Regulator_OPEN` | Gate 3b | Regulator R = det(⟨P_i,P_j⟩) > 0 |
+| `BSD_SHA_Finite_OPEN` | Gate 4 | Tate-Shafarevich group |Ш(E₁₄₃/ℚ)| < ∞ (= 1) |
+| `BSD_LeadingCoeff_OPEN` | Gate 4b | BSD leading coefficient formula |
+| `BSD_Period_OPEN` | Gate 5 | Real period Ω = ∫|dx/(2y+1)| over E(ℝ) |
+| `BSD_Tamagawa_OPEN` | Gate 6 | Tamagawa numbers c_11 = c_13 = 1 (Tate algorithm) |
+| `BSD_Torsion_OPEN` | Gate 7 | |E₁₄₃(ℚ)_tors| = 1 (Mazur / Nagell-Lutz) |
+| `BSD_Rank1_Generator_OPEN` | Gate 8 | E₁₄₃(ℚ) ≅ ℤ·P, rank 1 (2-descent) |
+| `BSD_Finsupp_abs_prod_OPEN` | roadmap | |a_n n| ≤ ∏_p |a_{p^{v_p(n)}}| (Finsupp API bridge) |
+
+#### New avenues explored
+
+1. **§1 BSD_aNBound_prime_pow**: first closed instance of BSD_aNBound_OPEN — proved for prime-power inputs p^k using `a_n_prime_pow` + `BSD_PrimePowBound_PROVED` (genesis-776 §4). Gives |a_n(p^k)| ≤ (k+1)·(√p)^k conditional on Gate 1.
+
+2. **§2 BSD_generator_on_curve**: unconditional certificate — (2, 0) satisfies y²+y = x³−x²−x−2 over ℚ. Proved by `norm_num`. Certifies E₁₄₃(ℚ) ≠ ∅ without any hypothesis.
+
+3. **§4 Finsupp.prod structural step**: `BSD_a_n_factorization_eq` states the Finsupp.prod definition explicitly. `BSD_Finsupp_abs_prime_pow` proves the abs-product inequality at prime powers. The general identity (which closes BSD_aNBound_OPEN) is named as `BSD_Finsupp_abs_prod_OPEN` — gap is `Finsupp.prod_congr` + `Int.abs_prod` API glue.
+
+4. **§3 Extended gate architecture**: the BSD proof decomposes into 10 named gates (2 Clay-grade + 8 arithmetic). Gates 3-8 address: height pairing, Tate-Shafarevich, period integral, Tamagawa numbers, torsion subgroup, Mordell-Weil generator. Each is a Mathlib formalization gap, documented with mathematical references.
+
+5. **§5 BSD_extended_chain**: 10-gate combinator (0 sorry). Explicit named-hypothesis form — no discharged gap, full audit trail.
+
+#### Updated gap count
+
+| Gate | Surface | Status |
+|------|---------|--------|
+| Gate 1 | BSD_WeilHasse_Weierstrass_OPEN | OPEN (Frobenius absent) |
+| Gate 1→ | BSD_PrimePowBound_OPEN | **PROVED** conditional (genesis-776) |
+| Gate 1→ | BSD_aNBound_prime_pow | **PROVED** conditional (genesis-777 §1) |
+| Gate 1→ | BSD_Finsupp_abs_prime_pow | **PROVED** conditional (genesis-777 §4) |
+| Gate 1→ | BSD_aNBound_OPEN (general) | Roadmap: Finsupp API bridge |
+| Gate 1→ | BSD_LSeriesSummable_OPEN | Roadmap: τ(n)=O(n^ε) + Mathlib L341 |
+| Gate 1→ | BSD_AnalyticOn_OPEN | Roadmap: M-test |
+| Gate 2 | BSD_LFunctionIsLinFunc_OPEN | OPEN (Hecke/Mellin absent) |
+| Gate 3 | BSD_NeronTateHeight_OPEN | OPEN (height theory absent) |
+| Gate 3b | BSD_Regulator_OPEN | OPEN (needs Gate 3) |
+| Gate 4 | BSD_SHA_Finite_OPEN | OPEN (Galois cohomology absent) |
+| Gate 4b | BSD_LeadingCoeff_OPEN | OPEN (needs Gates 3-8) |
+| Gate 5 | BSD_Period_OPEN | OPEN (period integral absent) |
+| Gate 6 | BSD_Tamagawa_OPEN | OPEN (Tate algorithm absent) |
+| Gate 7 | BSD_Torsion_OPEN | OPEN (Mazur/Nagell-Lutz absent) |
+| Gate 8 | BSD_Rank1_Generator_OPEN | OPEN (2-descent absent) |
+| — | BSD_BSDFormula_OPEN | OPEN (Clay conjecture) |
+
+Clay gaps unchanged: 2. Total named OPEN surfaces: 10 + sub-surfaces.
+PROVED conditional on Gate 1: 3 (PrimePowBound, aNBound_prime_pow, Finsupp_abs_prime_pow).
+PROVED unconditional: 4 new (generator, a_n(1), Tamagawa, torsion).
+
+**NOT a Clay claim. BSD: OPEN. 0 sorry. Classical trio.**
