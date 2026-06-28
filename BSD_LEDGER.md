@@ -793,7 +793,7 @@ Decomposes `BC6_WeilExplicit_143_OPEN` (~20pp) into THREE named atomic sub-surfa
 
 **File:** `BSD_Genesis761_CLOSED.lean` · SORRY: 0 · Axiom footprint: classical trio
 **Verify:** `verify_bsd_only.sh` Phase 34 PASSED
-**GitHub:** Pushed to DavidFox998/ClassNumber-143
+**GitHub:** Pushed to DavidFox998/birch-swinnerton-dyer-143
 
 ### Ramanujan ↔ Discriminant proved (both directions, classical trio)
 
@@ -850,3 +850,4 @@ concrete Lean inequality about the opaque `S_weil` function:
 The bound constant C_S14_143 = 8.62925199 satisfies C² > 52 = 4·13 (proved in C25).
 
 **RH: OPEN. BC6SelbergTrace_OPEN: OPEN. No Clay claim.**
+
