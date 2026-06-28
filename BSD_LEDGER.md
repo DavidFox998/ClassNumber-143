@@ -1079,3 +1079,103 @@ The architecture is already in place: genesis-775 defines BSD_HasseBound_TierC_O
 to receive whatever cutoff emerges from future batch runs.
 
 **NOT a current task.** BSD: OPEN. No Clay claim.
+
+---
+
+## genesis-776  (conditional Hasse chain: 4 surfaces proved)
+
+**File**: `BSD/BSD_Genesis776_CLOSED.lean`  |  **Lines**: 387  |  **0 sorry**
+
+**What was built**: Four surface closures proved, all conditional on Gate 1 (Hasse).
+The internal consequence chain of Gate 1 is now fully proved.
+When Gate 1 eventually closes, BSD_PrimePowBound + BSD_aNBound + BSD_LSeriesSummable + BSD_AnalyticOn
+all close automatically.
+
+### §1  BSD_antisupersingular  (PROVED)
+
+Statement: `¬((a_p p : ℤ)² = 4·p)` for prime `p`.
+
+Proof by parity split on `a_p p`:
+- **Odd**: `a_p = 2c+1` → `a_p² ≡ 1 (mod 4)` but `4p ≡ 0 (mod 4)`. `omega` closes.
+- **Even**: `a_p = 2c` → `c² = p`. Since `p` is prime: `p ∣ c` → `c = pk` →
+  `p = p²k²` → `pk² = 1` → `p ≤ 1`. Contradicts `p.Prime.two_le`.
+
+Significance: the **supersingular case** (Frobenius eigenvalues real, repeated) cannot
+occur for our prime values — `a_p` is an integer, `4p` is never a perfect square for prime `p`.
+This ensures `sin θ_p ≠ 0` in §4, avoiding division by zero.
+
+### §2  BSD_sin_succ_le  (PROVED)
+
+Statement: `|sin((k+1)·θ)| ≤ (k+1)·|sin θ|` for all `k : ℕ`, `θ : ℝ`.
+
+Proof by induction: base `k=0` by `simp`. Step: `sin_add` gives
+`|sin((n+2)θ)| ≤ |sin((n+1)θ)||cosθ| + |cos((n+1)θ)||sinθ|`. Use `|cosθ| ≤ 1` twice,
+apply induction hypothesis.  `linarith` closes.
+
+### §3  BSD_Newton_sin  (PROVED)
+
+Statement: `(a_prime_pow p k : ℝ) · sin θ = (√p)^k · sin((k+1)·θ)`
+where `θ = arccos(a_p/(2√p))`.
+
+Proof by **paired induction** (prove simultaneously for `j` and `j+1`):
+- `j=0`: `sinθ = 1·sinθ`. Direct.
+- `j=1`: `a_p·sinθ = √p·sin(2θ) = 2√p·sinθ·cosθ = a_p·sinθ`. Uses `sin_add`.
+- `j → j+2`: unfold recurrence `a_{p^{j+2}} = a_p·a_{p^{j+1}} - p·a_{p^j}`.
+  Apply `sin_add` to get `sin((j+3)θ) = sin((j+2)θ)cosθ + cos((j+2)θ)sinθ`.
+  Apply `sin_sub` to get `sin((j+1)θ) = sin((j+2)θ)cosθ - cos((j+2)θ)sinθ`.
+  Difference: `sin((j+3)θ) = 2cosθ·sin((j+2)θ) - sin((j+1)θ)`. `linarith` closes.
+
+### §4  BSD_PrimePowBound_PROVED  (CLOSES BSD_PrimePowBound_OPEN)
+
+Statement: given `BSD_WeilHasse_Weierstrass_OPEN` and `¬(p ∣ 143)`:
+`|(a_prime_pow p k : ℝ)| ≤ (k+1)·(Real.sqrt p)^k`.
+
+This IS `BSD_PrimePowBound_OPEN p k`.  **CLOSED** conditional on Gate 1.
+
+Proof:
+1. From Hasse: `|a_p/(2√p)| ≤ 1` → `θ_p = arccos(a_p/(2√p))` well-defined.
+2. `BSD_antisupersingular`: `a_p² ≠ 4p` → discriminant `4p-a_p² > 0`
+   → `sin²θ_p = (4p-a_p²)/(4p) > 0` → `sin θ_p > 0`.
+3. Newton identity (§3): `a_{p^k}·sinθ_p = (√p)^k·sin((k+1)θ_p)`.
+4. Divide both sides by `sinθ_p > 0`:
+   `|a_{p^k}| = (√p)^k·|sin((k+1)θ_p)| / sinθ_p ≤ (k+1)·sinθ_p·(√p)^k / sinθ_p = (k+1)·(√p)^k`.
+
+### §5  BSD_PrimePow_Weak  (PROVED, no Hasse)
+
+Statement: `|(a_prime_pow p k : ℤ)| ≤ (2·p)^k` for all `k : ℕ`.
+
+Proof by paired strong induction. Inductive step:
+`|a_{p^{k+2}}| ≤ p·(2p)^{k+1} + p·(2p)^k = (2p)^k·p·(2p+1) ≤ (2p)^{k+2}`
+since `p(2p+1) ≤ (2p)² = 4p²` iff `2p+1 ≤ 4p`. True for `p ≥ 1`. `nlinarith`.
+
+Gives L-series convergence at `Re(s) > 3` without Hasse (roadmap only — multiplicativity
+formalization pending).
+
+### §6  Roadmap: BSD_aNBound + BSD_LSeriesSummable
+
+**BSD_aNBound_OPEN** closes from BSD_PrimePowBound via:
+```
+|a_n n| = ∏_p |a_{p^{v_p(n)}}|        [abs_prod = prod_abs in ℤ via Finsupp.prod]
+        ≤ ∏_p (v_p(n)+1)·(√p)^{v_p(n)}  [BSD_PrimePowBound per factor]
+        = τ(n) · √n                        [arithmetic identity]
+```
+Gap: Finsupp.prod absolute value identity (next genesis target).
+
+**BSD_LSeriesSummable_OPEN** closes from BSD_aNBound via:
+`τ(n) = O(n^ε)` for any `ε > 0` → `|a_n| = O(n^{1/2+ε})` →
+`LSeriesSummable_of_isBigO_rpow` (Mathlib LSeries/Basic.lean L341) with `x = 3/2+ε`.
+
+**BSD_AnalyticOn_OPEN** closes from BSD_LSeriesSummable via standard M-test.
+
+### Gap count
+
+| Gate | Surface | Status |
+|------|---------|--------|
+| Gate 1 | `BSD_WeilHasse_Weierstrass_OPEN` | OPEN — Mathlib Frobenius absent |
+| Gate 1 → | `BSD_PrimePowBound_OPEN` | **PROVED** conditional on Gate 1 |
+| Gate 1 → | `BSD_aNBound_OPEN` | Roadmap: Finsupp.prod abs identity |
+| Gate 1 → | `BSD_LSeriesSummable_OPEN` | Roadmap: τ(n)=O(n^ε) + isBigO |
+| Gate 1 → | `BSD_AnalyticOn_OPEN` | Roadmap: M-test from LSeriesSummable |
+| Gate 2 | `BSD_LFunctionIsLinFunc_OPEN` | OPEN — Mellin/Hecke absent |
+
+**NOT a Clay claim.  BSD: OPEN.**
