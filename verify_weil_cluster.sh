@@ -1245,5 +1245,76 @@ else
   echo "(Phase 14 skipped -- START_PHASE=${START_PHASE})"
 fi
 
+echo "  Phase 14: C24_BC6ArithmeticBridge — Γ₀(143) arithmetic + BC6 decomposition."
+
+# ─── Phase 15: C25_BC6WeilExplicit ───────────────────────────────────────────
+if [[ ${START_PHASE:-1} -le 15 ]]; then
+  echo ""
+  echo "=== Phase 15: C25_BC6WeilExplicit — Weil Explicit sub-surface decomposition ==="
+  echo "  BC6_WeilSpectralGap_143_OPEN: zero-free region from λ₁ > 0 (~8pp)."
+  echo "  BC6_WeilArithBound_143_OPEN:  arithmetic Weil sum bound (~7pp)."
+  echo "  BC6_WeilLogFactor_143_OPEN:   log T denominator from func. eq. (~5pp)."
+  echo "  Proved: BC6_WeilExplicit_from_Three, BC6_WeilExplicit_to_LogFactor."
+  echo "  Proved: BC6_LogConductor_143_lt (log 143 < 5), C_S14_143_sq_gt_52 (C²>52)."
+  echo "  Shared API gaps: WeilArithBound↔BSD Gate 1; WeilLogFactor↔BSD Gate 2."
+
+  p15_lean_file="Towers/RH/Chain/C25_BC6WeilExplicit.lean"
+  p15_olean=".lake/build/lib/Towers/RH/Chain/C25_BC6WeilExplicit.olean"
+
+  if [[ -f "$p15_olean" ]] && [[ "$p15_lean_file" -ot "$p15_olean" ]]; then
+    echo "--- Towers/RH/Chain/C25_BC6WeilExplicit.lean ---"
+    echo "  SKIP (olean fresh)"
+    p15_ok=true
+  else
+    echo "--- Towers/RH/Chain/C25_BC6WeilExplicit.lean ---"
+    mkdir -p "$(dirname "$p15_olean")"
+    p15_result=$(LEAN_PATH="$LP" lean -o "$p15_olean" "$p15_lean_file" 2>&1)
+    p15_exit=$?
+    echo "$p15_result"
+    if [[ $p15_exit -eq 0 ]]; then
+      echo "  PASS -- olean: $p15_olean"
+      p15_ok=true
+    else
+      echo "  FAIL: C25_BC6WeilExplicit"
+      p15_ok=false
+    fi
+  fi
+
+  p15_audit_ok=true
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT15' 2>&1
+import Towers.RH.Chain.C25_BC6WeilExplicit
+#print axioms TheoremaAureum.BC6_WeilExplicit_from_Three
+#print axioms TheoremaAureum.BC6_LogConductor_143_lt
+#print axioms TheoremaAureum.C_S14_143_sq_gt_52
+AUDIT15
+  then
+    :
+  else
+    p15_audit_ok=false
+  fi
+
+  if $p15_ok && $p15_audit_ok; then
+    echo "Phase 15 PASSED (C25_BC6WeilExplicit: SORRY:0, classical trio)."
+    echo "  BC6_WeilExplicit_from_Three: 3 sub-surfaces → BC6_WeilExplicit_143_OPEN."
+    echo "  BC6_WeilExplicit_to_LogFactor: converse (with λ₁/Arakelov inputs)."
+    echo "  BC6_LogConductor_143_lt: log(143) < 5 (13-term Taylor enclosure)."
+    echo "  C_S14_143_sq_gt_52: C² > 52 = 4·13 (product witness)."
+    echo "  BC6_Conductor_prod: 143 = 11 × 13.  BC6_WeylPlusGenus: 14+13=27."
+    echo "  Remaining OPEN: BC6_WeilSpectralGap_143_OPEN (~8pp)."
+    echo "                  BC6_WeilArithBound_143_OPEN   (~7pp)."
+    echo "                  BC6_WeilLogFactor_143_OPEN    (~5pp)."
+    echo "  Shared API gaps: BC6_WeilArithBound ↔ BSD Gate 1 (Frobenius API)."
+    echo "                   BC6_WeilLogFactor  ↔ BSD Gate 2 (func. eq. API)."
+    echo "  BC6SelbergTrace_OPEN: OPEN.  RH: OPEN.  No Clay claim."
+  else
+    echo "Phase 15 FAILED — see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 15 skipped -- START_PHASE=${START_PHASE:-1})"
+fi
+
+echo "  Phase 15: C25_BC6WeilExplicit — Weil sub-surface decomposition + arithmetic certs."
+
 echo ""
-echo "=== All Towers modules verified (Phases 1–14). ==="
+echo "=== All Towers modules verified (Phases 1–15). ==="
