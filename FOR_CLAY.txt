@@ -1,5 +1,5 @@
 # FOR_CLAY.txt — Clay BSD Prize Submission Record
-# E_{143a1}/ℚ · DavidFox998/ClassNumber-143 · Generated: 2026-06-28
+# E_{143a1}/ℚ · DavidFox998/birch-swinnerton-dyer-143 · Generated: 2026-06-28
 
 ## What this is
 
@@ -170,3 +170,4 @@ The axiom footprint would be {propext, Classical.choice, Quot.sound} only.
   27d25c5c5790482c3f89cd8c47d1f05ad6e6ba644a546b3c1d0d9cb3782659cf  verify_weil_cluster.sh
 
 ## End of FOR_CLAY.txt
+
