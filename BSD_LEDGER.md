@@ -879,3 +879,53 @@ Full 83-fiber proof (all 83 decides + sum rewrite) is the roadmap for genesis-76
 | `BSD_LFunctionIsLinFunc_OPEN` | OPEN | — |
 
 **Genuine Clay gaps: 2 (unchanged). BSD: OPEN. No Clay claim.**
+
+## genesis-763 — HasseBridge Batch 1: primes 251-307 (2026-06-28)
+
+**File**: `BSD/BSD_Genesis763_CLOSED.lean` (276 lines, 0 sorry, classical trio)
+**Imports**: `Towers.BSD.BSD_Genesis762_CLOSED`
+**Commit**: b80c4da101ba
+
+### What is proved
+
+10 new primes: {251, 257, 263, 269, 271, 277, 281, 283, 293, 307}
+(all good reduction for 143a1; p ∤ 143 = 11×13).
+
+Each prime proves 5 theorems following genesis-740 pattern:
+  §1  `BSD_E143_card_pN`    — `(E143_Finset p).card = k`  by decide (63001-94249 pairs)
+  §2  `BSD_ap_pN`           — exact integer a_p            by omega
+  §3  `BSD_DegreeNonneg_pN` — BSD_FrobeniusDegreeNonneg_OPEN  completed-square
+  §4  `BSD_Hasse_OPEN_pN`   — BSD_Hasse_OPEN p  via BSD_hasse_of_degree_nonneg
+  §5  `BSD_HasseBound_Disc_pN` — (a_p p)^2 <= 4p  via BSD_disc_from_deg_763
+
+| prime | card | a_p | disc | sq witness      |
+|-------|------|-----|------|-----------------|
+| 251   | 230  | +21 | -563 | (r-21/2)^2+563/4|
+| 257   | 239  | +18 | -704 | (r-9)^2+176     |
+| 263   | 281  | -18 | -728 | (r+9)^2+182     |
+| 269   | 299  | -30 | -176 | (r+15)^2+44     |
+| 271   | 243  | +28 | -300 | (r-14)^2+75     |
+| 277   | 251  | +26 | -432 | (r-13)^2+108    |
+| 281   | 263  | +18 | -800 | (r-9)^2+200     |
+| 283   | 313  | -30 | -232 | (r+15)^2+58     |
+| 293   | 279  | +14 | -976 | (r-7)^2+244     |
+| 307   | 307  |   0 |-1228 | r^2+307         |
+
+**Local helper**: `BSD_disc_from_deg_763` (identical to genesis-762 private version;
+  each batch must redeclare with a local name, e.g. BSD_disc_from_deg_764).
+**Sentinel**: `BSD_HasseBound_Discriminant_61prime_CLOSED` (61 <= 61, le_refl)
+**Dispatcher**: `BSD_HasseBound_Discriminant_TierA_Batch1` (fin_cases, 10 primes)
+**Combinator**: `BSD_Genesis763_Combinator` -> reuses genesis-762 combinator
+
+### HasseBridge Tier A coverage after genesis-763: 61 primes
+
+  {2,...,241} (genesis-734..745, 51 primes) union {251,...,307} (genesis-763, 10 new)
+
+### Gap map after genesis-763
+
+| Gap | Status |
+|-----|--------|
+| `BSD_HasseBound_Discriminant_OPEN` (Gate 1) | Tier A: 61/inf proved; Tier B (311..997, ~105 primes) pending Batches 2-11; Tier C (p>997) open |
+| `BSD_LFunctionIsLinFunc_OPEN` (Gate 2) | OPEN -- Mellin/Hecke absent from Mathlib v4.12.0 |
+
+NOT a brick.  BSD: OPEN (Clay).  No Clay claim.
