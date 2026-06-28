@@ -243,8 +243,26 @@ compile_with_olean \
 echo ""
 
 # ── 3c. Collection + X0_143 ───────────────────────────────────────────────────
+# YMMasterCombinator closes all named _OPEN surfaces in the YM chain (2026-06-28).
+# Depends on ChainSummary, MassGapReal, MassGapFromDecay, TransferGapReal,
+# JacobiAngerAvenue1, SU3Instances (all oleans assumed fresh from lake build).
+compile_with_olean \
+  "Towers/YM/YMMasterCombinator.lean" \
+  ".lake/build/lib/Towers/YM/YMMasterCombinator.olean" \
+  "YM/YMMasterCombinator" || p3_ok=false
+echo ""
+
+# YMRhoClose: closes ρ_SU3 < 1 and mass gap lb > 0 from SzegoGap_genuine_open (2026-06-28).
+# Depends on YMMasterCombinator (w1_haar_SU3, SzegoGap_genuine_open) + BesselBounds.
+compile_with_olean \
+  "Towers/YM/YMRhoClose.lean" \
+  ".lake/build/lib/Towers/YM/YMRhoClose.olean" \
+  "YM/YMRhoClose" || p3_ok=false
+echo ""
+
 # YMCollection depends on BesselBounds, W1Toeplitz, KP_Closure,
-# Wall256_Beta0Bridge, Wall256_MassGapConditional (all compiled above or cached).
+# Wall256_Beta0Bridge, Wall256_MassGapConditional, YMMasterCombinator
+# (all compiled above or cached).
 compile_with_olean \
   "Towers/YM/YMCollection.lean" \
   ".lake/build/lib/Towers/YM/YMCollection.olean" \
@@ -269,6 +287,8 @@ if $p3_ok; then
   echo "Phase 3 PASSED (BesselBounds chain + W1Toeplitz + KP_Closure +"
   echo "                KP_Bridge (KP.Main import) +"
   echo "                Wall256_Scaffold + Wall256_Beta0Bridge +"
+  echo "                YMMasterCombinator (14 chain surfaces CLOSED) +"
+  echo "                YMRhoClose (ρ_SU3 < 1 from SzegoGap_genuine_open) +"
   echo "                YMCollection + X0_143/Basic + X0_143/K1IdealGrowth)."
 else
   echo "Phase 3 FAILED — see error lines above."
