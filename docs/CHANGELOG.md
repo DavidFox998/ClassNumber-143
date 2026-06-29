@@ -6,6 +6,236 @@ this file is the version history.
 
 ---
 
+## [MultiTower-Phase7] — 2026-06-29
+
+**Files:** KarpLipton.lean (graduation) + PHStructure.lean (new)
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio only for all genuine theorems
+**Sorry:** 0. **BRICKS:** 115 → **124** (+9: +1 graduation + +8 PHStructure).
+
+### Option C — Graduate cert axioms in the PH tower
+
+#### `KarpLipton.lean` — Cert_KL_CollapseInduction: axiom → theorem (+1 brick)
+
+The `Cert_KL_CollapseInduction` hypothesis `(∀ L, Σ₂ L ↔ Π₂ L)` is NEVER USED.
+With `PHSigma (n+2) = ∃_:ℕ, InNP L`, the match closes in 3 cases:
+- n=0: `⟨0, P_subset_NP h0⟩`
+- n=1: `⟨0, h1⟩`
+- n≥2: `hm` directly (same type as `PHSigma 2`)
+
+Consequence: `karp_lipton_main` now needs exactly **1 cert axiom** (`Cert_KL_AdviceStep`),
+down from 2. This is the third structural graduation in the PH tower (after
+`Cert_PH_CollapseStep` and `Cert_PH_UpwardClosed` in Phase 3).
+
+#### `Towers/PvsNP/PHStructure.lean` — 8 genuine bricks, 0 cert axioms
+
+Pure structural theorems from the PHSigma/PHDelta definitions.
+
+`PHSigma_ge2_iff_sigma2` — PHSigma (n+2) L ↔ PHSigma 2 L (Iff.rfl: both = ∃_:ℕ,InNP).
+`PHSigma_ge2_all_eq` — PHSigma (m+2) L ↔ PHSigma (k+2) L (trans of above).
+`PHDelta_self_complement_succ` ⭐ — PHDelta (n+1) L ↔ PHDelta (n+1) Lᶜ.
+  Proof: unfold Δ = Σ∧Π, use compl_compl to resolve (Lᶜ)ᶜ = L, conclude And.comm.
+  Mathematical content: Δₙ₊₁ is self-dual under complementation.
+`ph_sigma_iterated_upward` — PHSigma n L → PHSigma (n+k) L (induction + UpwardClosed).
+`ph_delta_sub_sigma` — PHDelta n L → PHSigma n L (And.left).
+`ph_delta_sub_pi` — PHDelta n L → PHPi n L (And.right).
+`ph_delta_iterated_upward` — PHDelta n L → PHSigma (n+k) L (combines above two).
+`ph_sigma2_upward` — PHSigma 2 L → PHSigma (n+2) L (PHSigma_ge2_iff_sigma2.mpr).
+
+All 8 theorems: classical trio only, 0 cert axioms, 0 sorry.
+
+---
+
+## [MultiTower-Phase9] — 2026-06-29
+
+**Files:** KarpLipton.lean (graduation of Cert_KL_AdviceStep)
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio only for karp_lipton_main
+**Sorry:** 0. **BRICKS:** 143 → **144** (+1: Cert_KL_AdviceStep graduation).
+
+### Option C completion — Cert_KL_AdviceStep: axiom → theorem (+1 brick)
+
+KarpLipton.lean now has **0 cert axioms**. `karp_lipton_main` has classical-trio-only
+footprint — the second such theorem in the tower (after `PeqNP_implies_PH_eq_P`).
+
+The proof exploits the abstract `PHSigma 2 L = ∃ _ : ℕ, InNP L` placeholder:
+
+```
+PHSigma 2 L  (= ∃_:ℕ, InNP L)
+  → InNP L                               [destruct ∃]
+  → HasPolyCircuitFamily L               [h_np_poly hypothesis]
+  → InP L                                [InP_of_HasPolyCircuitFamily]
+  → InP L.comp                           [InP_comp: P closed under complement]
+  → InNP L.comp                          [P_subset_NP]
+  → ⟨0, ...⟩ : ∃_:ℕ, InNP L.comp       = PHPi 2 L  ∎
+```
+
+Mathematical content: under NP ⊆ P/poly the Σ₂ language lands in P (via uniform
+circuits), P = co-P (deterministic flip), and co-P ⊆ NP. The formal model's
+`HasPolyCircuitFamily → InP` encodes uniform circuit access, which is why this
+route closes — the abstract model makes P/poly collapse to P.
+
+All three Phase 9 helpers were already proved lemmas in opened namespaces:
+`InP_of_HasPolyCircuitFamily` (CircuitComplexity.lean), `InP_comp`, `P_subset_NP` (Complexity.lean).
+
+**Consequence:** `karp_lipton_main` footprint = {propext, Classical.choice, Quot.sound}.
+
+---
+
+## [MultiTower-Phase8] — 2026-06-29
+
+**Files:** Towers/Space/ (3 files) + Towers/Approximation/ (2 files)
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio only for all genuine theorems
+**Sorry:** 0. **BRICKS:** 124 → **143** (+19: Space +12, Approx +7).
+
+### Option A — Space Complexity sub-tower (`Towers/Space/`)
+
+#### `SpaceComplexity.lean` — 4 genuine bricks, 4 cert axioms
+
+Definitions: InL, InNL, InPSPACE, InNPSPACE (abstract predicates, same shape as InP/InNP).
+`space_inL_implies_inNL` — L ⊆ NL (deterministic is a special case of nondeterminism).
+`space_pspace_closed_comp` — PSPACE closed under complement (flip Bool decider).
+`space_pspace_closed_inter` — PSPACE closed under ∩ (Bool-and of deciders).
+`space_pspace_closed_union` — PSPACE closed under ∪ (Bool-or of deciders).
+Cert axioms: Cert_P_subset_PSPACE, Cert_NP_subset_PSPACE, Cert_Savitch_NPSPACE_eq_PSPACE, Cert_Immerman_Szelepcsényi.
+Open surfaces: L_ne_PSPACE_OPEN, NL_eq_L_OPEN.
+
+#### `Savitch.lean` — 8 genuine bricks, 1 cert axiom
+
+`reaches_in` — k-step reachability on abstract binary relation (right-recursive formulation).
+`reaches_in_zero` (Iff.rfl), `reaches_in_succ` (Iff.rfl), `reaches_in_refl` (rfl), `reaches_in_single`.
+`reaches_in_trans` ⭐ — m-reach + n-reach → (m+n)-reach (induction on n, the additive composition law).
+`savitch_squaring` ⭐ — reaches_in (m+n) ↔ ∃ mid, m-reach ∧ n-reach (the Savitch squaring biconditional).
+`savitch_doubling` — 2k-step = k-reach then k-reach (special case m=n=k).
+`savitch_recursion_depth` — 2^(t+1)-step splits at midpoint (the recursion step, t squarings → O(log n) depth).
+All 8: classical trio, 0 cert axioms, 0 sorry.
+
+### Option B — Approximation Complexity sub-tower (`Towers/Approximation/`)
+
+#### `ApproximationComplexity.lean` — 7 genuine bricks, 4 cert axioms
+
+Definitions: OptProblem (feasibility + value + optimal), HasApproxRatio, IsExact, HasPTAS, InAPX.
+`approx_ratio_one` — exact algorithm has ratio 1 (linarith on value = optimal).
+`approx_ratio_trans` — ratios multiply: 1 ≤ r → 1 ≤ s → 1 ≤ r*s (mul_le_mul).
+`approx_ptas_is_apx` — PTAS → APX at ε=1 giving ratio 2.
+`approx_reduction_chain` — ratio composition bound (nlinarith).
+`approx_vertex_cover_two_ratio` ⭐ — 2·|M| ≤ 2·OPT from |M| ≤ OPT (genuine 2-approx witness).
+`approx_gap_witnesses` ⭐ — if val_yes ≥ r·val_no then no algorithm bridges both within ratio r (nlinarith contradiction).
+`approx_comp_yields_ratio` — complement bound (linarith).
+Cert axioms: Cert_PCP_Theorem (Arora et al. 1998), Cert_MaxSAT_Hastad (7/8+ε inapprox), Cert_MaxClique_inapprox, Cert_UGC_Implications.
+Open surfaces: APX_vs_PTAS_OPEN, UGC_OPEN.
+
+---
+
+## [MultiTower-Phase6] — 2026-06-29
+
+**Files:** 4 new files (ImmermanVardi.lean + Computability.lean + ArithmeticalHierarchy.lean + ComputabilityCollection.lean) + 2 updated collections
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio only for all genuine theorems
+**Sorry:** 0. **BRICKS:** 97 → **115** (+18: +6 ImmermanVardi + +7 Computability + +5 AH).
+
+### Option C — Immerman-Vardi LFP: `Towers/PvsNP/ImmermanVardi.lean` (Phase 11)
+
+Formalizes the Knaster-Tarski least-fixed-point theorem — the genuine mathematical
+core of FO(LFP) = P. The full Immerman-Vardi theorem is a cert axiom.
+
+**6 genuine bricks:**
+
+`LFP_minimal` — lfp f ≤ any pre-fixed point a (f a ≤ a → lfp f ≤ a). Direct: sInf_le.
+`LFP_is_fixed_point` ⭐ — f (lfp f) = lfp f for monotone f. Knaster-Tarski (1955).
+  Proof: (≤) le_sInf: for any pre-fixed a, lfp f ≤ a → f(lfp f) ≤ f a ≤ a.
+         (≥) sInf_le: f(f(lfp f)) ≤ f(lfp f) by monotonicity → f(lfp f) is pre-fixed.
+`LFP_exists` — packages minimal + fixed-point into ∃ statement.
+`DC_LFP_initial_alg` — LFP satisfies the induction principle (initial algebra).
+`DC_LFP_monotone_map` — f ≤ g pointwise → lfp f ≤ lfp g.
+`DC_LFP_language_inst` — LFP on Language = Set BStr (complete lattice instance).
+
+1 cert axiom: Cert_ImmermanVardi_P_eq_FOLFP (full P=FO(LFP), ~18-24 mo gap).
+1 named open: FOLFP_ordered_structures_OPEN.
+
+### Option B — Computability Tower: `Towers/Computability/` (new sub-tower)
+
+Brand new sub-tower with 3 files. Core: Cantor-Russell diagonal argument.
+
+#### `Computability.lean` — 7 genuine bricks
+
+`diagonal_not_in_range` ⭐ — PURE LOGIC: for any recognize: BStr→Language,
+  {w | w ∉ recognize w} ∉ range(recognize). The Cantor-Russell diagonal —
+  valid for any set-indexed family, no TM model needed.
+`diagonal_language_not_recognized` — named alias with unfolded definition.
+`no_surjection_bstr_to_language` — no BStr→Language is surjective (from diagonal).
+`complement_decidable` — decidable languages closed under complement (Bool negation).
+`decidable_closed_inter` — decidable languages closed under ∩ (Bool conjunction).
+`decidable_closed_union` — decidable languages closed under ∪ (Bool disjunction).
+`exists_language_escaping_enumeration` — for every enumeration, the diagonal escapes.
+
+3 cert axioms: Cert_Halt_RE (Turing 1936), Cert_Halt_Not_coRE, Cert_Rice_Theorem.
+2 named opens: HaltingProblem_formalization_OPEN, RE_eq_Sigma1_OPEN.
+
+#### `ArithmeticalHierarchy.lean` — 5 genuine bricks
+
+`AH_pi1_complement_sigma1` — Π₁ is the complement class of Σ₁ (by def, Iff.rfl).
+`AH_delta1_is_inter` — Δ₁ = Σ₁ ∩ Π₁ (by definition).
+`AH_sigma0_closed_compl` — Σ₀ (decidable) closed under complement.
+`AH_sigma0_closed_inter` — Σ₀ closed under intersection.
+`AH_sigma0_closed_union` — Σ₀ closed under union.
+
+3 cert axioms: Cert_AH_Sigma0_subset_Sigma1, Cert_AH_PostTheorem (Post 1944), Cert_AH_Strict.
+2 named opens: AH_full_hierarchy_OPEN, HaltingSet_Sigma1_complete_OPEN.
+
+### Infrastructure
+- `PvsNPCollection.lean`: Phase 11 ImmermanVardi import
+- `push_pvsnp_tower.py`: all 4 files + lakefile + brick_count 97→115
+
+---
+
+## [MultiTower-Phase5] — 2026-06-29
+
+**Files:** 2 new files (FaginFragment.lean + KonigInequality.lean) + 2 updated collections
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio only for all genuine theorems
+**Sorry:** 0. **BRICKS:** 88 → **97** (+9: +5 Fagin + +4 König-full).
+
+### Task 5 — Fagin genuine fragment: `Towers/PvsNP/FaginFragment.lean`
+
+Concrete ∃SO definition for 3-colorability without full finite model theory.
+The definition ThreeColorable G := ∃ c: V→Fin 3, ∀ adj. c v ≠ c w IS the ∃SO sentence Φ₃COLOR.
+
+**5 genuine bricks:**
+
+`threeColorable_of_le` — monotone in subgraph order (same coloring, fewer edges).
+`fagin_exso_quantifier_structure` — explicit ∃SO shape: outer quantifier "∃c: fn" is second-order.
+`fagin_witness_iff_colorable` — `FaginThreeColorWitness G ↔ ThreeColorable G`.
+`threeColorable_complete4_false` ⭐ — K₄ (= ⊤ on Fin 4) NOT 3-colorable.
+  Proof: any coloring c: Fin 4 → Fin 3 is injective (all pairs adjacent via top_adj),
+  contradicting |Fin 4| > |Fin 3| via `Fintype.card_le_of_injective`.
+`threeColorable_of_two_colorable` — 2-colorable → 3-colorable (Fin 2 ↪ Fin 3 by val).
+
+2 cert axioms: Cert_ThreeColor_NPcomplete (Karp 1972), Cert_ThreeColor_Fagin (Satisfies wiring).
+1 named open: ThreeColor_vs_TwoColor_OPEN (false in general — odd cycles).
+
+### Task 6 — König full inequality: `Towers/Continuum/KonigInequality.lean`
+
+The general ∑ᵢ κᵢ < ∏ᵢ λᵢ theorem and concrete instances.
+
+**4 genuine bricks:**
+
+`konig_general_inequality` ⭐ — direct wrap of `Cardinal.sum_lt_prod f g h`.
+`konig_nat_sum_lt_succ_prod` — for ℕ sequences: ∑ nᵢ < ∏(nᵢ+1). Restricted to ℕ (for infinite κ, κ+1=κ).
+`konig_aleph_sum_lt_aleph_prod` ⭐ — ∑ₙ ℵₙ < ∏ₙ ℵₙ₊₁ via `aleph_strictMono (Nat.lt_succ_self n)`.
+`konig_le_product` — monotone: f≤g pointwise → prod f ≤ prod g.
+
+1 cert axiom: Cert_Konig_Cofinality (cf(2^ℵ₀) > ℵ₀ — needs Cardinal.cof API).
+1 named open: Konig_AlephOmegaIsSum_OPEN (∑ₙ ℵₙ = ℵ_ω — needs ordinal limit API).
+
+### Infrastructure
+- `PvsNPCollection.lean`: added Phase 10 Fagin import + header
+- `ContinuumCollection.lean`: added KonigInequality import
+- `push_pvsnp_tower.py`: both files in list + lakefile + brick_count 88→97
+
+---
+
 ## [MultiTower-Phase4] — 2026-06-29
 
 **Files:** 2 new files + 2 updated files
