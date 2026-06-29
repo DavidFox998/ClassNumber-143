@@ -79,6 +79,69 @@ BSD: OPEN. No Clay claim.
 
 ---
 
+## [NS-ClayCertificate] — 2026-06-29
+
+**Files:** `Towers/NS/NSClayCertificate.lean` (new — formal Clay certificate);
+`lean-proof-towers/LEDGER.md` (updated — NS certification table)
+**Pushed to:** `DavidFox998/navier-stokes` (4 files: certificate, README, FOR_CERN, LEDGER)
+**Axioms:** classical trio + 4 named cert axioms. **Sorry:** 0.
+
+### What was done
+
+Formalised the NS Clay Certificate as a dedicated Lean file and updated
+the project-wide LEDGER.md with the full NS certification table.
+
+#### NSClayCertificate.lean — 5 sections
+
+**§1 Clay problem definition**: `ns_clay_problem_definition` — biconditional
+showing `NS_ClayStatement s ↔ (∀ u₀ f, ...)`. Not a proof; a definitional
+unfolding for clarity.
+
+**§2 Cert axiom registry**: 4 `def cert_*_registry : String` documenting
+each cert axiom's mathematical content and literature backing:
+- `Cert_Arb_NS_Gate1` → Rellich–Kondrachov (Aubin 1963, Lions 1969)
+- `Cert_Arb_NS_Gate2` → B(u,v,w) weak form (Leray 1934, Ladyzhenskaya 1969)
+- `Cert_Arb_NS_LocalReg` → Stokes local regularity (Solonnikov 1964, Giga 1981)
+- `Cert_Arb_NS_BKMStrong` → BKM blow-up criterion (Beale–Kato–Majda 1984)
+
+**§3 Genuinely proved theorems**: Re-exports of:
+- `cert_NS_GlobalSobolevBound` (0 cert axioms, genuine) — `NS_GlobalSobolevBound_PROVED`
+- `cert_NS_BKMCriterion` (1 cert) — `ns_bkm_criterion_discharged`
+- `cert_NS_BKMBridge` (1 cert) — `ns_bkm_bridge_discharged`
+- `cert_NS_Gate3` (2 certs) — `ns_gate3_discharged`
+
+**§4 Master certificate**: `NS_CLAY_CERTIFICATE` — clean single theorem
+with full axiom footprint documented in the docstring.
+
+**§5 Certificate audit**: `ns_certificate_total_axioms := 7`,
+`ns_research_axioms := 0`, `ns_cert_axiom_list`, `ns_brick_count_phase14 := 160`,
+`ns_proved_sub_avenues`, `ns_conditional_closures`, `ns_clay_physical_status`.
+
+#### LEDGER.md NS section
+
+Added 6 sub-tables:
+1. `NS_CLAY_CERTIFICATE` axiom footprint (7 rows)
+2. Proved theorems (CLAY_VALID — 25 rows, all classical trio)
+3. Conditional certificates (CLAY_CONDITIONAL — 5 rows)
+4. Cert axiom backing with literature citations (4 rows)
+5. Open surfaces (12 rows, CLAY_OPEN / CLAY_LOCKED)
+6. Locked open invariants (2 rows)
+
+#### push script updates
+
+- `NSClayCertificate.lean` added to `NS_LEAN_FILES` (after NSCollection)
+- `README.md` rewritten to reflect Phase 14 cert footprint + proof route
+- `FOR_CERN.txt` rewritten with cert structure + axiom audit
+- `push_readme_and_cern` now pushes `LEDGER.md` from local workspace file
+
+### Honest scope
+
+NS global regularity (physical ℝ³) remains OPEN. `NS_CLAY_CERTIFICATE` is
+conditional on 4 named cert axioms backed by published mathematics absent
+from Mathlib v4.12.0. NS Surface #2 LOCKED OPEN. No Clay claim.
+
+---
+
 ## [NS-Tower-Phase14] — 2026-06-29
 
 **Files:** `Towers/NS/NSExpDecayClose.lean` (new — Phase 14 capstone);
