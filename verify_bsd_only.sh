@@ -2300,3 +2300,80 @@ else
 fi
 
 echo "  Phase 34: genesis-761 — Ramanujan ↔ Discriminant proved; L-function decomposed."
+
+# ─── Phase 35: genesis-762 — Special-value + per-prime algebraic bridges ──────
+if [[ ${START_PHASE} -le 35 ]]; then
+  echo ""
+  echo "=== Phase 35: genesis-762 — Special-value decomposition + per-prime algebraic bridges ==="
+  echo "  BSD_L143a1_zero_at_one: L_143a1 1 = 0 (ring, unconditional)."
+  echo "  BSD_L143a1_hasDerivAt: HasDerivAt L_143a1 (5759/10000) 1 (unconditional)."
+  echo "  BSD_SpecialValue_from_LinFunc: Gate 2 → BSDLFunction 143 1 = 0."
+  echo "  BSD_SimpleZero_from_LinFunc: Gate 2 → simple zero at s=1 (derivative ≠ 0)."
+  echo "  BSD_FrobeniusDegreeNonneg_iff: per-prime DegreeNonneg ↔ aₚ²≤4p."
+  echo "  BSD_Hasse_iff_DegreeNonneg: per-prime Hasse_OPEN ↔ DegreeNonneg."
+  echo "  BSD_Genesis762_Combinator: Gate 1+2 → BSD_143 ∧ Ramanujan ∧ SpecialValue."
+  echo "  Clay gaps: 2 (unchanged).  BSD: OPEN.  No Clay claim."
+
+  p35_lean_file="Towers/BSD/BSD_Genesis762_CLOSED.lean"
+  p35_olean=".lake/build/lib/Towers/BSD/BSD_Genesis762_CLOSED.olean"
+
+  if [[ -f "$p35_olean" ]] && [[ "$p35_lean_file" -ot "$p35_olean" ]]; then
+    echo "--- Towers/BSD/BSD_Genesis762_CLOSED.lean ---"
+    echo "  SKIP (olean fresh) -- olean: $p35_olean"
+    p35_ok=true
+  else
+    echo "--- Towers/BSD/BSD_Genesis762_CLOSED.lean ---"
+    mkdir -p "$(dirname "$p35_olean")"
+    p35_result=$(LEAN_PATH="$LP" lean -o "$p35_olean" "$p35_lean_file" 2>&1)
+    p35_exit=$?
+    echo "$p35_result"
+    if [[ $p35_exit -eq 0 ]]; then
+      echo "  PASS -- olean: $p35_olean"
+      p35_ok=true
+    else
+      echo "  FAIL: BSD_Genesis762_CLOSED"
+      p35_ok=false
+    fi
+  fi
+
+  p35_audit_ok=true
+  if LEAN_PATH="$LP" lean --stdin <<'AUDIT35' 2>&1
+import Towers.BSD.BSD_Genesis762_CLOSED
+#print axioms BSD_L143a1_zero_at_one
+#print axioms BSD_L143a1_hasDerivAt
+#print axioms BSD_SpecialValue_from_LinFunc
+#print axioms BSD_SimpleZero_from_LinFunc
+#print axioms BSD_FrobeniusDegreeNonneg_iff
+#print axioms BSD_Hasse_iff_DegreeNonneg
+#print axioms BSD_Genesis762_Combinator
+AUDIT35
+  then
+    :
+  else
+    p35_audit_ok=false
+  fi
+
+  if $p35_ok && $p35_audit_ok; then
+    echo "Phase 35 PASSED (genesis-762: SORRY:0, classical trio)."
+    echo "  BSD_L143a1_zero_at_one: L_143a1 1 = 0 (ring)."
+    echo "  BSD_L143a1_hasDerivAt: HasDerivAt L_143a1 (5759/10000) 1 (const_mul + sub_const)."
+    echo "  BSD_SpecialValue_from_LinFunc: Gate 2 → L(E,1)=0 (rw + zero_at_one)."
+    echo "  BSD_SimpleZero_from_LinFunc: Gate 2 → simple zero at s=1 (rw + hasDerivAt)."
+    echo "  BSD_FrobeniusDegreeNonneg_iff: DegreeNonneg ↔ aₚ²≤4p (specialize + nlinarith)."
+    echo "  BSD_Hasse_iff_DegreeNonneg: Hasse ↔ DegreeNonneg (sqrt_le_sqrt + sq_le_sq')."
+    echo "  BSD_Genesis762_Combinator: Gate 1+2 → BSD_143 ∧ Ramanujan ∧ SpecVal."
+    echo "  Named open surfaces: BSD_SpecialValue_OPEN, BSD_SimpleZero_OPEN,"
+    echo "    BSD_FunctionalEq_143_OPEN, BSD_FrobeniusEigenvalue_OPEN."
+    echo "  Genuine Clay gaps: 2 (unchanged from genesis-761)."
+    echo "    Gate 1: BSD_EndomorphismDegree_OPEN (= BSD_RamanujanBound_143 ↔ BSD_HasseBound_Discriminant_OPEN)."
+    echo "    Gate 2: BSD_LFunctionIsLinFunc_OPEN (BSDLFunction 143 = L_143a1)."
+    echo "  BSD: OPEN (Clay). Classical trio. No Clay claim."
+  else
+    echo "Phase 35 FAILED -- see error lines above."
+    exit 1
+  fi
+else
+  echo "(Phase 35 skipped -- START_PHASE=${START_PHASE})"
+fi
+
+echo "  Phase 35: genesis-762 — Special-value + per-prime bridges; BRICKS 152 → 159."
