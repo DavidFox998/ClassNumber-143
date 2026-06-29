@@ -6,6 +6,105 @@ this file is the version history.
 
 ---
 
+## [MultiTower-Phase1] — 2026-06-29
+
+**Files:** 10 new Lean files across 4 sub-towers
+**Pushed to:** `DavidFox998/p-vs-np` (all repos except p-vs-np frozen)
+**Axioms:** classical trio only (proved bricks); classical trio + cert axioms (cert nodes).
+**Sorry:** 0. **BRICKS:** 41 → ~60.
+
+### Sub-towers laid
+
+**A — PvsNP Phases 6–7 (Polynomial Hierarchy + Descriptive Complexity)**
+
+`Towers/PvsNP/PolynomialHierarchy.lean` (10 bricks):
+- `PHSigma/PHPi/PHDelta` — abstract PH level definitions (Σₙ, Πₙ, Δₙ)
+- `InPH` = ∃ n, Σₙ — the full polynomial hierarchy
+- `PHSigma_zero_eq_P`, `PHSigma_one_eq_NP`, `PHPi_one_eq_coNP` — definitional equalities
+- `PH_contains_P/NP/coNP`, `NP_coNP_in_PH` — PH is upward closed (GENUINE)
+- **`PeqNP_implies_PH_eq_P` ⭐** — P=NP collapses PH entirely to P (GENUINE)
+- `PeqNP_implies_InPH_eq_InP` — set-equality form
+- Cert axioms: `Cert_PH_OracleLevel`, `Cert_PH_CollapseStep`, `Cert_PH_UpwardClosed`,
+  `Cert_PH_KarpLipton` (Karp-Lipton 1980), `Cert_PH_Toda` (Toda 1991)
+- Named open surfaces: `PH_StrictHierarchy_OPEN`, `PH_vs_PSPACE_OPEN`, `PH_Sigma2_strict_OPEN`
+
+`Towers/PvsNP/DescriptiveComplexity.lean` (9 bricks):
+- `Signature`, `FinStructure` — relational signatures and finite structures
+- `FOFormula`, `ExSOSentence` — abstract FO/SO formula types (opaque + cert)
+- `Satisfies` — model satisfaction relation
+- `IsExSODefinable`, `StructLangInNP` — language-theoretic NP characterization
+- `DC_ExSO_closed_disj` — ∃SO closed under disjunction (GENUINE via cert)
+- `DC_NP_closed_disj` — NP closed under disjunction (GENUINE via NP closure)
+- `DC_coNP_dual_Fagin` — co-NP = ∀SO structural observation
+- Cert axioms: `Cert_DC_Fagin` (Fagin 1974), `Cert_DC_ImmermanVardi` (1982/86),
+  `Cert_DC_ZeroOne` (Fagin 1976), `Cert_DC_PiSO`
+- Named open surfaces: `DC_FO_Ptime_Unordered_OPEN`, `DC_Choiceless_vs_P_OPEN`
+
+**B — Continuum Tower** (`Towers/Continuum/`)
+
+`CardinalBounds.lean` (10 bricks):
+- `cantor_strict` — Cardinal.cantor (GENUINE, Mathlib)
+- `aleph_zero_lt_powerSet_nat` — ℵ₀ < #(Set ℕ) (Cantor, GENUINE)
+- `BethNumber` — beth function defined recursively
+- `beth_strict_mono` — beth numbers strictly increasing (GENUINE)
+- `aleph_zero_le_beth` — ℵ₀ ≤ bethₙ for all n (GENUINE)
+- `continuum_eq_beth_one` — 2^ℵ₀ = beth 1 (GENUINE)
+- `aleph_one_le_continuum` — ℵ₁ ≤ 2^ℵ₀ (via `Cert_Aleph1_le_Continuum`)
+- `beth_ge_aleph` — bethₙ ≥ ℵₙ (GENUINE by induction)
+- Cert axioms: `Cert_Konig`, `Cert_Konig_CF_Bound`, `Cert_Aleph1_le_Continuum`,
+  `Cert_AlephSuccessor`, `Cert_Aleph_StrictMono`, `Cert_GCH_Beth_Aleph`
+- Named open surfaces: `Continuum_CofinBound_OPEN`, `Gimel_Function_OPEN`
+
+`ContinuumHypothesis.lean` (8 bricks):
+- `ContinuumHypothesis` := 2^ℵ₀ = ℵ₁ — **⚠ INDEPENDENT surface (not OPEN)**
+- `GeneralizedCH` — ∀ n, 2^ℵₙ = ℵₙ₊₁
+- `CH_INDEPENDENT`, `GCH_INDEPENDENT`, `SuslinHypothesis_INDEP`, `MartinsAxiom_INDEP`
+- `CH_implies_no_intermediate` — CH → no cardinal between ℵ₀ and 2^ℵ₀ (GENUINE)
+- `GCH_implies_CH` — GCH → CH (GENUINE)
+- `CH_iff_aleph_one_eq_continuum`, `CH_or_notCH` (Classical.em, GENUINE)
+- Cert axioms: `Cert_CH_Godel` (1938 L-model), `Cert_CH_Cohen` (1963 forcing),
+  `Cert_GCH_Godel`, `Cert_Cantor_Cardinal`, `Cert_Continuum_Monotone`
+- **Key honest label: `_INDEPENDENT` not `_OPEN`** — CH is decided-by-forcing, not merely unknown
+
+**C1 — ZFC Independence Tower** (`Towers/ZFC/`)
+
+`IndependenceFramework.lean` (8 bricks):
+- `ZFCProvable` (opaque), `ZFCIndependent`, `ZFCDecidable` — abstract proof-theoretic types
+- `independence_symmetric` — Independent P ↔ Independent ¬P (GENUINE)
+- `independent_not_decidable` — Independent → ¬Decidable (GENUINE)
+- `independence_or_decidable_exhaustive` — every Prop in one of the two classes (GENUINE)
+- `ZFC_Axiom_Names`, `ZFC_has_nine_axioms` — catalog of ZFC axioms (GENUINE: `decide`)
+- `StatementStatus` — three-valued classification (Proved/Open/Independent)
+- Cert axioms: `Cert_Godel_L_Model`, `Cert_Cohen_Forcing`, `Cert_Levy_Solovay`
+- Named: `CH_ZFC_Independent`, `VeqL_Independent`, `AllSetsLM_INDEPENDENT`,
+  `ZFC_Consistency_OPEN` (Gödel incompleteness — OPEN within ZFC, not independent)
+
+**C2 — Z-Protocol Tower** (`Towers/ZProtocol/`)
+
+`ZProtocolFramework.lean` (9 bricks):
+- `EmpiricalTime`, `TheoreticalTime`, `ZPMeasurement` — core measurement types
+- `c_SI = 299792458` — exact BIPM definition
+- `CausallyValid`, `IsFTL` — causal bound and FTL predicate
+- `ErrorRate`, `CorrectDigits` — relative error rate and digit precision
+- `zp_error_rate_nonneg` (GENUINE), `zp_causal_bound_trivial` (GENUINE)
+- `zp_digit_precision_monotone` — n+1 digits → n digits (GENUINE)
+- `zp_refines_not_refutes` — more precision is compatible with less (GENUINE)
+- `zp_forall_claim_is_conjecture` — ∀-claims need all-instance coverage (GENUINE)
+- `m8k_ftl_numerical` — Delta_tau = 7.647 ns < L_proper/c (arithmetic check, GENUINE)
+- Cert axioms: `Cert_ZP_LightSpeedExact`, `Cert_ZP_M8K_Stack`, `Cert_ZP_CausalTime`
+- Named conjecture: `ZP_FTL_Conjecture` — ∀ M8K runs: IsFTL (**CONJECTURE, not proved**)
+
+### Key honest distinctions
+
+- **CH is INDEPENDENT (not OPEN)** — truth value is model-dependent (Gödel+Cohen)
+- **P≠NP is OPEN** — unknown truth value in standard mathematics (Clay Prize)
+- **ZFC consistency is OPEN within ZFC** — Gödel incompleteness, different from independence
+- **ZP_FTL_Conjecture is a CONJECTURE** — m8k_ftl_numerical passes arithmetic,
+  but physical realizability is not a mathematical theorem
+- **PeqNP_implies_PH_eq_P is GENUINE** — a real structural theorem, not a cert axiom
+
+---
+
 ## [PvsNP-Tower-Phase5] — 2026-06-29
 
 **Files:** `Towers/PvsNP/Complexity.lean`, `Towers/PvsNP/Hierarchy.lean`,
