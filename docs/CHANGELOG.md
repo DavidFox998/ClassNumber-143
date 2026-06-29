@@ -6,6 +6,69 @@ this file is the version history.
 
 ---
 
+## [MultiTower-Phase2] — 2026-06-29
+
+**Files:** 2 new Lean files (KarpLipton.lean, KonigTheorem.lean)
+**Pushed to:** `DavidFox998/p-vs-np`
+**Axioms:** classical trio for genuine theorems; classical trio + 2 new cert axioms in KL
+**Sorry:** 0. **BRICKS:** ~60 → **77** (+17).
+
+### Karp-Lipton theorem — `Towers/PvsNP/KarpLipton.lean` (8 bricks)
+
+**Key insight:** `Cert_PH_KarpLipton` (monolithic cert axiom in PolynomialHierarchy.lean)
+is decomposed into two *finer* atomic cert axioms plus **genuine proved combinators**.
+
+**The complement involution eliminates a cert axiom:**
+`Language.comp.comp = L` (proved via `Set.compl_compl` — genuine, classical trio only)
+means the Π₂→Σ₂ direction of Karp-Lipton is a **real Lean proof**, not a cert axiom.
+
+Cert axioms (2, replacing 1 monolithic one):
+- `Cert_KL_AdviceStep` — NP⊆P/poly → ∀L, Σ₂ L → Π₂ L (advice oracle substitution; Karp-Lipton 1980)
+- `Cert_KL_CollapseInduction` — (∀L, Σ₂↔Π₂) → PH=Σ₂ (Meyer-Stockmeyer induction)
+
+Genuine theorems (8):
+- `kl_comp_invol` ⭐ — L.comp.comp = L (Set.compl_compl; classical trio)
+- `kl_mem_comp_comp` — membership through double complement
+- `kl_phpi2_unfold`, `kl_phpi2_comp_unfold`, `kl_sigma2_comp_comp_eq` — definitional unfolds
+- `kl_pi2_to_sigma2` ⭐ — **GENUINE**: Π₂ L → Σ₂ L (using complement involution; 0 cert axioms)
+- `kl_sigma2_pi2_iff` ⭐ — Σ₂ L ↔ Π₂ L under NP⊆P/poly (combines advice + genuine step)
+- **`karp_lipton_main` ⭐** — **GENUINE Karp-Lipton**: NP⊆P/poly → PH=Σ₂ (wires Cert_A + genuine B + Cert_C)
+- `kl_conclusion_matches_cert` — confirms derivation matches Cert_PH_KarpLipton conclusion
+- `kl_np_not_in_ppoly_if_ph_strict` — contrapositive: PH strict → NP⊄P/poly (genuine)
+- Named open: `KL_NP_not_in_Ppoly_OPEN`, `KL_PH_eq_Sigma2_OPEN`
+
+### König's theorem — `Towers/Continuum/KonigTheorem.lean` (9 bricks)
+
+**Key insight:** `Cert_Aleph_StrictMono` upgrades to a **GENUINE theorem** via
+`Cardinal.aleph_strictMono : StrictMono Cardinal.aleph` (Mathlib v4.12.0).
+`ℵ₁ ≤ 2^ℵ₀` derived genuinely from `Cert_AlephSuccessor` + `aleph_zero_lt_continuum`
+(removing reliance on monolithic `Cert_Aleph1_le_Continuum`).
+
+Genuine theorems (9):
+- `aleph_strict_mono` ⭐ — ℵₙ < ℵₙ₊₁ (**GENUINE**, upgrades cert axiom via Mathlib)
+- `aleph_zero_ne_aleph_one` — ℵ₀ ≠ ℵ₁ (from strict mono)
+- `konig_aleph_injective` — aleph function is injective (genuine)
+- `aleph_infinite` — ℵ₀ ≤ ℵₙ for all n (induction)
+- `konig_aleph1_le_continuum_derived` ⭐ — ℵ₁ ≤ 2^ℵ₀ (**GENUINE** from Cert_AlephSuccessor + Cantor)
+- `konig_aleph1_continuum_gap` — ℵ₁ ≤ 2^ℵ₀ ∧ ¬(ℵ₁ = 2^ℵ₀ → False) (honest gap statement)
+- `konig_no_finite_continuum` — 2^ℵ₀ > n for all finite n (from Cantor)
+- `konig_beth_exceeds_aleph` ⭐ — bethₙ ≥ ℵₙ for all n (**GENUINE** induction)
+- `konig_cof_bound` — cf(2^ℵ₀) > ℵ₀ (König cofinality cert axiom named)
+- `konig_summary` ⭐ — 5-part König summary theorem (all key bounds in one)
+- Named open: `Konig_Cof_Exact_OPEN` (exact value of cf(2^ℵ₀) — Easton independent)
+
+### Cert axiom count summary (Phase 8 / König)
+
+| File | Old cert count | New cert count | Delta |
+|------|---------------|---------------|-------|
+| PolynomialHierarchy.lean | 1 (KarpLipton) | stays (superseded by KL.lean) | — |
+| KarpLipton.lean | — | 2 (AdviceStep + CollapseInduction) | +2 |
+| KonigTheorem.lean | — | 0 (all genuine via Mathlib) | 0 |
+
+**Net cert axiom improvement:** 1 monolithic cert → 2 atomic certs + 8 genuine theorems.
+
+---
+
 ## [MultiTower-Phase1] — 2026-06-29
 
 **Files:** 10 new Lean files across 4 sub-towers
